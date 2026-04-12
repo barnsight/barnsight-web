@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BarnSight — Моніторинг гігієни ферм</title>
+    <meta
+      name="description"
+      content="BarnSight аналізує фото з камер у корівниках, виявляє скупчення гною та надає аналітику для швидкого реагування."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body class="page-transition font-sans">
+    <header class="border-b border-zinc-800">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="/" class="text-lg font-semibold tracking-tight">BarnSight</a>
+        <nav class="flex items-center gap-3">
+          <% if (currentUser) { %>
+          <a href="/dashboard" class="btn-secondary">Панель</a>
+          <form action="/logout" method="post">
+            <button class="btn-primary" type="submit">Вийти</button>
+          </form>
+          <% } else { %>
+          <a href="/login" class="btn-primary">Увійти</a>
+          <% } %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-6 py-14">
+      <section class="grid gap-10 lg:grid-cols-2">
+        <div>
+          <p class="mb-4 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs uppercase tracking-wider text-zinc-300">
+            Farm Hygiene Analytics
+          </p>
+          <h1 class="text-4xl font-extrabold leading-tight sm:text-5xl">
+            Моніторинг чистоти корівників на основі аналізу фото
+          </h1>
+          <p class="mt-6 max-w-xl text-zinc-300">
+            BarnSight автоматично аналізує знімки з камер, фіксує події забруднення та допомагає команді ферми швидко
+            реагувати на ризики для тварин і персоналу.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/login" class="btn-primary">Спробувати зараз</a>
+            <a href="#how" class="btn-secondary">Як це працює</a>
+          </div>
+        </div>
+        <div class="panel p-6">
+          <h2 class="text-xl font-semibold">Стан API</h2>
+          <p class="mt-2 text-sm text-zinc-400">Підключення до бекенду: <%= apiBaseUrl %></p>
+          <div id="health-badge" class="mt-5 inline-flex rounded-lg border border-zinc-700 px-3 py-2 text-sm">
+            Перевірка...
+          </div>
+          <ul class="mt-6 space-y-3 text-sm text-zinc-300">
+            <li>• Події з камер із confidence та bounding box</li>
+            <li>• Аналітика за датами, господарствами і зонами</li>
+            <li>• Звіти для операційних рішень</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="how" class="mt-16 grid gap-4 md:grid-cols-3">
+        <article class="panel p-5">
+          <h3 class="text-lg font-semibold">1. Збір фото</h3>
+          <p class="mt-2 text-sm text-zinc-300">Камери передають знімки з зон утримання тварин у безпечний API-контур.</p>
+        </article>
+        <article class="panel p-5">
+          <h3 class="text-lg font-semibold">2. Детекція гною</h3>
+          <p class="mt-2 text-sm text-zinc-300">
+            Система фіксує події, confidence та координати області забруднення.
+          </p>
+        </article>
+        <article class="panel p-5">
+          <h3 class="text-lg font-semibold">3. Дії команди</h3>
+          <p class="mt-2 text-sm text-zinc-300">
+            Чергові працівники бачать пріоритетні ризики та планують прибирання.
+          </p>
+        </article>
+      </section>
+    </main>
+
+    <script src="/public/pageTransitions.js"></script>
+    <script>
+      (async function loadHealth() {
+        const badge = document.getElementById("health-badge");
+        try {
+          const response = await fetch("/app/api/health");
+          const data = await response.json();
+          if (response.ok && data.status === "ok") {
+            badge.textContent = "API працює (status: ok)";
+            badge.className = "mt-5 inline-flex rounded-lg border border-zinc-600 bg-zinc-100 px-3 py-2 text-sm text-zinc-950";
+            return;
+          }
+          badge.textContent = "API відповідає з помилкою";
+        } catch {
+          badge.textContent = "API тимчасово недоступне";
+        }
+      })();
+    </script>
+  </body>
+</html>
