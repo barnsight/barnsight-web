@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="<%= locale %>">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= t("faq.title") %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body class="page-transition font-sans">
+    <header class="brand-header">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-4">
+        <a href="/" class="brand-link">
+          <img class="brand-logo" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
+          <span>BarnSight</span>
+        </a>
+        <nav class="flex flex-wrap items-center gap-3">
+          <%- include("partials/language-switcher") %>
+          <a href="/about" class="text-sm font-medium text-zinc-700 hover:text-amber-900"><%= t("nav.about") %></a>
+          <a href="/pricing" class="text-sm font-medium text-zinc-700 hover:text-amber-900"><%= t("nav.pricing") %></a>
+          <% if (currentUser) { %>
+          <a href="/dashboard" class="btn-secondary"><%= t("nav.dashboard") %></a>
+          <% } else { %>
+          <a href="/register" class="btn-secondary"><%= t("nav.register") %></a>
+          <a href="/login" class="btn-primary"><%= t("nav.login") %></a>
+          <% } %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-6 py-14 sm:py-18">
+      <p class="inline-flex rounded-full border border-amber-800/20 bg-white/70 px-4 py-2 text-xs uppercase tracking-[0.25em] text-amber-900">
+        FAQ
+      </p>
+      <h1 class="mt-6 text-5xl font-extrabold leading-[0.92] tracking-tight text-zinc-950 sm:text-6xl"><%= t("faq.heading") %></h1>
+
+      <section class="mt-12 space-y-6">
+        <%
+          const faqItems = locale === "en"
+            ? [
+                ["What does BarnSight actually do?", "BarnSight monitors barn cleanliness through camera-based detection, organized event review, and operational reporting. It is designed to help teams notice contamination earlier and respond with better context."],
+                ["Is BarnSight meant to replace people on site?", "No. BarnSight is built to support human judgment. Teams still review detections, inspect conditions, and make decisions. The platform reduces delay and inconsistency; it does not replace accountability."],
+                ["Can it work in difficult farm conditions?", "Yes. The platform is designed for uneven lighting, unstable connectivity, and practical field deployment. Edge processing and resilient ingestion reduce dependence on ideal network conditions."],
+                ["Who is BarnSight for?", "It is built for farmers, inspectors, managers, and technical teams that need a reliable way to review hygiene events across barns, devices, and staff workflows."],
+                ["How does the web dashboard help operations?", "The dashboard brings events, analytics, reports, profile tools, and device-facing workflows into one place so the operational team can review what happened and act faster."],
+                ["Can BarnSight scale beyond a single barn?", "Yes. The system architecture is intended for multiple barns, multiple devices, and ongoing model adaptation as conditions change across sites."],
+              ]
+            : [
+                ["Що саме робить BarnSight?", "BarnSight контролює чистоту корівників через детекцію з камер, організований перегляд подій і операційні звіти. Платформа допомагає помічати забруднення раніше та реагувати з кращим контекстом."],
+                ["Чи замінює BarnSight людей на фермі?", "Ні. BarnSight створений для підтримки людського рішення. Команда все одно переглядає детекції, оцінює умови та приймає дії. Платформа зменшує затримки й хаос, але не прибирає відповідальність."],
+                ["Чи працює система у складних умовах ферми?", "Так. Платформа спроєктована для нерівномірного освітлення, нестабільного зв’язку та реального польового середовища. Edge-обробка і стійке приймання подій зменшують залежність від ідеальної мережі."],
+                ["Для кого створено BarnSight?", "Система орієнтована на фермерів, інспекторів, менеджерів і технічні команди, яким потрібен надійний спосіб перегляду гігієнічних подій у межах barns, devices і робочих процесів персоналу."],
+                ["Як вебпанель допомагає операційній роботі?", "Панель збирає події, аналітику, звіти, профільні інструменти та робочі сценарії для edge-пристроїв в одному місці, щоб команда швидше розуміла ситуацію і діяла без зайвих перемикань."],
+                ["Чи можна масштабувати BarnSight на кілька господарств?", "Так. Архітектура системи розрахована на кілька корівників, кілька пристроїв і поступову адаптацію моделей під різні умови на різних локаціях."],
+              ];
+        %>
+        <% for (const item of faqItems) { %>
+        <article class="panel rounded-[2rem] p-7 shadow-xl shadow-amber-950/10">
+          <h2 class="text-2xl font-semibold tracking-tight text-zinc-950"><%= item[0] %></h2>
+          <p class="mt-4 max-w-5xl text-base leading-8 text-zinc-700"><%= item[1] %></p>
+        </article>
+        <% } %>
+      </section>
+
+      <section class="mt-20 rounded-[2rem] border border-amber-900/10 bg-zinc-950 px-7 py-8 text-white shadow-2xl shadow-zinc-950/12">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-sm uppercase tracking-[0.24em] text-white/45">More</p>
+            <p class="mt-4 max-w-3xl text-sm leading-8 text-white/72">
+              For product context, engineering direction, and project repositories, use the BarnSight GitHub organization and the operational pages across this website.
+            </p>
+          </div>
+          <a href="https://github.com/barnsight" target="_blank" rel="noreferrer" class="btn-secondary border-white/20 bg-white/10 text-white">GitHub</a>
+        </div>
+      </section>
+    </main>
+    <script src="/public/pageTransitions.js"></script>
+  </body>
+</html>

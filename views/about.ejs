@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="<%= locale %>">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= t("about.title") %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body class="page-transition font-sans">
+    <header class="brand-header">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-4">
+        <a href="/" class="brand-link">
+          <img class="brand-logo" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
+          <span>BarnSight</span>
+        </a>
+        <nav class="flex flex-wrap items-center gap-3">
+          <%- include("partials/language-switcher") %>
+          <a href="/faq" class="text-sm font-medium text-zinc-700 hover:text-amber-900"><%= t("nav.faq") %></a>
+          <a href="/pricing" class="text-sm font-medium text-zinc-700 hover:text-amber-900"><%= t("nav.pricing") %></a>
+          <% if (currentUser) { %>
+          <a href="/dashboard" class="btn-secondary"><%= t("nav.dashboard") %></a>
+          <% } else { %>
+          <a href="/register" class="btn-secondary"><%= t("nav.register") %></a>
+          <a href="/login" class="btn-primary"><%= t("nav.login") %></a>
+          <% } %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-6 py-14 sm:py-18">
+      <section class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+          <p class="inline-flex rounded-full border border-amber-800/20 bg-white/70 px-4 py-2 text-xs uppercase tracking-[0.25em] text-amber-900">
+            <%= t("about.badge") %>
+          </p>
+          <h1 class="mt-6 max-w-4xl text-5xl font-extrabold leading-[0.92] tracking-tight text-zinc-950 sm:text-6xl">
+            AI cleanliness monitoring for farms that need reliability, not friction.
+          </h1>
+          <p class="mt-6 max-w-3xl text-lg leading-8 text-zinc-700">
+            BarnSight develops computer vision solutions for agricultural hygiene monitoring. The platform enables real-time detection and reporting of barn floor contamination so farmers and inspectors can maintain cleaner, safer facilities with clearer evidence.
+          </p>
+          <p class="mt-5 max-w-3xl text-base leading-8 text-zinc-600">
+            The system is designed around a practical operational loop: camera capture, edge inference, centralized ingestion, structured storage, and a dashboard for review. It supports human judgment with faster visibility, not replacement.
+          </p>
+        </div>
+
+        <aside class="panel p-7">
+          <h2 class="text-3xl font-bold tracking-tight text-zinc-950"><%= t("about.included") %></h2>
+          <ul class="mt-6 space-y-4 text-base leading-8 text-zinc-700">
+            <li>• Edge detection optimized for low-latency and offline-capable operation in farm environments.</li>
+            <li>• Centralized ingestion for storing and querying detection events from distributed edge hardware.</li>
+            <li>• Model training support for custom YOLO-based detectors adapted to different barn conditions.</li>
+            <li>• Reviewable detections with timestamps, confidence scores, imagery, and audit trail.</li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="mt-20 grid gap-5 lg:grid-cols-3">
+        <article class="panel p-7">
+          <h3 class="text-2xl font-semibold text-zinc-950"><%= t("about.card1") %></h3>
+          <p class="mt-4 text-base leading-8 text-zinc-700"><%= t("about.card1Body") %></p>
+          <p class="mt-4 text-sm leading-7 text-zinc-600">Every detection remains visible and reviewable so teams can understand what happened, where it happened, and what should be done next.</p>
+        </article>
+        <article class="panel p-7">
+          <h3 class="text-2xl font-semibold text-zinc-950"><%= t("about.card2") %></h3>
+          <p class="mt-4 text-base leading-8 text-zinc-700"><%= t("about.card2Body") %></p>
+          <p class="mt-4 text-sm leading-7 text-zinc-600">On-device inference reduces latency and supports harsh conditions where connectivity is intermittent and operational simplicity matters.</p>
+        </article>
+        <article class="panel p-7">
+          <h3 class="text-2xl font-semibold text-zinc-950"><%= t("about.card3") %></h3>
+          <p class="mt-4 text-base leading-8 text-zinc-700"><%= t("about.card3Body") %></p>
+          <p class="mt-4 text-sm leading-7 text-zinc-600">From one barn to multi-site rollouts, BarnSight keeps the data model consistent across devices, zones, users, analytics, and reports.</p>
+        </article>
+      </section>
+
+      <section class="mt-20 grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+        <article class="panel p-7">
+          <p class="text-sm uppercase tracking-[0.24em] text-zinc-500">Engineering principles</p>
+          <div class="mt-6 overflow-hidden rounded-[1.5rem] border border-amber-900/10">
+            <div class="grid grid-cols-[180px_1fr] border-b border-amber-900/10 bg-amber-50/70 px-5 py-4 text-sm font-semibold text-zinc-950">
+              <span>Principle</span>
+              <span>Meaning</span>
+            </div>
+            <div class="grid grid-cols-[180px_1fr] gap-4 border-b border-amber-900/10 px-5 py-4 text-sm leading-7 text-zinc-700">
+              <span class="font-semibold text-zinc-950">Reliability first</span>
+              <span>Systems must continue to operate under poor connectivity and uneven on-site conditions.</span>
+            </div>
+            <div class="grid grid-cols-[180px_1fr] gap-4 border-b border-amber-900/10 px-5 py-4 text-sm leading-7 text-zinc-700">
+              <span class="font-semibold text-zinc-950">Performance matters</span>
+              <span>Real-time inference with bounded resources and minimal latency on edge hardware.</span>
+            </div>
+            <div class="grid grid-cols-[180px_1fr] gap-4 border-b border-amber-900/10 px-5 py-4 text-sm leading-7 text-zinc-700">
+              <span class="font-semibold text-zinc-950">Simplicity by default</span>
+              <span>Interfaces should require no training to operate effectively for staff in the field.</span>
+            </div>
+            <div class="grid grid-cols-[180px_1fr] gap-4 px-5 py-4 text-sm leading-7 text-zinc-700">
+              <span class="font-semibold text-zinc-950">Transparency</span>
+              <span>Confidence scores, raw imagery, timestamps, and reviewable event history stay visible.</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel p-7">
+          <p class="text-sm uppercase tracking-[0.24em] text-zinc-500">Projects</p>
+          <div class="mt-6 space-y-5 text-sm leading-7 text-zinc-700">
+            <div>
+              <p class="font-semibold text-zinc-950">barnsight-edge</p>
+              <p>Embedded computer vision system for real-time excrement detection from camera feeds.</p>
+            </div>
+            <div>
+              <p class="font-semibold text-zinc-950">barnsight-api</p>
+              <p>Async FastAPI backend handling event ingestion, user management, analytics, and reporting.</p>
+            </div>
+            <div>
+              <p class="font-semibold text-zinc-950">barnsight-train</p>
+              <p>Training pipeline for custom YOLO detection models with dataset management and export.</p>
+            </div>
+            <div>
+              <p class="font-semibold text-zinc-950">barnsight-web</p>
+              <p>Node.js and Express web interface with public marketing pages and a secure operational dashboard.</p>
+            </div>
+          </div>
+          <a href="https://github.com/barnsight" target="_blank" rel="noreferrer" class="mt-8 inline-flex rounded-xl bg-zinc-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-amber-900">Visit GitHub</a>
+        </article>
+      </section>
+
+      <section class="mt-20 rounded-[2rem] border border-amber-900/10 bg-zinc-950 px-7 py-8 text-white shadow-2xl shadow-zinc-950/12">
+        <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <p class="text-sm uppercase tracking-[0.24em] text-white/45">Contributing</p>
+            <p class="mt-4 max-w-3xl text-sm leading-8 text-white/72">
+              BarnSight welcomes contributions from engineers, researchers, and agricultural professionals. The preferred workflow is straightforward: review current issues, propose a clear solution, and submit pull requests that are correct, readable, and aligned with the operational goals of the platform.
+            </p>
+          </div>
+          <div class="space-y-3 text-sm text-white/72">
+            <p>License: GPL-3.0 unless noted otherwise.</p>
+            <a href="https://github.com/barnsight" target="_blank" rel="noreferrer" class="inline-flex transition hover:text-white">github.com/barnsight</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="/public/pageTransitions.js"></script>
+  </body>
+</html>

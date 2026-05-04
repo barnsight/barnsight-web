@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="<%= locale %>">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= t("api.title") %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body class="page-transition font-sans">
+    <header class="brand-header">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-4">
+        <div>
+          <a href="/" class="brand-link">
+            <img class="brand-logo" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
+            <span>BarnSight</span>
+          </a>
+          <p class="mt-1 text-xs text-zinc-600">API Console · <%= t("dashboard.role") %> <%= role %></p>
+        </div>
+        <div class="flex items-center gap-3">
+          <%- include("partials/language-switcher") %>
+          <a href="/dashboard" class="btn-secondary"><%= t("nav.dashboard") %></a>
+          <form action="/logout" method="post">
+            <button class="btn-primary" type="submit"><%= t("nav.logout") %></button>
+          </form>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto grid max-w-7xl gap-6 px-6 py-8 xl:grid-cols-[0.95fr_1.05fr]">
+      <section>
+        <div class="panel p-5">
+          <h1 class="text-2xl font-bold"><%= t("api.subtitle") %></h1>
+          <p class="mt-2 text-sm text-zinc-700">
+            <%= t("api.lead") %>
+          </p>
+        </div>
+        <div id="endpointList" class="mt-4 space-y-4"></div>
+      </section>
+
+      <section class="panel sticky top-4 self-start p-5">
+        <h2 class="text-xl font-semibold"><%= t("api.request") %></h2>
+        <form id="apiRequestForm" class="mt-4 space-y-4">
+          <div class="grid gap-3 md:grid-cols-[140px_1fr]">
+            <div>
+              <label class="mb-1 block text-sm text-zinc-700" for="method">Method</label>
+              <select id="method" class="field">
+                <option>GET</option>
+                <option>POST</option>
+                <option>PUT</option>
+                <option>PATCH</option>
+                <option>DELETE</option>
+              </select>
+            </div>
+            <div>
+              <label class="mb-1 block text-sm text-zinc-700" for="path">Path</label>
+              <input id="path" class="field font-mono" placeholder="/api-keys" required />
+            </div>
+          </div>
+
+          <div>
+            <label class="mb-1 block text-sm text-zinc-700" for="apiKey"><%= t("api.edgeKey") %></label>
+            <input id="apiKey" class="field font-mono" placeholder="Optional: bs_..." />
+          </div>
+
+          <div>
+            <label class="mb-1 block text-sm text-zinc-700" for="body"><%= t("api.body") %></label>
+            <textarea id="body" class="field min-h-56 font-mono text-xs" spellcheck="false"></textarea>
+          </div>
+
+          <button class="btn-primary w-full" type="submit"><%= t("api.submit") %></button>
+        </form>
+
+        <div class="mt-5">
+          <h2 class="text-xl font-semibold"><%= t("api.response") %></h2>
+          <pre id="responseOutput" class="mt-3 max-h-[34rem] overflow-auto rounded-lg border border-amber-900/20 bg-zinc-950/90 p-3 text-xs text-amber-50"></pre>
+        </div>
+      </section>
+    </main>
+
+    <script src="/public/pageTransitions.js"></script>
+    <script>window.APP_LOCALE = "<%= locale %>";</script>
+    <script src="/public/apiConsole.js"></script>
+  </body>
+</html>

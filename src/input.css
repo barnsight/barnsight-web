@@ -4,7 +4,23 @@
 
 @layer base {
   body {
-    @apply bg-zinc-950 text-zinc-100 antialiased;
+    @apply bg-amber-50 text-zinc-950 antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(251, 191, 36, 0.12), transparent 28%),
+      linear-gradient(180deg, rgba(255, 252, 247, 0.98) 0%, rgba(255, 248, 235, 0.92) 100%);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+  }
+
+  body.dashboard-page {
+    background-image:
+      radial-gradient(circle at top left, rgba(245, 158, 11, 0.24), transparent 24%),
+      radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.22), transparent 28%),
+      linear-gradient(180deg, #fff6d7 0%, #f9e8ab 100%);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
   }
 
   body.page-transition {
@@ -61,21 +77,63 @@
 }
 
 @layer components {
+  .brand-link {
+    @apply inline-flex items-center gap-3 text-lg font-semibold tracking-tight text-zinc-950;
+  }
+
+  .brand-logo {
+    @apply h-10 w-10 rounded-xl object-contain shadow-lg shadow-amber-900/10;
+  }
+
+  .brand-header {
+    @apply border-b border-amber-900/15 bg-amber-50/75 backdrop-blur-xl;
+  }
+
+  .home-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(120deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%),
+      url("/assets/brand/background.png");
+    background-position: center;
+    background-size: cover;
+    opacity: 0.96;
+    pointer-events: none;
+  }
+
   .panel {
-    @apply rounded-xl border border-zinc-800 bg-zinc-900/70 shadow-panel transition duration-300 hover:-translate-y-0.5 hover:border-zinc-700;
+    @apply rounded-xl border border-amber-900/15 bg-white/80 text-zinc-950 shadow-panel backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-amber-700/40;
+  }
+
+  .hero-video {
+    animation: hero-breathe 7s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: card-float 7s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: card-float 7s ease-in-out infinite;
+    animation-delay: 1.2s;
+  }
+
+  .pricing-card {
+    @apply transition duration-300 ease-out hover:-translate-y-2;
   }
 
   .btn-primary,
   .btn-secondary {
-    @apply relative inline-flex items-center justify-center overflow-hidden rounded-md px-4 py-2 text-sm font-medium transition duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-950 active:scale-[0.97];
+    @apply relative inline-flex items-center justify-center overflow-hidden rounded-md px-4 py-2 text-sm font-semibold transition duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-amber-50 active:scale-[0.97];
   }
 
   .btn-secondary {
-    @apply border border-zinc-700 bg-zinc-900 text-zinc-100 focus:ring-zinc-500;
+    @apply border border-amber-900/20 bg-white/70 text-zinc-900 focus:ring-amber-600;
   }
 
   .btn-primary {
-    @apply border border-zinc-600 bg-zinc-100 text-zinc-950 focus:ring-zinc-400;
+    @apply border border-amber-700 bg-amber-500 text-zinc-950 shadow-lg shadow-amber-900/15 focus:ring-amber-600;
   }
 
   .btn-primary::before,
@@ -100,11 +158,11 @@
   }
 
   .btn-primary:hover {
-    @apply bg-white shadow-lg shadow-zinc-300/20;
+    @apply bg-amber-400 shadow-lg shadow-amber-800/20;
   }
 
   .btn-secondary:hover {
-    @apply border-zinc-500 bg-zinc-800 shadow-lg shadow-black/35;
+    @apply border-amber-700/40 bg-white shadow-lg shadow-amber-900/10;
   }
 
   .btn-primary:hover::before,
@@ -138,7 +196,7 @@
   }
 
   .field {
-    @apply w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100 placeholder-zinc-500 focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-500;
+    @apply w-full rounded-lg border border-amber-900/20 bg-white/90 px-3 py-2 text-zinc-950 placeholder-zinc-500 focus:border-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500;
   }
 }
 
@@ -189,5 +247,25 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes hero-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.018);
+  }
+}
+
+@keyframes card-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
   }
 }

@@ -3,7 +3,8 @@ import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
-import { callApi, getApiBaseUrl, loginWithPassword, normalizeApiError } from "./apiClient.js";
+import { callApi, getApiBaseUrl, loginWithPassword, normalizeApiError, registerAccount } from "./apiClient.js";
+import { createTranslator, normalizeLocale, supportedLocales } from "./i18n.js";
 
 dotenv.config();
 
@@ -37,13 +38,31 @@ app.use("/assets", express.static(path.join(__dirname, "..", "public", "assets")
 app.use("/public", express.static(path.join(__dirname, "..", "public")));
 
 app.use((req, res, next) => {
+  if (typeof req.query.lang === "string") {
+    req.session.locale = normalizeLocale(req.query.lang);
+  }
+  const locale = normalizeLocale(req.session.locale || req.acceptsLanguages(supportedLocales) || "uk");
+  const t = createTranslator(locale);
+  const queryWithoutLang = { ...req.query };
+  delete queryWithoutLang.lang;
+  res.locals.locale = locale;
+  res.locals.t = t;
+  res.locals.languageLinks = supportedLocales.map((language) => {
+    const params = new URLSearchParams(queryWithoutLang);
+    params.set("lang", language);
+    return {
+      label: language.toUpperCase(),
+      href: `${req.path}?${params.toString()}`,
+      active: language === locale,
+    };
+  });
   res.locals.currentUser = req.session.user || null;
   next();
 });
 
 function requireAuth(req, res, next) {
   if (!req.session.user?.token) {
-    return res.status(401).json({ message: "Потрібна авторизація" });
+    return res.status(401).json({ message: res.locals.t("error.authRequired") });
   }
   return next();
 }
@@ -60,7 +79,7 @@ async function proxyJson(req, res, { path: apiPath, method = "GET", queryFromReq
     return res.status(result.status).json(result.data);
   } catch (error) {
     return res.status(502).json({
-      message: "Не вдалося отримати відповідь від BarnSight API.",
+      message: res.locals.t("error.apiResponse"),
       status: 502,
       endpoint: apiPath,
       details: [{ field: null, message: error?.message || "Unknown network error", type: "network_error" }],
@@ -71,6 +90,28 @@ async function proxyJson(req, res, { path: apiPath, method = "GET", queryFromReq
 app.get("/", (req, res) => {
   res.render("index", {
     apiBaseUrl: getApiBaseUrl(),
+  });
+});
+
+app.get("/about", (req, res) => {
+  res.render("about");
+});
+
+app.get("/faq", (req, res) => {
+  res.render("faq");
+});
+
+app.get("/pricing", (req, res) => {
+  res.render("pricing");
+});
+
+app.get("/api-console", (req, res) => {
+  if (!req.session.user?.token) {
+    return res.redirect("/login");
+  }
+
+  return res.render("api-console", {
+    role: req.session.user.role || "user",
   });
 });
 
@@ -85,7 +126,7 @@ app.get("/login", (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    return res.status(400).render("login", { error: "Вкажіть логін і пароль." });
+    return res.status(400).render("login", { error: res.locals.t("error.loginRequired") });
   }
 
   try {
@@ -93,7 +134,7 @@ app.post("/login", async (req, res) => {
     if (!result.ok || !result.data?.access_token) {
       const errorLines = [
         `Помилка авторизації (HTTP ${result.status})`,
-        result.error?.message || "Невірний логін або пароль.",
+        result.error?.message || res.locals.t("error.invalidLogin"),
       ];
       if (result.error?.details?.length) {
         for (const detail of result.error.details) {
@@ -112,7 +153,98 @@ app.post("/login", async (req, res) => {
     return res.redirect("/dashboard");
   } catch (error) {
     return res.status(502).render("login", {
-      error: `Помилка підключення до BarnSight API.\n${error?.message || "Unknown network error"}`,
+      error: `${res.locals.t("error.apiConnection")}\n${error?.message || "Unknown network error"}`,
+    });
+  }
+});
+
+function renderRegistration(req, res, statusCode = 200, data = {}) {
+  return res.status(statusCode).render("register", {
+    error: null,
+    success: null,
+    form: {},
+    isAdmin: req.session.user?.role === "admins",
+    ...data,
+  });
+}
+
+function formatRegistrationError(result) {
+  const errorLines = [
+    `Помилка реєстрації (HTTP ${result.status})`,
+    result.error?.message || "Не вдалося створити акаунт.",
+  ];
+  if (result.error?.details?.length) {
+    for (const detail of result.error.details) {
+      errorLines.push(`- ${detail.field || "payload"}: ${detail.message}`);
+    }
+  }
+  return errorLines.join("\n");
+}
+
+app.get("/register", (req, res) => renderRegistration(req, res));
+
+app.post("/register", async (req, res) => {
+  const { first_name, middle_name, last_name, username, email, password } = req.body;
+  const requestedType = req.body.accountType || "admin";
+  const isAdmin = req.session.user?.role === "admins";
+  const accountType = isAdmin ? (["farmers", "staff"].includes(requestedType) ? requestedType : "farmers") : "admin";
+
+  const form = { first_name, middle_name, last_name, username, email, accountType };
+  if (!first_name || !middle_name || !last_name || !username || !email || !password) {
+    return renderRegistration(req, res, 400, {
+      error: res.locals.t("error.registrationRequired"),
+      form,
+    });
+  }
+
+  if (password.length < 8) {
+    return renderRegistration(req, res, 400, {
+      error: res.locals.t("error.passwordLength"),
+      form,
+    });
+  }
+
+  try {
+    const result = await registerAccount({
+      accountType,
+      token: accountType === "admin" ? undefined : req.session.user?.token,
+      payload: {
+        first_name,
+        middle_name,
+        last_name,
+        username,
+        email,
+        password,
+      },
+    });
+
+    if (!result.ok) {
+      return renderRegistration(req, res, result.status, { error: formatRegistrationError(result), form });
+    }
+
+    if (accountType === "admin") {
+      const loginResult = await loginWithPassword(username, password);
+      if (loginResult.ok && loginResult.data?.access_token) {
+        req.session.user = {
+          username,
+          token: loginResult.data.access_token,
+          role: loginResult.data.role || "admins",
+        };
+        return res.redirect("/dashboard");
+      }
+    }
+
+    return renderRegistration(req, res, 201, {
+      success:
+        accountType === "admin"
+          ? res.locals.t("register.adminCreated")
+          : res.locals.t("register.userCreated"),
+      form: {},
+    });
+  } catch (error) {
+    return renderRegistration(req, res, 502, {
+      error: `${res.locals.t("error.apiConnection")}\n${error?.message || "Unknown network error"}`,
+      form,
     });
   }
 });
@@ -173,6 +305,59 @@ app.get("/app/api/reports/custom", requireAuth, async (req, res) =>
 app.get("/app/api/admin/dashboard", requireAuth, async (req, res) =>
   proxyJson(req, res, { path: "/api/v1/admin/dashboard", queryFromReq: false }),
 );
+
+app.get("/app/api/metrics", requireAuth, async (req, res) => {
+  try {
+    const result = await callApi({ path: "/metrics", method: "GET", token: req.session.user?.token });
+    if (!result.ok) {
+      return res.status(result.status).json(result.error);
+    }
+    return res.status(result.status).send(
+      typeof result.data === "string" ? result.data : JSON.stringify(result.data, null, 2),
+    );
+  } catch (error) {
+    return res.status(502).json({
+      message: "Не вдалося отримати metrics від BarnSight API.",
+      status: 502,
+      endpoint: "/metrics",
+      details: [{ field: null, message: error?.message || "Unknown network error", type: "network_error" }],
+    });
+  }
+});
+
+app.all(/^\/app\/api\/v1\/(.+)$/, requireAuth, async (req, res) => {
+  const apiPath = `/api/v1/${req.params[0]}`;
+  const body = ["GET", "HEAD"].includes(req.method) ? undefined : { ...req.body };
+  const apiKey = req.get("x-edge-api-key") || body?.__apiKey;
+  if (body && "__apiKey" in body) {
+    delete body.__apiKey;
+  }
+
+  try {
+    const result = await callApi({
+      path: apiPath,
+      method: req.method,
+      token: apiKey ? undefined : req.session.user?.token,
+      apiKey,
+      query: req.query,
+      body,
+    });
+    if (!result.ok) {
+      return res.status(result.status).json(result.error);
+    }
+    if (result.status === 204) {
+      return res.status(204).send();
+    }
+    return res.status(result.status).json(result.data);
+  } catch (error) {
+    return res.status(502).json({
+      message: "Не вдалося отримати відповідь від BarnSight API.",
+      status: 502,
+      endpoint: apiPath,
+      details: [{ field: null, message: error?.message || "Unknown network error", type: "network_error" }],
+    });
+  }
+});
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console

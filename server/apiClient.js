@@ -40,6 +40,7 @@ export function normalizeApiError({ status, path, data }) {
   const validation = mapValidationDetails(data?.detail);
   const message =
     data?.message ||
+    (typeof data?.detail === "string" ? data.detail : null) ||
     data?.detail?.message ||
     (validation.length > 0 ? "Помилка валідації запиту." : "Запит до BarnSight API завершився помилкою.");
 
@@ -74,13 +75,40 @@ export async function loginWithPassword(username, password) {
   };
 }
 
-export async function callApi({ path, method = "GET", token, query, body }) {
+export async function registerAccount({ accountType, token, payload }) {
+  const endpointByType = {
+    admin: "/api/v1/admin",
+    farmers: "/api/v1/farmers",
+    staff: "/api/v1/staff",
+  };
+  const path = endpointByType[accountType];
+  if (!path) {
+    return {
+      ok: false,
+      status: 400,
+      data: null,
+      error: normalizeApiError({
+        status: 400,
+        path: "/api/v1/register",
+        data: { message: "Невідомий тип акаунта для реєстрації." },
+      }),
+    };
+  }
+
+  return callApi({ path, method: "POST", token, body: payload });
+}
+
+export async function callApi({ path, method = "GET", token, apiKey, query, body }) {
   const headers = {};
 
   if (token) {
     headers.Authorization = `Bearer ${token}`;
     headers["access-token"] = token;
     headers["token-type"] = "bearer";
+  }
+
+  if (apiKey) {
+    headers["X-API-Key"] = apiKey;
   }
 
   if (body !== undefined && body !== null) {

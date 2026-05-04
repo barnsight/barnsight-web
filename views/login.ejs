@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="uk">
+<html lang="<%= locale %>">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Вхід — BarnSight</title>
+    <title><%= t("login.title") %></title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,25 +15,36 @@
   <body class="page-transition font-sans">
     <main class="mx-auto flex min-h-screen max-w-6xl items-center px-6 py-12">
       <section class="mx-auto w-full max-w-md panel p-8">
-        <a href="/" class="text-sm text-zinc-400 hover:text-zinc-200">← На головну</a>
-        <h1 class="mt-3 text-3xl font-bold">Вхід у BarnSight</h1>
-        <p class="mt-2 text-sm text-zinc-400">Увійдіть, щоб переглядати події, аналітику та звіти.</p>
+        <div class="flex items-center justify-between gap-3">
+          <a href="/" class="text-sm text-zinc-600 hover:text-amber-900"><%= t("nav.backHome") %></a>
+          <%- include("partials/language-switcher") %>
+        </div>
+        <img class="mt-5 h-16 w-16 rounded-2xl object-contain shadow-lg shadow-amber-900/15" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
+        <h1 class="mt-3 text-3xl font-bold"><%= t("login.heading") %></h1>
+        <p class="mt-2 text-sm text-zinc-600"><%= t("login.lead") %></p>
 
         <% if (error) { %>
-        <pre class="mt-4 whitespace-pre-wrap rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-200"><%= error %></pre>
+        <pre class="mt-4 whitespace-pre-wrap rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-900"><%= error %></pre>
         <% } %>
 
         <form class="mt-6 space-y-4" action="/login" method="post" autocomplete="on">
           <div>
-            <label class="mb-1 block text-sm text-zinc-300" for="username">Логін</label>
+            <label class="mb-1 block text-sm text-zinc-700" for="username"><%= t("login.username") %></label>
             <input id="username" class="field" name="username" required />
           </div>
           <div>
-            <label class="mb-1 block text-sm text-zinc-300" for="password">Пароль</label>
+            <label class="mb-1 block text-sm text-zinc-700" for="password"><%= t("login.password") %></label>
             <input id="password" class="field" type="password" name="password" required />
           </div>
-          <button type="submit" class="btn-primary w-full">Увійти</button>
+          <button type="submit" class="btn-primary w-full"><%= t("login.submit") %></button>
         </form>
+        <p class="mt-5 text-center text-sm text-zinc-600">
+          <%= t("login.noAccount") %>
+          <a href="/register" class="font-semibold text-amber-900 hover:text-amber-700"><%= t("login.register") %></a>
+        </p>
+        <p class="mt-2 text-center text-sm text-zinc-600">
+          <a href="/pricing" class="font-semibold text-amber-900 hover:text-amber-700"><%= t("nav.pricing") %></a>
+        </p>
       </section>
     </main>
     <script src="/public/pageTransitions.js"></script>
