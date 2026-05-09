@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="<%= locale %>">
+  <head>
+    <%- include("partials/head") %>
+    <title><%= t("home.title") %></title>
+    <meta name="description" content="<%= t('home.description') %>" />
+  </head>
+  <body class="page-transition font-sans">
+    <header class="brand-header">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-4">
+        <a href="/" class="brand-link">
+          <img class="brand-logo" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
+          <span>BarnSight</span>
+        </a>
+        <nav class="flex flex-wrap items-center gap-3">
+          <a href="#about" class="text-sm font-medium text-ink-soft hover:text-ochre-deep"><%= t("nav.about") %></a>
+          <a href="#workflow" class="text-sm font-medium text-ink-soft hover:text-ochre-deep"><%= t("home.how") %></a>
+          <a href="/pricing" class="text-sm font-medium text-ink-soft hover:text-ochre-deep"><%= t("nav.pricing") %></a>
+          <a href="/faq" class="text-sm font-medium text-ink-soft hover:text-ochre-deep"><%= t("nav.faq") %></a>
+          <%- include("partials/language-switcher") %>
+          <%- include("partials/theme-toggle") %>
+          <% if (currentUser) { %>
+          <a href="/dashboard" class="btn-secondary"><%= t("nav.dashboard") %></a>
+          <form action="/logout" method="post">
+            <button class="btn-primary" type="submit"><%= t("nav.logout") %></button>
+          </form>
+          <% } else { %>
+          <a href="/register" class="btn-secondary"><%= t("nav.register") %></a>
+          <a href="/login" class="btn-primary"><%= t("nav.login") %></a>
+          <% } %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pt-14">
+      <section class="grid gap-10 lg:grid-cols-[0.94fr_1.06fr] lg:items-center">
+        <div class="space-y-8 reveal">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="chip"><%= t("home.badge") %></span>
+            <span class="inline-flex items-center gap-2 text-xs font-medium text-ink-mute">
+              <span class="status-dot" data-api-health></span>
+              <span data-api-health-label><%= locale === "uk" ? "API · перевірка…" : "API · checking…" %></span>
+            </span>
+          </div>
+          <div class="space-y-6">
+            <h1 class="max-w-4xl font-display text-5xl font-extrabold leading-[0.92] tracking-tight text-ink sm:text-6xl lg:text-7xl">
+              <% const heroParts = (t("home.hero") || "").split(/\s+/); %>
+              <% const last = heroParts.pop(); %>
+              <%= heroParts.join(" ") %>
+              <span class="ink-underline italic text-ochre-deep"><%= last %></span>
+            </h1>
+            <p class="max-w-xl text-lg leading-8 text-ink-soft">
+              <%= t("home.lead") %>
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a href="<%= currentUser ? '/dashboard' : '/login' %>" class="btn-primary"><%= currentUser ? t("nav.dashboard") : t("home.cta") %></a>
+            <a href="/pricing" class="btn-secondary"><%= t("home.secondaryCta") %></a>
+            <a href="/about" class="btn-secondary"><%= t("nav.about") %></a>
+          </div>
+          <div class="grid max-w-xl grid-cols-3 gap-4 pt-2">
+            <article class="reveal">
+              <p class="counter" data-target="42" data-suffix="+">0</p>
+              <p class="mt-1 text-xs uppercase tracking-[0.18em] text-ink-mute"><%= t("home.activeBarns") || "Active barns" %></p>
+            </article>
+            <article class="reveal">
+              <p class="counter" data-target="118" data-suffix="">0</p>
+              <p class="mt-1 text-xs uppercase tracking-[0.18em] text-ink-mute"><%= t("home.cameras") || "Cameras" %></p>
+            </article>
+            <article class="reveal">
+              <p class="counter" data-target="6.4" data-decimals="1" data-suffix="<%= locale === 'uk' ? ' хв' : ' min' %>">0</p>
+              <p class="mt-1 text-xs uppercase tracking-[0.18em] text-ink-mute"><%= t("home.alerts") || "Avg. response" %></p>
+            </article>
+          </div>
+        </div>
+
+        <section class="panel tilt-2 relative overflow-hidden p-4 reveal">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgb(var(--hay)/0.18),transparent_35%)]"></div>
+          <div class="relative">
+            <video
+              class="hero-video h-[520px] w-full rounded-[1.4rem_2rem_1.6rem_2rem] object-cover"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              poster="/assets/brand/background.png"
+            >
+              <source src="/assets/brand/hero-barn.mp4" type="video/mp4" />
+            </video>
+            <div class="absolute inset-x-5 bottom-5 rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-paper-warm/85 p-5 backdrop-blur-xl">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p class="text-xs uppercase tracking-[0.26em] text-ink-mute">BarnSight</p>
+                  <p class="mt-2 font-display text-2xl font-semibold text-ink">
+                    <%= locale === "uk" ? "Моніторинг гігієни ферм із прозорою верифікацією." : "Farm hygiene monitoring that stays reviewable." %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <div class="rule-sketch my-16"></div>
+
+      <section id="about" class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] reveal">
+        <div class="space-y-4">
+          <p class="text-sm uppercase tracking-[0.24em] text-ink-mute"><%= t("home.metricsTitle") %></p>
+          <h2 class="max-w-xl font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+            <%= t("home.aboutTitle") %>
+          </h2>
+        </div>
+        <div class="space-y-6">
+          <p class="text-lg leading-8 text-ink-soft"><%= t("home.aboutLead") %></p>
+          <div class="grid gap-4 sm:grid-cols-3">
+            <article class="panel tilt-card tilt-1 p-6">
+              <p class="text-sm leading-7 text-ink-soft"><%= t("home.aboutPoint1") %></p>
+            </article>
+            <article class="panel tilt-card tilt-n1 p-6">
+              <p class="text-sm leading-7 text-ink-soft"><%= t("home.aboutPoint2") %></p>
+            </article>
+            <article class="panel tilt-card tilt-3 p-6">
+              <p class="text-sm leading-7 text-ink-soft"><%= t("home.aboutPoint3") %></p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="workflow" class="mt-24 reveal">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-sm uppercase tracking-[0.24em] text-ink-mute"><%= t("home.workflowTitle") %></p>
+            <h2 class="mt-3 max-w-3xl font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+              <%= locale === "uk" ? "Від кадру з камери до " : "From camera frame to " %>
+              <span class="ink-underline italic text-ochre-deep"><%= locale === "uk" ? "щоденного звіту" : "daily report" %></span>.
+            </h2>
+          </div>
+          <a href="/pricing" class="btn-secondary"><%= t("nav.pricing") %></a>
+        </div>
+        <div class="mt-10 grid gap-5 lg:grid-cols-3">
+          <article class="panel animate-float tilt-1 p-6">
+            <p class="font-mono text-xs uppercase tracking-[0.24em] text-ochre-deep">01</p>
+            <h3 class="mt-3 font-display text-2xl font-semibold"><%= t("home.step1Title") %></h3>
+            <p class="mt-3 text-sm leading-7 text-ink-soft"><%= t("home.step1Body") %></p>
+          </article>
+          <article class="panel animate-float-delayed tilt-n2 p-6">
+            <p class="font-mono text-xs uppercase tracking-[0.24em] text-ochre-deep">02</p>
+            <h3 class="mt-3 font-display text-2xl font-semibold"><%= t("home.step2Title") %></h3>
+            <p class="mt-3 text-sm leading-7 text-ink-soft"><%= t("home.step2Body") %></p>
+          </article>
+          <article class="panel animate-float tilt-2 p-6">
+            <p class="font-mono text-xs uppercase tracking-[0.24em] text-ochre-deep">03</p>
+            <h3 class="mt-3 font-display text-2xl font-semibold"><%= t("home.step3Title") %></h3>
+            <p class="mt-3 text-sm leading-7 text-ink-soft"><%= t("home.step3Body") %></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="mt-24 grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center reveal">
+        <div class="space-y-5">
+          <p class="text-sm uppercase tracking-[0.24em] text-ink-mute"><%= locale === "uk" ? "Майбутнє BarnSight" : "The future of BarnSight" %></p>
+          <h2 class="max-w-3xl font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+            <%= locale === "uk" ? "Від детекції до " : "From detection to " %><span class="ink-underline italic text-ochre-deep"><%= locale === "uk" ? "підтримки рішень" : "decision support" %></span>.
+          </h2>
+          <p class="text-lg leading-8 text-ink-soft">
+            <%= locale === "uk"
+              ? "BarnSight еволюціонує від простого збору подій до повноцінного операційного шару для команд агрогігієни. Наступний етап поєднує інтелект чистоти корівників, робочі процеси команди та структурованішу поверхню перегляду для щоденних рішень."
+              : "BarnSight is evolving beyond event capture into a fuller operational layer for agricultural hygiene teams. The next phase combines cleaner barn intelligence, coworker workflows, and a more structured review surface for day-to-day decisions." %>
+          </p>
+          <p class="text-base leading-8 text-ink-mute">
+            <%= locale === "uk"
+              ? "Фокус залишається практичним: стійке розгортання на фермах, прозорі докази та інтерфейси, що допомагають персоналу реагувати швидше, не приховуючи фактичні спостереження камер і моделей."
+              : "The focus remains practical: resilient farm deployment, transparent evidence, and interfaces that help staff react faster without hiding the underlying reality of what cameras and models observed." %>
+          </p>
+        </div>
+        <article class="panel tilt-n1 overflow-hidden p-3">
+          <img
+            src="/assets/brand/future-barnsight.png"
+            alt="<%= locale === 'uk' ? 'Концепт майбутнього BarnSight' : 'Future of BarnSight concept' %>"
+            class="h-full min-h-[340px] w-full rounded-[1.2rem_1.8rem_1.4rem_2rem] object-cover"
+          />
+        </article>
+      </section>
+
+      <section class="mt-24 panel bg-ink/95 px-6 py-10 text-paper shadow-panel-lg sm:px-8 reveal">
+        <div class="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div>
+            <p class="text-sm uppercase tracking-[0.24em] text-paper/55"><%= t("footer.product") %></p>
+            <h2 class="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl">BarnSight</h2>
+            <p class="mt-4 max-w-3xl text-sm leading-7 text-paper/72">
+              <%= locale === "uk"
+                ? "BarnSight розробляє системи комп’ютерного зору для моніторингу агрогігієни. Платформа поєднує edge-детекцію, централізований інжест і структурований перегляд, щоб команди утримували ферми чистішими та безпечнішими без зайвого навантаження на польову роботу."
+                : "BarnSight develops computer vision systems for agricultural hygiene monitoring. The platform combines edge detection, centralized ingestion, and structured review so teams can operate cleaner, safer facilities without adding friction to field work." %>
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a href="https://github.com/barnsight" target="_blank" rel="noreferrer" class="btn-secondary border-paper/25 bg-paper/10 text-paper">GitHub</a>
+            <a href="/faq" class="btn-secondary border-paper/25 bg-paper/10 text-paper"><%= t("nav.faq") %></a>
+            <a href="/pricing" class="btn-primary"><%= t("nav.pricing") %></a>
+          </div>
+        </div>
+        <footer class="mt-8 grid gap-3 border-t border-paper/12 pt-5 text-sm text-paper/55 md:grid-cols-4">
+          <p><%= t("footer.product") %> · BarnSight</p>
+          <p><%= t("footer.company") %> · Horizon Farm Analytics</p>
+          <p><%= t("footer.contact") %> · ops@barnsight.local</p>
+          <a href="https://github.com/barnsight" target="_blank" rel="noreferrer" class="transition hover:text-paper">github.com/barnsight</a>
+        </footer>
+      </section>
+    </main>
+
+    <script src="/public/pageTransitions.js"></script>
+    <script src="/public/site.js"></script>
+  </body>
+</html>

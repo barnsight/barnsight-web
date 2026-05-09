@@ -1,0 +1,8 @@
+<div class="inline-flex rounded-[10px_14px_12px_16px] border border-edge/55 bg-paper-warm/85 p-1 text-xs font-semibold">
+  <% for (const link of languageLinks) { %>
+  <a
+    href="<%= link.href %>"
+    class="rounded-[8px_12px_10px_14px] px-2 py-1 transition <%= link.active ? 'bg-hay text-ink' : 'text-ink-mute hover:text-ink' %>"
+  ><%= link.label %></a>
+  <% } %>
+</div>

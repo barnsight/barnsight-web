@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="<%= locale %>">
+  <head>
+    <%- include("partials/head") %>
+    <title><%= t("dashboard.title") %></title>
+  </head>
+  <body class="dashboard-page page-transition font-sans">
+    <main class="mx-auto max-w-[1780px] px-4 py-4 sm:px-6 lg:px-8">
+      <header class="panel p-5 sm:p-6">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <img class="brand-logo" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
+            <div>
+              <p class="text-sm uppercase tracking-[0.24em] text-ink-mute">BarnSight</p>
+              <h1 class="mt-2 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-5xl">
+                <%= t("nav.dashboard") %>
+                <span class="ml-2 inline-flex items-center gap-2 align-middle text-xs font-medium text-ink-mute">
+                  <span class="status-dot" data-api-health></span>
+                  <span data-api-health-label><%= locale === "uk" ? "API · перевірка…" : "API · checking…" %></span>
+                </span>
+              </h1>
+              <p class="mt-2 max-w-3xl text-sm leading-7 text-ink-soft">
+                <%= locale === "uk"
+                  ? "Операційний простір для господарств, колег, подій, edge-пристроїв і сценаріїв перегляду."
+                  : "Operational workspace for barns, coworkers, events, edge devices, and review workflows." %>
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <%- include("partials/language-switcher") %>
+            <%- include("partials/theme-toggle") %>
+            <a href="/" class="btn-secondary"><%= t("nav.backHome") %></a>
+            <button id="refreshBtn" class="btn-primary"><%= t("dashboard.refresh") %></button>
+            <form action="/logout" method="post">
+              <button class="btn-secondary" type="submit"><%= t("nav.logout") %></button>
+            </form>
+          </div>
+        </div>
+
+        <div class="mt-6 overflow-x-auto">
+          <div id="dashboardTabs" class="flex min-w-max gap-3">
+            <button type="button" class="dashboard-tab" data-tab="overview"><%= locale === "uk" ? "Огляд" : "Overview" %></button>
+            <button type="button" class="dashboard-tab" data-tab="profile"><%= locale === "uk" ? "Профіль" : "Profile" %></button>
+            <button type="button" class="dashboard-tab" data-tab="keys"><%= locale === "uk" ? "API-ключі" : "API Keys" %></button>
+            <button type="button" class="dashboard-tab" data-tab="barns"><%= locale === "uk" ? "Господарства" : "Barns" %></button>
+            <button type="button" class="dashboard-tab" data-tab="devices"><%= locale === "uk" ? "Пристрої" : "Devices" %></button>
+            <button type="button" class="dashboard-tab" data-tab="cameras"><%= locale === "uk" ? "Камери та зони" : "Cameras &amp; Zones" %></button>
+            <button type="button" class="dashboard-tab" data-tab="events"><%= locale === "uk" ? "Події" : "Events" %></button>
+            <% if (role === "admins") { %>
+            <button type="button" class="dashboard-tab" data-tab="admin"><%= locale === "uk" ? "Адмін" : "Admin" %></button>
+            <% } %>
+            <button type="button" class="dashboard-tab" data-tab="system"><%= locale === "uk" ? "Система" : "System" %></button>
+          </div>
+        </div>
+      </header>
+
+      <section class="mt-4 space-y-4">
+        <section data-tab-panel="overview" class="dashboard-panel space-y-4">
+          <section class="grid gap-4 md:grid-cols-2 2xl:grid-cols-4">
+            <article class="panel p-5">
+              <p class="text-sm text-ink-mute"><%= t("dashboard.user") %></p>
+              <h2 id="meName" class="mt-3 font-display text-2xl font-bold">...</h2>
+              <p id="meUsername" class="mt-1 text-sm text-ink-soft">—</p>
+            </article>
+            <article class="panel p-5">
+              <p class="text-sm text-ink-mute"><%= t("dashboard.barns") %></p>
+              <h2 id="barnCount" class="mt-3 font-display text-2xl font-bold">0</h2>
+              <p id="deviceCountLabel" class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "Пристрої: —" : "Devices: —" %></p>
+            </article>
+            <article class="panel p-5">
+              <p class="text-sm text-ink-mute"><%= t("dashboard.events") %></p>
+              <h2 id="eventCount" class="mt-3 font-display text-2xl font-bold">0</h2>
+              <p id="calendarSummary" class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "Календар завантажується…" : "Calendar loading…" %></p>
+            </article>
+            <article class="panel p-5">
+              <p class="text-sm text-ink-mute"><%= t("dashboard.trend") %></p>
+              <h2 id="trend" class="mt-3 font-display text-2xl font-bold">—</h2>
+              <p id="apiKeyCountLabel" class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "API-ключі: —" : "API keys: —" %></p>
+            </article>
+          </section>
+
+          <section class="panel p-5">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <h2 class="font-display text-lg font-semibold"><%= t("dashboard.filters") %></h2>
+                <p class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "Використовуйте одне вікно дат для аналітики, звітів і перегляду подій." : "Use one date window for analytics, reports, and event review." %></p>
+              </div>
+              <form id="filtersForm" class="grid w-full gap-3 xl:grid-cols-[180px_180px_1fr_180px]">
+                <input id="startDate" type="date" class="field" aria-label="<%= t("dashboard.start") %>" />
+                <input id="endDate" type="date" class="field" aria-label="<%= t("dashboard.end") %>" />
+                <input id="barnId" type="number" class="field" placeholder="<%= locale === 'uk' ? 'ID господарства' : 'Barn ID' %>" />
+                <button id="applyFiltersBtn" type="submit" class="btn-primary w-full"><%= t("dashboard.apply") %></button>
+              </form>
+            </div>
+            <p id="filtersStatus" class="mt-3 text-xs text-ink-mute"><%= t("dashboard.waiting") %></p>
+          </section>
+
+          <section class="panel p-5">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 class="font-display text-lg font-semibold"><%= t("dashboard.analytics") %></h2>
+                <p class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "Усі значення формуються з поточних відповідей аналітики та звіту за вибраний період." : "All values are rendered from the current analytics and report response for the selected period." %></p>
+              </div>
+              <div class="flex gap-4 text-xs text-ink-soft">
+                <span><span class="text-ochre">●</span> <%= locale === "uk" ? "Події" : "Events" %></span>
+                <span><span class="text-ink">●</span> Confidence</span>
+              </div>
+            </div>
+            <div id="analyticsChart" class="mt-5 grid min-h-[280px] gap-3 rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-paper-warm/55 p-4 sm:grid-cols-7"></div>
+            <div id="analyticsHighlights" class="mt-4 grid gap-3 md:grid-cols-3"></div>
+            <p id="analyticsEmptyState" class="mt-4 hidden text-sm text-ink-mute"><%= locale === "uk" ? "Для вибраного періоду немає аналітичних даних." : "No analytics data for the selected period." %></p>
+          </section>
+        </section>
+
+        <section data-tab-panel="profile" class="dashboard-panel hidden">
+          <article class="panel p-5">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Профіль" : "Profile" %></h2>
+                <p class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "Дані користувача, email і керування паролем." : "User info, email, and password controls." %></p>
+              </div>
+              <p id="profileStatus" class="text-xs text-ink-mute"><%= locale === "uk" ? "Профіль готовий." : "Profile ready." %></p>
+            </div>
+            <div id="profileSummary" class="mt-4 grid gap-3 md:grid-cols-2"></div>
+            <div class="mt-5 grid gap-4 2xl:grid-cols-2">
+              <form id="profileForm" class="rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-paper-warm/65 p-4">
+                <h3 class="font-display text-lg font-semibold text-ink"><%= locale === "uk" ? "Оновити профіль" : "Update profile" %></h3>
+                <div class="mt-4 grid gap-3">
+                  <input id="profileFirstName" class="field" placeholder="<%= locale === 'uk' ? 'Імʼя' : 'First name' %>" />
+                  <input id="profileMiddleName" class="field" placeholder="<%= locale === 'uk' ? 'По батькові' : 'Middle name' %>" />
+                  <input id="profileLastName" class="field" placeholder="<%= locale === 'uk' ? 'Прізвище' : 'Last name' %>" />
+                  <button class="btn-primary w-full" type="submit"><%= locale === "uk" ? "Зберегти профіль" : "Save profile" %></button>
+                </div>
+              </form>
+              <form id="emailForm" class="rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-paper-warm/65 p-4">
+                <h3 class="font-display text-lg font-semibold text-ink"><%= locale === "uk" ? "Оновити email" : "Update email" %></h3>
+                <div class="mt-4 grid gap-3">
+                  <input id="profileEmail" class="field" type="email" placeholder="user@example.com" />
+                  <input id="emailPassword" class="field" type="password" placeholder="<%= locale === 'uk' ? 'Поточний пароль' : 'Current password' %>" />
+                  <button class="btn-primary w-full" type="submit"><%= locale === "uk" ? "Зберегти email" : "Save email" %></button>
+                </div>
+              </form>
+              <form id="passwordForm" class="rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-paper-warm/65 p-4">
+                <h3 class="font-display text-lg font-semibold text-ink"><%= locale === "uk" ? "Змінити пароль" : "Change password" %></h3>
+                <div class="mt-4 grid gap-3">
+                  <input id="currentPassword" class="field" type="password" placeholder="<%= locale === 'uk' ? 'Поточний пароль' : 'Current password' %>" />
+                  <input id="newPassword" class="field" type="password" placeholder="<%= locale === 'uk' ? 'Новий пароль' : 'New password' %>" />
+                  <button class="btn-primary w-full" type="submit"><%= locale === "uk" ? "Змінити пароль" : "Change password" %></button>
+                </div>
+              </form>
+              <form id="recoveryForm" class="rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-paper-warm/65 p-4">
+                <h3 class="font-display text-lg font-semibold text-ink"><%= locale === "uk" ? "Скидання через відновлення" : "Recovery reset" %></h3>
+                <div class="mt-4 grid gap-3">
+                  <input id="recoveryEmail" class="field" type="email" placeholder="user@example.com" />
+                  <input id="recoveryPassword" class="field" type="password" placeholder="<%= locale === 'uk' ? 'Новий пароль для заміни' : 'Replacement password' %>" />
+                  <button class="btn-primary w-full" type="submit"><%= locale === "uk" ? "Скинути пароль" : "Reset password" %></button>
+                </div>
+              </form>
+            </div>
+          </article>
+        </section>
+
+        <section data-tab-panel="keys" class="dashboard-panel hidden">
+          <article class="panel p-5">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Edge API-ключі" : "Edge API keys" %></h2>
+                <p class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "Створюйте, переглядайте та відкликайте ключі для edge-пристроїв." : "Create, review, and revoke keys for edge devices." %></p>
+              </div>
+              <p id="apiKeyCreateStatus" class="text-xs text-ink-mute"><%= locale === "uk" ? "Готово." : "Ready." %></p>
+            </div>
+            <form id="apiKeyForm" class="mt-4 grid gap-3 md:grid-cols-[1fr_180px]">
+              <input id="apiKeyName" class="field" placeholder="<%= locale === 'uk' ? 'Edge-пристрій господарства 1' : 'Barn 1 Edge Device' %>" />
+              <button class="btn-primary w-full" type="submit"><%= locale === "uk" ? "Створити ключ" : "Create key" %></button>
+            </form>
+            <div id="apiKeyReveal" class="mt-4 hidden notice"></div>
+            <div id="apiKeysList" class="mt-4 grid gap-3"></div>
+          </article>
+        </section>
+
+        <section data-tab-panel="barns" class="dashboard-panel hidden">
+          <article class="panel p-5">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Господарства" : "Barns" %></h2>
+                <p class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "Актуальні дані господарств з API, включно зі зведеннями гігієни за наявності." : "Live barn data from the API, including hygiene summaries where available." %></p>
+              </div>
+            </div>
+            <div id="barnsList" class="mt-5 grid gap-4 xl:grid-cols-2"></div>
+          </article>
+        </section>
+
+        <section data-tab-panel="devices" class="dashboard-panel hidden">
+          <div class="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+            <form id="deviceForm" class="panel p-5">
+              <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Створити або оновити пристрій" : "Create or update device" %></h2>
+              <div class="mt-4 grid gap-3 md:grid-cols-2">
+                <input id="deviceIdInput" class="field" placeholder="<%= locale === 'uk' ? 'ID пристрою' : 'Device ID' %>" />
+                <input id="deviceBarnIdInput" class="field" placeholder="<%= locale === 'uk' ? 'ID господарства' : 'Barn ID' %>" />
+                <input id="deviceNameInput" class="field" placeholder="<%= locale === 'uk' ? 'Назва пристрою' : 'Device name' %>" />
+                <input id="deviceLocationInput" class="field" placeholder="<%= locale === 'uk' ? 'Локація' : 'Location' %>" />
+                <select id="deviceStatusInput" class="field md:col-span-2">
+                  <option value="offline"><%= locale === "uk" ? "офлайн" : "offline" %></option>
+                  <option value="online"><%= locale === "uk" ? "онлайн" : "online" %></option>
+                </select>
+              </div>
+              <p id="deviceStatusMessage" class="mt-4 text-xs text-ink-mute"><%= locale === "uk" ? "Готово." : "Ready." %></p>
+              <button class="btn-primary mt-4 w-full" type="submit"><%= locale === "uk" ? "Зберегти пристрій" : "Save device" %></button>
+            </form>
+            <article class="panel p-5">
+              <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Пристрої" : "Devices" %></h2>
+              <div id="devicesList" class="mt-4 grid gap-3"></div>
+            </article>
+          </div>
+        </section>
+
+        <section data-tab-panel="cameras" class="dashboard-panel hidden">
+          <div class="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+            <div class="space-y-4">
+              <form id="cameraForm" class="panel p-5">
+                <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Створити або оновити камеру" : "Create or update camera" %></h2>
+                <div class="mt-4 grid gap-3 md:grid-cols-2">
+                  <input id="cameraDeviceIdInput" class="field" placeholder="<%= locale === 'uk' ? 'ID пристрою' : 'Device ID' %>" />
+                  <input id="cameraIdInput" class="field" placeholder="<%= locale === 'uk' ? 'ID камери' : 'Camera ID' %>" />
+                  <input id="cameraBarnIdInput" class="field" placeholder="<%= locale === 'uk' ? 'ID господарства' : 'Barn ID' %>" />
+                  <input id="cameraNameInput" class="field" placeholder="<%= locale === 'uk' ? 'Назва камери' : 'Camera name' %>" />
+                  <input id="cameraStreamInput" class="field md:col-span-2" placeholder="<%= locale === 'uk' ? 'Мітка потоку' : 'Stream label' %>" />
+                </div>
+                <p id="cameraStatusMessage" class="mt-4 text-xs text-ink-mute"><%= locale === "uk" ? "Готово." : "Ready." %></p>
+                <button class="btn-primary mt-4 w-full" type="submit"><%= locale === "uk" ? "Зберегти камеру" : "Save camera" %></button>
+              </form>
+              <form id="zoneForm" class="panel p-5">
+                <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Створити зону" : "Create zone" %></h2>
+                <div class="mt-4 grid gap-3">
+                  <input id="zoneCameraIdInput" class="field" placeholder="<%= locale === 'uk' ? 'ID камери' : 'Camera ID' %>" />
+                  <input id="zoneIdInput" class="field" placeholder="<%= locale === 'uk' ? 'ID зони' : 'Zone ID' %>" />
+                  <input id="zoneBarnIdInput" class="field" placeholder="<%= locale === 'uk' ? 'ID господарства' : 'Barn ID' %>" />
+                  <input id="zoneDeviceIdInput" class="field" placeholder="<%= locale === 'uk' ? 'ID пристрою' : 'Device ID' %>" />
+                  <input id="zoneLabelInput" class="field" placeholder="<%= locale === 'uk' ? 'Назва зони' : 'Label' %>" />
+                  <textarea id="zonePolygonInput" class="field min-h-28 font-mono text-xs" placeholder='[{"x":0.1,"y":0.1},{"x":0.8,"y":0.1},{"x":0.8,"y":0.8}]'></textarea>
+                </div>
+                <p id="zoneStatusMessage" class="mt-4 text-xs text-ink-mute"><%= locale === "uk" ? "Готово." : "Ready." %></p>
+                <button class="btn-primary mt-4 w-full" type="submit"><%= locale === "uk" ? "Зберегти зону" : "Save zone" %></button>
+              </form>
+            </div>
+            <div class="space-y-4">
+              <article class="panel p-5">
+                <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Камери" : "Cameras" %></h2>
+                <div id="camerasList" class="mt-4 grid gap-3"></div>
+              </article>
+              <article class="panel p-5">
+                <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Зони" : "Zones" %></h2>
+                <div id="zonesList" class="mt-4 grid gap-3"></div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section data-tab-panel="events" class="dashboard-panel hidden space-y-4">
+          <article class="panel p-5">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Календар подій" : "Event calendar" %></h2>
+                <p class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "Останні детекції, згруповані за днями." : "Recent detections grouped by day." %></p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button id="calendarPrev" type="button" class="btn-secondary px-3">←</button>
+                <p id="calendarLabel" class="min-w-32 text-center text-sm font-semibold text-ink">—</p>
+                <button id="calendarNext" type="button" class="btn-secondary px-3">→</button>
+              </div>
+            </div>
+            <div class="mt-4 overflow-x-auto">
+              <div class="min-w-[620px]">
+                <div class="grid grid-cols-7 gap-2 text-center text-xs font-semibold uppercase tracking-[0.18em] text-ink-mute">
+                  <% if (locale === "uk") { %>
+                  <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Нд</span>
+                  <% } else { %>
+                  <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                  <% } %>
+                </div>
+                <div id="calendarGrid" class="mt-3 grid grid-cols-7 gap-2"></div>
+              </div>
+            </div>
+            <div class="mt-5 rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-paper-warm/65 p-4">
+              <div class="flex items-center justify-between gap-3">
+                <h3 class="text-sm font-semibold text-ink"><%= locale === "uk" ? "Обраний день" : "Selected day" %></h3>
+                <p id="calendarSelectedDate" class="text-xs text-ink-mute">—</p>
+              </div>
+              <div id="calendarEventList" class="mt-3 grid gap-3"></div>
+            </div>
+          </article>
+
+          <article class="panel p-5">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 class="font-display text-lg font-semibold"><%= t("dashboard.detectionEvents") %></h2>
+                <p class="mt-1 text-sm text-ink-soft"><%= t("dashboard.snapshotsHint") %></p>
+              </div>
+            </div>
+            <div id="eventsNotice" class="hidden"></div>
+            <div id="eventsList" class="mt-4 grid gap-4 sm:grid-cols-2 2xl:grid-cols-3"></div>
+          </article>
+        </section>
+
+        <% if (role === "admins") { %>
+        <section data-tab-panel="admin" class="dashboard-panel hidden space-y-4">
+          <section class="grid gap-4 md:grid-cols-4">
+            <article class="panel p-5">
+              <p class="text-xs uppercase tracking-[0.22em] text-ink-mute"><%= locale === "uk" ? "Адміни" : "Admins" %></p>
+              <p id="adminAdminsCount" class="mt-3 font-display text-3xl font-bold">0</p>
+            </article>
+            <article class="panel p-5">
+              <p class="text-xs uppercase tracking-[0.22em] text-ink-mute"><%= locale === "uk" ? "Фермери" : "Farmers" %></p>
+              <p id="adminFarmersCount" class="mt-3 font-display text-3xl font-bold">0</p>
+            </article>
+            <article class="panel p-5">
+              <p class="text-xs uppercase tracking-[0.22em] text-ink-mute"><%= locale === "uk" ? "Персонал" : "Staff" %></p>
+              <p id="adminStaffCount" class="mt-3 font-display text-3xl font-bold">0</p>
+            </article>
+            <article class="panel p-5">
+              <p class="text-xs uppercase tracking-[0.22em] text-ink-mute"><%= locale === "uk" ? "Усього подій" : "Total events" %></p>
+              <p id="adminEventsCount" class="mt-3 font-display text-3xl font-bold">0</p>
+            </article>
+          </section>
+          <div class="grid gap-4 xl:grid-cols-[0.88fr_1.12fr]">
+            <form id="coworkerForm" class="panel p-5">
+              <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Додати колегу" : "Add coworker" %></h2>
+              <p class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "Створюйте акаунти фермерів і персоналу в межах того самого робочого простору BarnSight." : "Create farmers and staff accounts for the same BarnSight account workspace." %></p>
+              <div class="mt-4 grid gap-3 md:grid-cols-2">
+                <select id="coworkerRole" class="field md:col-span-2">
+                  <option value="farmers"><%= locale === "uk" ? "фермер" : "farmer" %></option>
+                  <option value="staff"><%= locale === "uk" ? "персонал" : "staff" %></option>
+                </select>
+                <input id="coworkerFirstName" class="field" placeholder="<%= locale === 'uk' ? 'Імʼя' : 'First name' %>" />
+                <input id="coworkerMiddleName" class="field" placeholder="<%= locale === 'uk' ? 'По батькові' : 'Middle name' %>" />
+                <input id="coworkerLastName" class="field" placeholder="<%= locale === 'uk' ? 'Прізвище' : 'Last name' %>" />
+                <input id="coworkerUsername" class="field" placeholder="<%= locale === 'uk' ? 'Логін' : 'Username' %>" />
+                <input id="coworkerEmail" class="field md:col-span-2" type="email" placeholder="Email" />
+                <input id="coworkerPassword" class="field md:col-span-2" type="password" placeholder="<%= locale === 'uk' ? 'Пароль' : 'Password' %>" />
+              </div>
+              <p id="coworkerStatus" class="mt-4 text-xs text-ink-mute"><%= locale === "uk" ? "Готово." : "Ready." %></p>
+              <button class="btn-primary mt-4 w-full" type="submit"><%= locale === "uk" ? "Створити колегу" : "Create coworker" %></button>
+            </form>
+            <article class="panel p-5">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Колеги" : "Coworkers" %></h2>
+                <div class="flex gap-2">
+                  <button type="button" class="admin-role-filter btn-secondary px-3" data-role="admins"><%= locale === "uk" ? "Адміни" : "Admins" %></button>
+                  <button type="button" class="admin-role-filter btn-secondary px-3" data-role="farmers"><%= locale === "uk" ? "Фермери" : "Farmers" %></button>
+                  <button type="button" class="admin-role-filter btn-secondary px-3" data-role="staff"><%= locale === "uk" ? "Персонал" : "Staff" %></button>
+                </div>
+              </div>
+              <div id="coworkersList" class="mt-4 grid gap-3"></div>
+            </article>
+          </div>
+        </section>
+        <% } %>
+
+        <section data-tab-panel="system" class="dashboard-panel hidden">
+          <div class="grid gap-4 xl:grid-cols-[0.75fr_1.25fr]">
+            <article class="panel p-5">
+              <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Система" : "System" %></h2>
+              <div class="mt-4 grid gap-3">
+                <div class="rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-paper-warm/65 p-4">
+                  <p class="text-xs uppercase tracking-[0.18em] text-ink-mute"><%= locale === "uk" ? "Стан" : "Health" %></p>
+                  <p id="systemHealth" class="mt-2 font-display text-lg font-semibold text-ink"><%= locale === "uk" ? "Перевірка…" : "Checking…" %></p>
+                </div>
+                <div class="rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-paper-warm/65 p-4">
+                  <p class="text-xs uppercase tracking-[0.18em] text-ink-mute"><%= locale === "uk" ? "Роль" : "Role" %></p>
+                  <p class="mt-2 font-display text-lg font-semibold text-ink"><%= role %></p>
+                </div>
+              </div>
+            </article>
+            <article class="panel p-5">
+              <h2 class="font-display text-lg font-semibold"><%= locale === "uk" ? "Метрики" : "Metrics" %></h2>
+              <pre id="metricsOutput" class="mt-4 max-h-[28rem] overflow-auto rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-ink/95 p-3 font-mono text-xs text-paper"></pre>
+            </article>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      window.BARNSIGHT_ROLE = "<%= role %>";
+      window.APP_LOCALE = "<%= locale %>";
+    </script>
+    <script src="/public/pageTransitions.js"></script>
+    <script src="/public/site.js"></script>
+    <script src="/public/dashboard.js"></script>
+  </body>
+</html>
