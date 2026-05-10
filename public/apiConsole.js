@@ -14,6 +14,72 @@ const ui = {
   },
 }[locale];
 
+const ukTextMap = {
+  Authentication: "Автентифікація",
+  Profile: "Профіль",
+  "API Keys": "API-ключі",
+  Barns: "Господарства",
+  Devices: "Пристрої",
+  "Cameras & Zones": "Камери та зони",
+  "Events & Analytics": "Події та аналітика",
+  Admin: "Адмін",
+  System: "Система",
+  "Refresh/revoke current JWT": "Оновити/відкликати поточний JWT",
+  "Logout through API": "Вийти через API",
+  "Google OAuth redirect; open API URL directly": "Редірект Google OAuth; відкрийте URL API напряму",
+  "Current profile with assigned barns": "Поточний профіль із призначеними господарствами",
+  "Update current profile": "Оновити поточний профіль",
+  "Change password": "Змінити пароль",
+  "Update email": "Оновити email",
+  "Recover password by email": "Відновити пароль через email",
+  "List edge API keys": "Список edge API-ключів",
+  "Create edge API key": "Створити edge API-ключ",
+  "Revoke edge API key": "Відкликати edge API-ключ",
+  "List accessible barns": "Список доступних господарств",
+  "Read one barn": "Отримати одне господарство",
+  "List barn devices": "Список пристроїв господарства",
+  "List barn cameras": "Список камер господарства",
+  "Barn hygiene summary": "Зведення гігієни господарства",
+  "Create/update edge host": "Створити/оновити edge-хост",
+  "List devices; optional ?barn_id=1": "Список пристроїв; опційно ?barn_id=1",
+  "Read device": "Отримати пристрій",
+  "Device online status": "Онлайн-статус пристрою",
+  "Read remote config": "Прочитати віддалений конфіг",
+  "Replace remote config": "Замінити віддалений конфіг",
+  "Edge heartbeat; requires edge API key field": "Heartbeat edge-пристрою; потрібен edge API-ключ",
+  "Create/update camera": "Створити/оновити камеру",
+  "List device cameras": "Список камер пристрою",
+  "Read camera": "Отримати камеру",
+  "Camera online status": "Онлайн-статус камери",
+  "List zones; optional ?camera_id=cam-01&barn_id=1": "Список зон; опційно ?camera_id=cam-01&barn_id=1",
+  "List camera zones": "Список зон камери",
+  "Create camera zone": "Створити зону камери",
+  "Update camera zone": "Оновити зону камери",
+  "Delete camera zone": "Видалити зону камери",
+  "Recent camera detections; optional ?limit=100": "Останні детекції камери; опційно ?limit=100",
+  "Create detection event; JWT or edge API key": "Створити подію детекції; JWT або edge API-ключ",
+  "Query events; optional ?limit=30&barn_id=1&camera_id=cam-01": "Запит подій; опційно ?limit=30&barn_id=1&camera_id=cam-01",
+  "Analytics; requires ?start=YYYY-MM-DD&end=YYYY-MM-DD": "Аналітика; потрібні ?start=YYYY-MM-DD&end=YYYY-MM-DD",
+  "Detections; requires ?start=YYYY-MM-DD&end=YYYY-MM-DD": "Детекції; потрібні ?start=YYYY-MM-DD&end=YYYY-MM-DD",
+  "Report; requires ?start=YYYY-MM-DD&end=YYYY-MM-DD": "Звіт; потрібні ?start=YYYY-MM-DD&end=YYYY-MM-DD",
+  "Admin statistics": "Адмін-статистика",
+  "Create farmer": "Створити фермера",
+  "Create staff": "Створити співробітника",
+  "List users by role: admins, farmers, staff, edge": "Список користувачів за роллю: admins, farmers, staff, edge",
+  "Read user": "Отримати користувача",
+  "Update user": "Оновити користувача",
+  "Delete user": "Видалити користувача",
+  "Change user role": "Змінити роль користувача",
+  "Health check": "Перевірка стану",
+  "Prometheus metrics; proxied separately because it is outside /api/v1": "Метрики Prometheus; проксійовано окремо, бо endpoint поза /api/v1",
+  "WebSocket endpoint; use a WS client": "Endpoint WebSocket; використайте WS-клієнт",
+};
+
+function tr(text) {
+  if (locale !== "uk") return text;
+  return ukTextMap[text] || text;
+}
+
 const endpoints = [
   {
     group: "Authentication",
@@ -222,20 +288,20 @@ function renderEndpoints() {
     .map(
       (group) => `
         <section class="panel p-4">
-          <h3 class="text-lg font-semibold">${group.group}</h3>
+          <h3 class="text-lg font-semibold">${tr(group.group)}</h3>
           <div class="mt-3 space-y-2">
             ${group.items
               .map(
                 (endpoint) => `
                   <button
                     type="button"
-                    class="endpoint-btn w-full rounded-lg border border-amber-900/15 bg-white/70 p-3 text-left transition hover:border-amber-700/40 hover:bg-white"
+                    class="endpoint-btn w-full rounded-[10px_18px_12px_20px] border border-edge/45 bg-paper-warm/65 p-3 text-left transition hover:-translate-y-0.5 hover:border-ochre/55 hover:bg-paper-warm"
                     data-method="${endpoint.method}"
                     data-path="${endpoint.path}"
                   >
-                    <span class="font-mono text-xs font-semibold text-amber-900">${endpoint.method}</span>
-                    <span class="ml-2 font-mono text-sm text-zinc-900">${endpoint.path}</span>
-                    <span class="mt-1 block text-xs text-zinc-600">${endpoint.note}</span>
+                    <span class="font-mono text-xs font-semibold text-ochre-deep">${endpoint.method}</span>
+                    <span class="ml-2 font-mono text-sm text-ink">${endpoint.path}</span>
+                    <span class="mt-1 block text-xs text-ink-soft">${tr(endpoint.note)}</span>
                   </button>
                 `,
               )

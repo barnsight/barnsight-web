@@ -51,12 +51,8 @@ const planHint = document.getElementById("pricingPlanHint");
 
 function setActiveTab(target) {
   tabs.forEach((tab) => {
-    const active = tab.dataset.target === target;
-    tab.className = active
-      ? "pricing-tab rounded-xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-zinc-950/15"
-      : "pricing-tab rounded-xl px-6 py-3 text-sm font-semibold text-zinc-700";
+    tab.classList.toggle("is-active", tab.dataset.target === target);
   });
-
   panels.forEach((panel) => {
     panel.classList.toggle("hidden", panel.id !== `pricing-panel-${target}`);
   });
@@ -93,7 +89,7 @@ function calculate() {
     [copy.support, supportCost],
     [copy.training, trainingCost],
   ]
-    .map(([label, value]) => `<li class="flex items-center justify-between gap-4 border-b border-white/10 pb-3"><span>${label}</span><strong>${formatter.format(value)}</strong></li>`)
+    .map(([label, value]) => `<li class="flex items-center justify-between gap-4 border-b border-paper/12 pb-3"><span>${label}</span><strong>${formatter.format(value)}</strong></li>`)
     .join("");
 
   if (total < 450) {

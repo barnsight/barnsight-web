@@ -23,6 +23,30 @@ const messages = {
     userFallback: "User",
     badJson: "Invalid JSON response from server.",
     apiKeyCreated: "API key created. Save the raw key now:",
+    username: "Username",
+    email: "Email",
+    role: "Role",
+    assignedBarns: "Assigned barns",
+    edgeKey: "Edge key",
+    delete: "Delete",
+    barn: "Barn",
+    location: "Location",
+    description: "Description",
+    account: "Account",
+    device: "Device",
+    unknown: "unknown",
+    camera: "Camera",
+    zone: "Zone",
+    disabled: "disabled",
+    enabled: "enabled",
+    detections: "Detections",
+    highRiskZones: "High-risk zones",
+    trend: "Trend",
+    eventsShort: "evt",
+    devicesCount: "Devices",
+    apiKeysCount: "API keys",
+    loadedCount: "Data loaded",
+    unavailable: "unavailable",
   },
   uk: {
     requestError: "Помилка запиту.",
@@ -45,6 +69,30 @@ const messages = {
     userFallback: "Користувач",
     badJson: "Некоректна JSON-відповідь від сервера.",
     apiKeyCreated: "API-ключ створено. Збережіть raw key зараз:",
+    username: "Логін",
+    email: "Email",
+    role: "Роль",
+    assignedBarns: "Призначені господарства",
+    edgeKey: "Edge-ключ",
+    delete: "Видалити",
+    barn: "Господарство",
+    location: "Локація",
+    description: "Опис",
+    account: "Акаунт",
+    device: "Пристрій",
+    unknown: "невідомо",
+    camera: "Камера",
+    zone: "Зона",
+    disabled: "вимкнено",
+    enabled: "увімкнено",
+    detections: "Детекції",
+    highRiskZones: "Зони високого ризику",
+    trend: "Тренд",
+    eventsShort: "под.",
+    devicesCount: "Пристрої",
+    apiKeysCount: "API-ключі",
+    loadedCount: "Дані завантажено",
+    unavailable: "недоступно",
   },
 }[locale];
 
@@ -167,10 +215,7 @@ async function apiRequest({ path, method = "GET", query = "", body, apiKey, expe
 function setActiveTab(tab) {
   state.currentTab = tab;
   document.querySelectorAll(".dashboard-tab").forEach((button) => {
-    const active = button.dataset.tab === tab;
-    button.className = active
-      ? "dashboard-tab rounded-full bg-amber-500 px-5 py-3 text-sm font-semibold text-zinc-950 shadow-lg shadow-amber-900/12"
-      : "dashboard-tab rounded-full bg-white/75 px-5 py-3 text-sm font-semibold text-zinc-700 hover:bg-white";
+    button.classList.toggle("is-active", button.dataset.tab === tab);
   });
   document.querySelectorAll(".dashboard-panel").forEach((panel) => {
     panel.classList.toggle("hidden", panel.dataset.tabPanel !== tab);
@@ -182,10 +227,10 @@ function setFiltersStatus(text, tone = "neutral") {
   node.textContent = text;
   node.className =
     tone === "error"
-      ? "mt-3 text-xs text-red-700"
+      ? "mt-3 text-xs text-[rgb(var(--danger))]"
       : tone === "success"
-        ? "mt-3 text-xs text-emerald-700"
-        : "mt-3 text-xs text-zinc-500";
+        ? "mt-3 text-xs text-[rgb(var(--ok))]"
+        : "mt-3 text-xs text-ink-mute";
 }
 
 function setStatus(id, text, tone = "neutral") {
@@ -194,27 +239,27 @@ function setStatus(id, text, tone = "neutral") {
   node.textContent = text;
   node.className =
     tone === "error"
-      ? "text-xs text-red-700"
+      ? "text-xs text-[rgb(var(--danger))]"
       : tone === "success"
-        ? "text-xs text-emerald-700"
-        : "text-xs text-zinc-500";
+        ? "text-xs text-[rgb(var(--ok))]"
+        : "text-xs text-ink-mute";
 }
 
 function renderProfile() {
   if (!state.me) return;
   const barns = Array.isArray(state.me.barns) ? state.me.barns : [];
   const summary = [
-    ["Username", state.me.username || "—"],
-    ["Email", state.me.email || "—"],
-    ["Role", role],
-    ["Assigned barns", barns.length ? barns.map((barn) => barn.name || barn.barn_id || barn.id).join(", ") : "—"],
+    [messages.username, state.me.username || "—"],
+    [messages.email, state.me.email || "—"],
+    [messages.role, role],
+    [messages.assignedBarns, barns.length ? barns.map((barn) => barn.name || barn.barn_id || barn.id).join(", ") : "—"],
   ];
   el("profileSummary").innerHTML = summary
     .map(
       ([label, value]) => `
-        <article class="rounded-[1.5rem] border border-amber-900/10 bg-white/65 p-4">
-          <p class="text-xs uppercase tracking-[0.18em] text-zinc-500">${label}</p>
-          <p class="mt-2 text-xl font-semibold text-zinc-950 break-all">${value}</p>
+        <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
+          <p class="text-xs uppercase tracking-[0.18em] text-ink-mute">${label}</p>
+          <p class="mt-2 font-display text-xl font-semibold text-ink break-all">${value}</p>
         </article>
       `,
     )
@@ -230,7 +275,7 @@ function renderProfile() {
 function renderApiKeys() {
   const root = el("apiKeysList");
   if (!state.apiKeys.length) {
-    root.innerHTML = `<p class="text-sm text-zinc-600">${messages.noApiKeys}</p>`;
+    root.innerHTML = `<p class="text-sm text-ink-soft">${messages.noApiKeys}</p>`;
     return;
   }
 
@@ -238,14 +283,14 @@ function renderApiKeys() {
     .map((item) => {
       const id = item._id || item.id || item.key_id;
       return `
-        <article class="rounded-[1.5rem] border border-amber-900/10 bg-white/65 p-4">
+        <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p class="text-lg font-semibold text-zinc-950">${item.name || "Edge key"}</p>
-              <p class="mt-1 text-xs text-zinc-500 break-all">${id || "—"}</p>
-              <p class="mt-1 text-xs text-zinc-500">${formatTimestamp(item.created_at)}</p>
+              <p class="font-display text-lg font-semibold text-ink">${item.name || messages.edgeKey}</p>
+              <p class="mt-1 font-mono text-xs text-ink-mute break-all">${id || "—"}</p>
+              <p class="mt-1 text-xs text-ink-mute">${formatTimestamp(item.created_at)}</p>
             </div>
-            <button type="button" class="btn-secondary api-key-delete" data-key-id="${id}">Delete</button>
+            <button type="button" class="btn-secondary api-key-delete" data-key-id="${id}">${messages.delete}</button>
           </div>
         </article>
       `;
@@ -271,23 +316,23 @@ function renderApiKeys() {
 function renderBarns() {
   const root = el("barnsList");
   if (!state.barns.length) {
-    root.innerHTML = `<p class="text-sm text-zinc-600">${messages.noBarns}</p>`;
+    root.innerHTML = `<p class="text-sm text-ink-soft">${messages.noBarns}</p>`;
     return;
   }
   root.innerHTML = state.barns
     .map((barn) => `
-      <article class="rounded-[1.75rem] border border-amber-900/10 bg-white/72 p-5 shadow-lg shadow-amber-900/8">
+      <article class="rounded-[14px_28px_18px_30px] border border-edge/45 bg-paper-warm/72 p-5 shadow-panel">
         <div class="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p class="text-xs uppercase tracking-[0.18em] text-zinc-500">Barn</p>
-            <h3 class="mt-2 text-xl font-semibold text-zinc-950">${barn.name || `Barn ${barn.barn_id || barn.id || ""}`}</h3>
+            <p class="text-xs uppercase tracking-[0.18em] text-ink-mute">${messages.barn}</p>
+            <h3 class="mt-2 font-display text-xl font-semibold text-ink">${barn.name || `${messages.barn} ${barn.barn_id || barn.id || ""}`}</h3>
           </div>
-          <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">${barn.barn_id || barn.id || "—"}</span>
+          <span class="rounded-[10px_18px_12px_20px] bg-hay/40 px-3 py-1 font-mono text-xs font-semibold text-ochre-deep">${barn.barn_id || barn.id || "—"}</span>
         </div>
-        <div class="mt-4 grid gap-2 text-sm text-zinc-600">
-          <p><span class="font-medium text-zinc-900">Location:</span> ${barn.location || "—"}</p>
-          <p><span class="font-medium text-zinc-900">Description:</span> ${barn.description || "—"}</p>
-          <p><span class="font-medium text-zinc-900">Account:</span> ${barn.account_id || "—"}</p>
+        <div class="mt-4 grid gap-2 text-sm text-ink-soft">
+          <p><span class="font-medium text-ink">${messages.location}:</span> ${barn.location || "—"}</p>
+          <p><span class="font-medium text-ink">${messages.description}:</span> ${barn.description || "—"}</p>
+          <p><span class="font-medium text-ink">${messages.account}:</span> ${barn.account_id || "—"}</p>
         </div>
       </article>
     `)
@@ -297,25 +342,33 @@ function renderBarns() {
 function renderDevices() {
   const root = el("devicesList");
   if (!state.devices.length) {
-    root.innerHTML = `<p class="text-sm text-zinc-600">${messages.noDevices}</p>`;
+    root.innerHTML = `<p class="text-sm text-ink-soft">${messages.noDevices}</p>`;
     return;
   }
   root.innerHTML = state.devices
-    .map((device) => `
-      <article class="rounded-[1.5rem] border border-amber-900/10 bg-white/65 p-4">
+    .map((device) => {
+      const status = (device.status || "unknown").toLowerCase();
+      const statusClass = status === "online"
+        ? "bg-[rgb(var(--ok))] text-paper"
+        : status === "offline"
+          ? "bg-ink/85 text-paper"
+          : "bg-edge/55 text-ink";
+      return `
+      <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
         <div class="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p class="text-lg font-semibold text-zinc-950">${device.name || device.device_id || "Device"}</p>
-            <p class="mt-1 text-xs text-zinc-500">${device.device_id || "—"}</p>
+            <p class="font-display text-lg font-semibold text-ink">${device.name || device.device_id || messages.device}</p>
+            <p class="mt-1 font-mono text-xs text-ink-mute">${device.device_id || "—"}</p>
           </div>
-          <span class="rounded-full bg-zinc-950 px-3 py-1 text-xs font-semibold text-white">${device.status || "unknown"}</span>
+          <span class="rounded-[10px_18px_12px_20px] px-3 py-1 text-xs font-semibold ${statusClass}">${device.status || messages.unknown}</span>
         </div>
-        <div class="mt-3 grid gap-1 text-sm text-zinc-600">
-          <p><span class="font-medium text-zinc-900">Barn:</span> ${device.barn_id || "—"}</p>
-          <p><span class="font-medium text-zinc-900">Location:</span> ${device.location || "—"}</p>
+        <div class="mt-3 grid gap-1 text-sm text-ink-soft">
+          <p><span class="font-medium text-ink">${messages.barn}:</span> ${device.barn_id || "—"}</p>
+          <p><span class="font-medium text-ink">${messages.location}:</span> ${device.location || "—"}</p>
         </div>
       </article>
-    `)
+    `;
+    })
     .join("");
 }
 
@@ -325,51 +378,73 @@ function renderCamerasAndZones() {
   camerasRoot.innerHTML = state.cameras.length
     ? state.cameras
         .map((camera) => `
-          <article class="rounded-[1.5rem] border border-amber-900/10 bg-white/65 p-4">
-            <p class="text-lg font-semibold text-zinc-950">${camera.name || camera.camera_id || "Camera"}</p>
-            <p class="mt-1 text-xs text-zinc-500">${camera.camera_id || "—"}</p>
-            <p class="mt-3 text-sm text-zinc-600">Barn ${camera.barn_id || "—"} · Device ${camera.device_id || "—"} · ${camera.status || "unknown"}</p>
+          <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
+            <p class="font-display text-lg font-semibold text-ink">${camera.name || camera.camera_id || messages.camera}</p>
+            <p class="mt-1 font-mono text-xs text-ink-mute">${camera.camera_id || "—"}</p>
+            <p class="mt-3 text-sm text-ink-soft">${messages.barn} ${camera.barn_id || "—"} · ${messages.device} ${camera.device_id || "—"} · ${camera.status || messages.unknown}</p>
           </article>
         `)
         .join("")
-    : `<p class="text-sm text-zinc-600">${messages.noCameras}</p>`;
+    : `<p class="text-sm text-ink-soft">${messages.noCameras}</p>`;
 
   zonesRoot.innerHTML = state.zones.length
     ? state.zones
         .map((zone) => `
-          <article class="rounded-[1.5rem] border border-amber-900/10 bg-white/65 p-4">
-            <p class="text-lg font-semibold text-zinc-950">${zone.label || zone.zone_id || "Zone"}</p>
-            <p class="mt-1 text-xs text-zinc-500">${zone.zone_id || "—"}</p>
-            <p class="mt-3 text-sm text-zinc-600">Camera ${zone.camera_id || "—"} · Barn ${zone.barn_id || "—"} · ${zone.enabled === false ? "disabled" : "enabled"}</p>
+          <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
+            <p class="font-display text-lg font-semibold text-ink">${zone.label || zone.zone_id || messages.zone}</p>
+            <p class="mt-1 font-mono text-xs text-ink-mute">${zone.zone_id || "—"}</p>
+            <p class="mt-3 text-sm text-ink-soft">${messages.camera} ${zone.camera_id || "—"} · ${messages.barn} ${zone.barn_id || "—"} · ${zone.enabled === false ? messages.disabled : messages.enabled}</p>
           </article>
         `)
         .join("")
-    : `<p class="text-sm text-zinc-600">${messages.noZones}</p>`;
+    : `<p class="text-sm text-ink-soft">${messages.noZones}</p>`;
+}
+
+function renderEventsNotice() {
+  const node = el("eventsNotice");
+  if (!node) return;
+  const meta = state.eventsMeta || {};
+  if (!meta.partial) {
+    node.classList.add("hidden");
+    node.innerHTML = "";
+    return;
+  }
+  node.classList.remove("hidden");
+  node.className = "notice is-warn mt-3";
+  const skipped = meta.skippedWindows || 0;
+  const detail = locale === "uk"
+    ? `Деякі історичні події містять некоректне поле <code>image_snapshot</code> (URL замість base64), тому API не зміг їх повернути. Показано лише валідні записи${skipped ? ` · пропущено вікон: ${skipped}` : ""}.`
+    : `Some historical events store an <code>image_snapshot</code> URL instead of base64, so the API rejected them. Only valid records are shown${skipped ? ` · skipped windows: ${skipped}` : ""}.`;
+  node.innerHTML = detail;
 }
 
 function renderEvents(events = state.events) {
   const root = el("eventsList");
+  renderEventsNotice();
   if (!events.length) {
-    root.innerHTML = `<p class="text-sm text-zinc-600">${messages.noEvents}</p>`;
+    root.innerHTML = `<p class="text-sm text-ink-mute">${messages.noEvents}</p>`;
     return;
   }
   root.innerHTML = events
     .map((event) => {
       const imageSrc = toImageSrc(event.image_snapshot);
+      const conf = typeof event.confidence === "number"
+        ? `${Math.round(event.confidence * 100)}%`
+        : (event.confidence ?? "—");
       return `
-        <article class="rounded-[1.5rem] border border-amber-900/10 bg-white/72 p-4 shadow-lg shadow-amber-900/8">
+        <article class="rounded-[14px_28px_18px_30px] border border-edge/45 bg-paper-warm/72 p-4 shadow-panel">
           <div class="flex items-start justify-between gap-3">
             <div>
-              <p class="text-xs uppercase tracking-[0.18em] text-zinc-500">${event.camera_id || "camera?"}</p>
-              <p class="mt-1 text-sm font-semibold text-zinc-950">${formatTimestamp(event.timestamp)}</p>
+              <p class="font-mono text-xs uppercase tracking-[0.18em] text-ink-mute">${event.camera_id || `${messages.camera}?`}</p>
+              <p class="mt-1 text-sm font-semibold text-ink">${formatTimestamp(event.timestamp)}</p>
             </div>
-            <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">${event.confidence ?? "—"}</span>
+            <span class="rounded-[10px_18px_12px_20px] bg-hay/40 px-3 py-1 text-xs font-semibold text-ochre-deep">${conf}</span>
           </div>
-          ${imageSrc ? `<img src="${imageSrc}" alt="Detection snapshot" class="mt-3 h-40 w-full rounded-xl border border-amber-900/15 object-cover" loading="lazy" />` : ""}
-          <div class="mt-3 grid gap-1 text-xs text-zinc-600">
-            <p><span class="font-medium text-zinc-900">Device:</span> ${event.device_id || "—"}</p>
-            <p><span class="font-medium text-zinc-900">Barn:</span> ${event.barn_id || "—"}</p>
-            <p><span class="font-medium text-zinc-900">ID:</span> ${event._id || "—"}</p>
+          ${imageSrc ? `<img src="${imageSrc}" alt="${locale === "uk" ? "Знімок детекції" : "Detection snapshot"}" class="mt-3 h-40 w-full rounded-[10px_18px_12px_20px] border border-edge/45 object-cover" loading="lazy" />` : ""}
+          <div class="mt-3 grid gap-1 text-xs text-ink-soft">
+            <p><span class="font-medium text-ink">${messages.device}:</span> ${event.device_id || "—"}</p>
+            <p><span class="font-medium text-ink">${messages.barn}:</span> ${event.barn_id || "—"}</p>
+            <p><span class="font-medium text-ink">ID:</span> <span class="font-mono">${event._id || "—"}</span></p>
           </div>
         </article>
       `;
@@ -404,14 +479,14 @@ function renderAnalytics() {
   chart.innerHTML = normalized
     .map(
       (item) => `
-        <div class="flex min-h-[220px] flex-col justify-end gap-3 rounded-[1.25rem] bg-white/75 p-3">
+        <div class="flex min-h-[220px] flex-col justify-end gap-3 rounded-[10px_18px_12px_20px] bg-paper-warm/75 p-3">
           <div class="flex flex-1 items-end gap-2">
-            <div class="flex-1 rounded-t-xl bg-amber-500/90" style="height:${Math.max(10, (item.events / maxEvents) * 100)}%"></div>
-            <div class="flex-1 rounded-t-xl bg-zinc-950/80" style="height:${Math.max(10, (item.confidence / maxConfidence) * 100)}%"></div>
+            <div class="flex-1 rounded-t-xl bg-ochre/85" style="height:${Math.max(10, (item.events / maxEvents) * 100)}%"></div>
+            <div class="flex-1 rounded-t-xl bg-ink/80" style="height:${Math.max(10, (item.confidence / maxConfidence) * 100)}%"></div>
           </div>
           <div class="text-center">
-            <p class="text-xs font-semibold text-zinc-900">${item.label}</p>
-            <p class="text-[11px] text-zinc-500">${item.events} / ${item.confidence}</p>
+            <p class="font-mono text-xs font-semibold text-ink">${item.label}</p>
+            <p class="text-[11px] text-ink-mute">${item.events} / ${item.confidence}</p>
           </div>
         </div>
       `,
@@ -423,15 +498,15 @@ function renderAnalytics() {
   const trend = state.analytics?.trend || state.report?.trend || "—";
 
   highlights.innerHTML = [
-    ["Detections", detections],
-    ["High-risk zones", zones],
-    ["Trend", trend],
+    [messages.detections, detections],
+    [messages.highRiskZones, zones],
+    [messages.trend, trend],
   ]
     .map(
       ([label, value]) => `
-        <article class="rounded-[1.25rem] border border-amber-900/10 bg-white/70 p-4">
-          <p class="text-xs uppercase tracking-[0.18em] text-zinc-500">${label}</p>
-          <p class="mt-2 text-3xl font-bold text-zinc-950">${value}</p>
+        <article class="rounded-[10px_18px_12px_20px] border border-edge/45 bg-paper-warm/65 p-4">
+          <p class="text-xs uppercase tracking-[0.18em] text-ink-mute">${label}</p>
+          <p class="mt-2 font-display text-3xl font-bold text-ink">${value}</p>
         </article>
       `,
     )
@@ -468,9 +543,9 @@ function renderCalendar() {
     const count = (eventsByDay.get(key) || []).length;
     const active = state.selectedCalendarDate === key;
     cells.push(`
-      <button type="button" class="calendar-day min-h-[76px] rounded-2xl border px-3 py-2 text-left ${active ? "border-amber-700 bg-amber-200/75 shadow-lg shadow-amber-900/10" : "border-amber-900/10 bg-white/72 hover:border-amber-700/35 hover:bg-white"}" data-date="${key}">
-        <span class="text-sm font-semibold text-zinc-950">${day}</span>
-        <span class="mt-2 block text-xs text-zinc-500">${count ? `${count} evt` : "—"}</span>
+      <button type="button" class="calendar-day min-h-[76px] rounded-[10px_18px_12px_20px] border px-3 py-2 text-left transition ${active ? "border-ochre bg-hay/55 shadow-panel" : "border-edge/45 bg-paper-warm/72 hover:border-ochre/55 hover:bg-paper-warm"}" data-date="${key}">
+        <span class="text-sm font-semibold text-ink">${day}</span>
+        <span class="mt-2 block text-xs text-ink-mute">${count ? `${count} ${messages.eventsShort}` : "—"}</span>
       </button>
     `);
   }
@@ -497,21 +572,26 @@ function renderSelectedDay() {
     ? items
         .slice(0, 6)
         .map(
-          (event) => `
-            <article class="rounded-[1.25rem] border border-amber-900/10 bg-white/72 p-3">
+          (event) => {
+            const conf = typeof event.confidence === "number"
+              ? `${Math.round(event.confidence * 100)}%`
+              : (event.confidence ?? "—");
+            return `
+            <article class="rounded-[10px_18px_12px_20px] border border-edge/45 bg-paper-warm/72 p-3">
               <div class="flex items-start justify-between gap-3">
                 <div>
-                  <p class="text-sm font-semibold text-zinc-950">${event.camera_id || "camera?"}</p>
-                  <p class="mt-1 text-xs text-zinc-500">${formatTimestamp(event.timestamp)}</p>
+                  <p class="font-mono text-sm font-semibold text-ink">${event.camera_id || `${messages.camera}?`}</p>
+                  <p class="mt-1 text-xs text-ink-mute">${formatTimestamp(event.timestamp)}</p>
                 </div>
-                <span class="rounded-full bg-zinc-950 px-2 py-1 text-[11px] font-semibold text-white">${event.confidence ?? "—"}</span>
+                <span class="rounded-[8px_14px_10px_16px] bg-ink/90 px-2 py-1 text-[11px] font-semibold text-paper">${conf}</span>
               </div>
-              <p class="mt-2 text-xs text-zinc-600">Barn ${event.barn_id || "—"} · Device ${event.device_id || "—"}</p>
+              <p class="mt-2 text-xs text-ink-soft">${messages.barn} ${event.barn_id || "—"} · ${messages.device} ${event.device_id || "—"}</p>
             </article>
-          `,
+          `;
+          },
         )
         .join("")
-    : `<p class="text-sm text-zinc-600">${messages.noCalendarEvents}</p>`;
+    : `<p class="text-sm text-ink-soft">${messages.noCalendarEvents}</p>`;
 }
 
 function renderAdmin() {
@@ -524,18 +604,18 @@ function renderAdmin() {
   const items = state.coworkers[state.currentCoworkerRole] || [];
   const root = el("coworkersList");
   if (!items.length) {
-    root.innerHTML = `<p class="text-sm text-zinc-600">${messages.noCoworkers}</p>`;
+    root.innerHTML = `<p class="text-sm text-ink-soft">${messages.noCoworkers}</p>`;
     return;
   }
   root.innerHTML = items
     .map(
       (user) => `
-        <article class="rounded-[1.5rem] border border-amber-900/10 bg-white/65 p-4">
+        <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p class="text-lg font-semibold text-zinc-950">${user.first_name || ""} ${user.last_name || ""}</p>
-              <p class="mt-1 text-sm text-zinc-600">${user.username || "—"}</p>
-              <p class="mt-1 text-xs text-zinc-500">${user.email || "—"}</p>
+              <p class="font-display text-lg font-semibold text-ink">${user.first_name || ""} ${user.last_name || ""}</p>
+              <p class="mt-1 text-sm text-ink-soft">${user.username || "—"}</p>
+              <p class="mt-1 text-xs text-ink-mute">${user.email || "—"}</p>
             </div>
             <div class="flex flex-wrap gap-2">
               <select class="field coworker-role-select" data-username="${user.username}" style="width:auto">
@@ -543,7 +623,7 @@ function renderAdmin() {
                 <option value="farmers" ${user.role === "farmers" ? "selected" : ""}>farmers</option>
                 <option value="staff" ${user.role === "staff" ? "selected" : ""}>staff</option>
               </select>
-              <button type="button" class="btn-secondary coworker-delete" data-username="${user.username}">Delete</button>
+              <button type="button" class="btn-secondary coworker-delete" data-username="${user.username}">${messages.delete}</button>
             </div>
           </div>
         </article>
@@ -606,7 +686,7 @@ async function loadDevices() {
   } catch {
     state.devices = [];
   }
-  setText("deviceCountLabel", `Devices: ${state.devices.length}`);
+  setText("deviceCountLabel", `${messages.devicesCount}: ${state.devices.length}`);
   renderDevices();
 }
 
@@ -617,20 +697,25 @@ async function loadApiKeys() {
   } catch {
     state.apiKeys = [];
   }
-  setText("apiKeyCountLabel", `API keys: ${state.apiKeys.length}`);
+  setText("apiKeyCountLabel", `${messages.apiKeysCount}: ${state.apiKeys.length}`);
   renderApiKeys();
 }
 
 async function loadEvents() {
+  let partial = false;
+  let skippedWindows = 0;
   try {
     const response = await apiRequest({ path: "/events", query: buildQuery({ limit: 120 }) });
     state.events = response.events || response.items || response || [];
     setText("eventCount", String(response.total || state.events.length));
+    partial = Boolean(response.partial || response.recovered_from_validation_error);
+    skippedWindows = Number(response.skipped_windows || 0);
   } catch {
     state.events = [];
     setText("eventCount", "0");
   }
-  setText("calendarSummary", `${messages.loaded}: ${state.events.length}`);
+  setText("calendarSummary", `${messages.loadedCount}: ${state.events.length}`);
+  state.eventsMeta = { partial, skippedWindows };
   renderCalendar();
   renderEvents();
 }
@@ -655,9 +740,9 @@ async function loadHealthAndMetrics() {
   try {
     const response = await fetch("/app/api/health");
     const data = await response.json();
-    setText("systemHealth", response.ok ? `${data.status || "ok"}` : "unavailable");
+    setText("systemHealth", response.ok ? `${data.status || "ok"}` : messages.unavailable);
   } catch {
-    setText("systemHealth", "unavailable");
+    setText("systemHealth", messages.unavailable);
   }
   try {
     const metrics = await apiRequest({ path: "/metrics", expectText: true });
@@ -843,7 +928,10 @@ function bindForms() {
       });
       el("apiKeyName").value = "";
       const reveal = el("apiKeyReveal");
-      reveal.className = "mt-4 rounded-[1.5rem] border border-emerald-700/20 bg-emerald-50 p-4 text-sm text-emerald-900";
+      reveal.className = "notice mt-4";
+      reveal.style.borderColor = "rgb(var(--ok)/0.55)";
+      reveal.style.background = "rgb(var(--ok-soft))";
+      reveal.style.color = "rgb(var(--ok))";
       reveal.textContent = `${messages.apiKeyCreated} ${payload.key || ""}`;
       setStatus("apiKeyCreateStatus", messages.created, "success");
       await loadApiKeys();

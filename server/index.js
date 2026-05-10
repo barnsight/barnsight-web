@@ -3,7 +3,14 @@ import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
-import { callApi, getApiBaseUrl, loginWithPassword, normalizeApiError, registerAccount } from "./apiClient.js";
+import {
+  callApi,
+  fetchEventsResilient,
+  getApiBaseUrl,
+  loginWithPassword,
+  normalizeApiError,
+  registerAccount,
+} from "./apiClient.js";
 import { createTranslator, normalizeLocale, supportedLocales } from "./i18n.js";
 
 dotenv.config();
@@ -296,7 +303,25 @@ app.get("/app/api/barns", requireAuth, async (req, res) => proxyJson(req, res, {
 app.get("/app/api/barns/:barnId", requireAuth, async (req, res) =>
   proxyJson(req, res, { path: `/api/v1/barns/${req.params.barnId}`, queryFromReq: false }),
 );
-app.get("/app/api/events", requireAuth, async (req, res) => proxyJson(req, res, { path: "/api/v1/events" }));
+app.get("/app/api/events", requireAuth, async (req, res) => {
+  try {
+    const result = await fetchEventsResilient({
+      token: req.session.user?.token,
+      query: req.query,
+    });
+    if (!result.ok) {
+      return res.status(result.status).json(result.error);
+    }
+    return res.status(result.status).json(result.data);
+  } catch (error) {
+    return res.status(502).json({
+      message: res.locals.t("error.apiResponse"),
+      status: 502,
+      endpoint: "/api/v1/events",
+      details: [{ field: null, message: error?.message || "Unknown network error", type: "network_error" }],
+    });
+  }
+});
 app.get("/app/api/analytics", requireAuth, async (req, res) => proxyJson(req, res, { path: "/api/v1/analytics" }));
 app.get("/app/api/detections", requireAuth, async (req, res) => proxyJson(req, res, { path: "/api/v1/detections" }));
 app.get("/app/api/reports/custom", requireAuth, async (req, res) =>
@@ -334,6 +359,18 @@ app.all(/^\/app\/api\/v1\/(.+)$/, requireAuth, async (req, res) => {
   }
 
   try {
+    if (apiPath === "/api/v1/events" && req.method === "GET") {
+      const result = await fetchEventsResilient({
+        token: apiKey ? undefined : req.session.user?.token,
+        apiKey,
+        query: req.query,
+      });
+      if (!result.ok) {
+        return res.status(result.status).json(result.error);
+      }
+      return res.status(result.status).json(result.data);
+    }
+
     const result = await callApi({
       path: apiPath,
       method: req.method,

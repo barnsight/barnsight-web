@@ -1,8 +1,8 @@
-<div class="inline-flex rounded-lg border border-amber-900/15 bg-white/60 p-1 text-xs font-semibold">
+<div class="inline-flex rounded-[10px_14px_12px_16px] border border-edge/55 bg-paper-warm/85 p-1 text-xs font-semibold">
   <% for (const link of languageLinks) { %>
   <a
     href="<%= link.href %>"
-    class="rounded-md px-2 py-1 <%= link.active ? 'bg-amber-500 text-zinc-950' : 'text-zinc-600 hover:text-amber-900' %>"
+    class="rounded-[8px_12px_10px_14px] px-2 py-1 transition <%= link.active ? 'bg-hay text-ink' : 'text-ink-mute hover:text-ink' %>"
   ><%= link.label %></a>
   <% } %>
 </div>

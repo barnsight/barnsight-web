@@ -1,16 +1,8 @@
 <!doctype html>
 <html lang="<%= locale %>">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include("partials/head") %>
     <title><%= t("pricing.title") %></title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/assets/styles.css" />
   </head>
   <body class="page-transition font-sans">
     <header class="brand-header">
@@ -21,8 +13,9 @@
         </a>
         <nav class="flex flex-wrap items-center gap-3">
           <%- include("partials/language-switcher") %>
-          <a href="/about" class="text-sm font-medium text-zinc-700 hover:text-amber-900"><%= t("nav.about") %></a>
-          <a href="/faq" class="text-sm font-medium text-zinc-700 hover:text-amber-900"><%= t("nav.faq") %></a>
+          <%- include("partials/theme-toggle") %>
+          <a href="/about" class="text-sm font-medium text-ink-soft hover:text-ochre-deep"><%= t("nav.about") %></a>
+          <a href="/faq" class="text-sm font-medium text-ink-soft hover:text-ochre-deep"><%= t("nav.faq") %></a>
           <% if (currentUser) { %>
           <a href="/dashboard" class="btn-secondary"><%= t("nav.dashboard") %></a>
           <% } else { %>
@@ -34,72 +27,75 @@
     </header>
 
     <main class="mx-auto max-w-7xl px-6 py-14 sm:py-18">
-      <section class="relative overflow-hidden rounded-[2.5rem] border border-amber-900/10 bg-white/65 px-6 py-12 shadow-2xl shadow-amber-950/8 sm:px-10">
-        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(24,24,27,0.05)_1px,transparent_1px),linear-gradient(rgba(24,24,27,0.05)_1px,transparent_1px)] bg-[size:22px_22px] opacity-50"></div>
+      <% const isUk = locale === "uk"; %>
+      <section class="panel relative overflow-hidden px-6 py-12 sm:px-10 reveal">
+        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgb(var(--ink)/0.05)_1px,transparent_1px),linear-gradient(rgb(var(--ink)/0.05)_1px,transparent_1px)] bg-[size:22px_22px] opacity-50"></div>
         <div class="relative mx-auto max-w-3xl text-center">
-          <p class="inline-flex rounded-full border border-amber-800/15 bg-white/80 px-4 py-2 text-xs uppercase tracking-[0.26em] text-amber-900">
-            <%= t("pricing.heading") %>
+          <span class="chip"><%= t("pricing.heading") %></span>
+          <h1 class="mt-6 font-display text-5xl font-extrabold tracking-tight text-ink sm:text-6xl">
+            <%= isUk ? "Оберіть тариф, який " : "Choose a pricing plan that " %><span class="ink-underline italic text-ochre-deep"><%= isUk ? "відповідає масштабу ферми" : "fits the farm" %></span>.
+          </h1>
+          <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-ink-soft">
+            <%= isUk
+              ? "Структуровані плани для пілотних господарств, мультисайтових операторів і технічних команд, що масштабують edge-обладнання."
+              : "Structured plans for pilot barns, multi-site operators, and engineering teams deploying edge hardware at scale." %>
           </p>
-          <h1 class="mt-6 text-5xl font-extrabold tracking-tight text-zinc-950 sm:text-6xl">Choose a pricing plan that fits the farm.</h1>
-          <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-zinc-700">
-            Structured plans for pilot barns, multi-site operators, and engineering teams deploying edge hardware at scale.
-          </p>
-          <div class="mx-auto mt-8 inline-flex rounded-2xl border border-amber-900/10 bg-white/85 p-1 shadow-lg shadow-amber-950/8">
-            <button type="button" class="pricing-tab rounded-xl px-6 py-3 text-sm font-semibold" data-target="plans">Plans</button>
-            <button type="button" class="pricing-tab rounded-xl px-6 py-3 text-sm font-semibold" data-target="calculator">Calculator</button>
-            <button type="button" class="pricing-tab rounded-xl px-6 py-3 text-sm font-semibold" data-target="enterprise">Enterprise</button>
+          <div class="pricing-tabs mx-auto mt-8 inline-flex rounded-[14px_22px_18px_24px] border border-edge/55 bg-paper-warm/85 p-1 shadow-panel">
+            <button type="button" class="pricing-tab is-active" data-target="plans"><%= isUk ? "Плани" : "Plans" %></button>
+            <button type="button" class="pricing-tab" data-target="calculator"><%= isUk ? "Калькулятор" : "Calculator" %></button>
+            <button type="button" class="pricing-tab" data-target="enterprise">Enterprise</button>
           </div>
         </div>
 
         <section id="pricing-panel-plans" class="pricing-panel relative mt-12">
           <div class="grid gap-6 xl:grid-cols-3">
-            <article class="pricing-card rounded-[2rem] border border-amber-900/10 bg-white/90 p-8 shadow-xl shadow-amber-950/8">
-              <span class="inline-flex rounded-full bg-sky-50 px-4 py-2 text-sm font-medium text-sky-900">Pilot</span>
+            <article class="pricing-card panel tilt-1 p-8">
+              <span class="inline-flex rounded-[10px_18px_12px_20px] bg-paper-soft px-4 py-2 text-sm font-medium text-ink"><%= isUk ? "Пілот" : "Pilot" %></span>
               <div class="mt-8 flex items-end gap-2">
-                <span class="text-5xl font-extrabold text-zinc-950">$249</span>
-                <span class="pb-2 text-sm text-zinc-500">/month</span>
+                <span class="font-display text-5xl font-extrabold text-ink">$249</span>
+                <span class="pb-2 text-sm text-ink-mute"><%= isUk ? "/місяць" : "/month" %></span>
               </div>
-              <p class="mt-5 text-sm leading-7 text-zinc-600">For one site validating real-time hygiene monitoring with a small edge footprint.</p>
-              <button class="mt-6 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-zinc-100">Start pilot</button>
-              <ul class="mt-8 space-y-3 text-sm text-zinc-700">
-                <li>✓ 1 barn included</li>
-                <li>✓ Up to 4 cameras</li>
-                <li>✓ 1 edge device profile</li>
-                <li>✓ Event review and weekly reports</li>
-                <li>✓ Basic onboarding</li>
+              <p class="mt-5 text-sm leading-7 text-ink-soft"><%= isUk ? "Для одного майданчика, що валідує моніторинг гігієни в реальному часі з невеликим edge-контуром." : "For one site validating real-time hygiene monitoring with a small edge footprint." %></p>
+              <button class="btn-secondary mt-6 w-full"><%= isUk ? "Запустити пілот" : "Start pilot" %></button>
+              <ul class="mt-8 space-y-3 text-sm text-ink-soft">
+                <li><%= isUk ? "✓ 1 господарство включено" : "✓ 1 barn included" %></li>
+                <li><%= isUk ? "✓ До 4 камер" : "✓ Up to 4 cameras" %></li>
+                <li><%= isUk ? "✓ 1 профіль edge-пристрою" : "✓ 1 edge device profile" %></li>
+                <li><%= isUk ? "✓ Перегляд подій і щотижневі звіти" : "✓ Event review and weekly reports" %></li>
+                <li><%= isUk ? "✓ Базове впровадження" : "✓ Basic onboarding" %></li>
               </ul>
             </article>
 
-            <article class="pricing-card rounded-[2rem] border border-zinc-950 bg-zinc-950 p-8 text-white shadow-2xl shadow-zinc-950/18">
-              <span class="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white">Operations</span>
+            <article class="pricing-card panel tilt-n1 bg-ink/95 p-8 text-paper">
+              <span class="inline-flex rounded-[10px_18px_12px_20px] bg-paper/12 px-4 py-2 text-sm font-medium text-paper"><%= isUk ? "Операції" : "Operations" %></span>
               <div class="mt-8 flex items-end gap-2">
-                <span class="text-5xl font-extrabold">$699</span>
-                <span class="pb-2 text-sm text-white/60">/month</span>
+                <span class="font-display text-5xl font-extrabold">$699</span>
+                <span class="pb-2 text-sm text-paper/55"><%= isUk ? "/місяць" : "/month" %></span>
               </div>
-              <p class="mt-5 text-sm leading-7 text-white/72">For active operators that need more barns, more cameras, analytics, and device oversight in one workflow.</p>
-              <button class="mt-6 w-full rounded-xl bg-white px-4 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-amber-100">Choose operations</button>
-              <ul class="mt-8 space-y-3 text-sm text-white/80">
-                <li>✓ Up to 3 barns</li>
-                <li>✓ Up to 18 cameras</li>
-                <li>✓ 3 managed edge devices</li>
-                <li>✓ Reports, analytics, and event calendar</li>
-                <li>✓ API key management and user roles</li>
+              <p class="mt-5 text-sm leading-7 text-paper/72"><%= isUk ? "Для активних операторів, яким потрібні більше господарств, більше камер, аналітика та контроль пристроїв в одному контурі." : "For active operators that need more barns, more cameras, analytics, and device oversight in one workflow." %></p>
+              <button class="btn-primary mt-6 w-full"><%= isUk ? "Обрати план операцій" : "Choose operations" %></button>
+              <ul class="mt-8 space-y-3 text-sm text-paper/80">
+                <li><%= isUk ? "✓ До 3 господарств" : "✓ Up to 3 barns" %></li>
+                <li><%= isUk ? "✓ До 18 камер" : "✓ Up to 18 cameras" %></li>
+                <li><%= isUk ? "✓ 3 керовані edge-пристрої" : "✓ 3 managed edge devices" %></li>
+                <li><%= isUk ? "✓ Звіти, аналітика та календар подій" : "✓ Reports, analytics, and event calendar" %></li>
+                <li><%= isUk ? "✓ Керування API-ключами та ролями користувачів" : "✓ API key management and user roles" %></li>
               </ul>
             </article>
 
-            <article class="pricing-card rounded-[2rem] border border-amber-900/10 bg-white/90 p-8 shadow-xl shadow-amber-950/8">
-              <span class="inline-flex rounded-full bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-900">Enterprise</span>
+            <article class="pricing-card panel tilt-2 p-8">
+              <span class="inline-flex rounded-[10px_18px_12px_20px] bg-paper-soft px-4 py-2 text-sm font-medium text-ink">Enterprise</span>
               <div class="mt-8 flex items-end gap-2">
-                <span class="text-5xl font-extrabold text-zinc-950">Custom</span>
+                <span class="font-display text-5xl font-extrabold text-ink">Custom</span>
               </div>
-              <p class="mt-5 text-sm leading-7 text-zinc-600">For multi-site deployments that need tailored retention, rollout planning, and support guarantees.</p>
-              <button class="mt-6 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-zinc-100">Talk to engineering</button>
-              <ul class="mt-8 space-y-3 text-sm text-zinc-700">
-                <li>✓ Unlimited barns and cameras</li>
-                <li>✓ Dedicated rollout support</li>
-                <li>✓ Custom retention and storage policies</li>
-                <li>✓ Integration and model adaptation support</li>
-                <li>✓ Priority incident response</li>
+              <p class="mt-5 text-sm leading-7 text-ink-soft"><%= isUk ? "Для мультисайтових розгортань, яким потрібні індивідуальні політики зберігання, план впровадження та гарантії підтримки." : "For multi-site deployments that need tailored retention, rollout planning, and support guarantees." %></p>
+              <button class="btn-secondary mt-6 w-full"><%= isUk ? "Зв'язатися з інженерною командою" : "Talk to engineering" %></button>
+              <ul class="mt-8 space-y-3 text-sm text-ink-soft">
+                <li><%= isUk ? "✓ Необмежена кількість господарств і камер" : "✓ Unlimited barns and cameras" %></li>
+                <li><%= isUk ? "✓ Виділена підтримка впровадження" : "✓ Dedicated rollout support" %></li>
+                <li><%= isUk ? "✓ Кастомні політики retention і зберігання" : "✓ Custom retention and storage policies" %></li>
+                <li><%= isUk ? "✓ Підтримка інтеграцій і адаптації моделей" : "✓ Integration and model adaptation support" %></li>
+                <li><%= isUk ? "✓ Пріоритетне реагування на інциденти" : "✓ Priority incident response" %></li>
               </ul>
             </article>
           </div>
@@ -107,68 +103,68 @@
 
         <section id="pricing-panel-calculator" class="pricing-panel mt-12 hidden">
           <div class="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
-            <article class="rounded-[2rem] border border-amber-900/10 bg-white/90 p-8 shadow-xl shadow-amber-950/8">
-              <h2 class="text-3xl font-bold tracking-tight text-zinc-950">Special calculator</h2>
-              <p class="mt-4 text-sm leading-7 text-zinc-600">Model the expected monthly cost across barns, cameras, edge hardware, retention, reports, and support levels.</p>
+            <article class="panel p-8">
+              <h2 class="font-display text-3xl font-bold tracking-tight text-ink"><%= isUk ? "Розширений калькулятор" : "Special calculator" %></h2>
+              <p class="mt-4 text-sm leading-7 text-ink-soft"><%= isUk ? "Змоделюйте очікувану місячну вартість з урахуванням господарств, камер, edge-обладнання, retention, звітів і рівня підтримки." : "Model the expected monthly cost across barns, cameras, edge hardware, retention, reports, and support levels." %></p>
               <div class="mt-8 grid gap-4 sm:grid-cols-2">
                 <label class="block">
-                  <span class="mb-2 block text-sm text-zinc-700"><%= t("pricing.barns") %></span>
+                  <span class="mb-2 block text-sm text-ink-soft"><%= t("pricing.barns") %></span>
                   <input id="pricingBarns" class="field" type="number" min="1" value="2" />
                 </label>
                 <label class="block">
-                  <span class="mb-2 block text-sm text-zinc-700"><%= t("pricing.cameras") %></span>
+                  <span class="mb-2 block text-sm text-ink-soft"><%= t("pricing.cameras") %></span>
                   <input id="pricingCameras" class="field" type="number" min="1" value="12" />
                 </label>
                 <label class="block">
-                  <span class="mb-2 block text-sm text-zinc-700"><%= t("pricing.devices") %></span>
+                  <span class="mb-2 block text-sm text-ink-soft"><%= t("pricing.devices") %></span>
                   <input id="pricingDevices" class="field" type="number" min="1" value="3" />
                 </label>
                 <label class="block">
-                  <span class="mb-2 block text-sm text-zinc-700">Monthly snapshots (GB)</span>
+                  <span class="mb-2 block text-sm text-ink-soft"><%= isUk ? "Місячні snapshot (GB)" : "Monthly snapshots (GB)" %></span>
                   <input id="pricingStorageGb" class="field" type="number" min="0" value="180" />
                 </label>
               </div>
               <div class="mt-5 grid gap-4 sm:grid-cols-2">
                 <label class="block">
-                  <span class="mb-2 block text-sm text-zinc-700">Support tier</span>
+                  <span class="mb-2 block text-sm text-ink-soft"><%= isUk ? "Рівень підтримки" : "Support tier" %></span>
                   <select id="pricingSupportTier" class="field">
-                    <option value="standard">Standard</option>
-                    <option value="priority">Priority</option>
-                    <option value="mission">Mission critical</option>
+                    <option value="standard"><%= isUk ? "Стандарт" : "Standard" %></option>
+                    <option value="priority"><%= isUk ? "Пріоритет" : "Priority" %></option>
+                    <option value="mission"><%= isUk ? "Критичний режим" : "Mission critical" %></option>
                   </select>
                 </label>
                 <label class="block">
-                  <span class="mb-2 block text-sm text-zinc-700">Analytics cadence</span>
+                  <span class="mb-2 block text-sm text-ink-soft"><%= isUk ? "Частота аналітики" : "Analytics cadence" %></span>
                   <select id="pricingAnalyticsTier" class="field">
-                    <option value="weekly">Weekly</option>
-                    <option value="daily">Daily</option>
-                    <option value="realtime">Near real-time</option>
+                    <option value="weekly"><%= isUk ? "Щотижня" : "Weekly" %></option>
+                    <option value="daily"><%= isUk ? "Щодня" : "Daily" %></option>
+                    <option value="realtime"><%= isUk ? "Майже в реальному часі" : "Near real-time" %></option>
                   </select>
                 </label>
               </div>
               <div class="mt-5 grid gap-4 sm:grid-cols-2">
-                <label class="flex items-center justify-between rounded-[1.25rem] border border-amber-900/10 bg-amber-50/70 px-4 py-4">
-                  <span class="text-sm font-medium text-zinc-900"><%= t("pricing.snapshots") %></span>
-                  <input id="pricingSnapshots" type="checkbox" checked class="h-5 w-5 accent-amber-500" />
+                <label class="flex items-center justify-between rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/85 px-4 py-4">
+                  <span class="text-sm font-medium text-ink"><%= t("pricing.snapshots") %></span>
+                  <input id="pricingSnapshots" type="checkbox" checked class="h-5 w-5 accent-[rgb(var(--ochre))]" />
                 </label>
-                <label class="flex items-center justify-between rounded-[1.25rem] border border-amber-900/10 bg-amber-50/70 px-4 py-4">
-                  <span class="text-sm font-medium text-zinc-900">Need training pipeline support</span>
-                  <input id="pricingTraining" type="checkbox" class="h-5 w-5 accent-amber-500" />
+                <label class="flex items-center justify-between rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/85 px-4 py-4">
+                  <span class="text-sm font-medium text-ink"><%= isUk ? "Потрібна підтримка тренувального пайплайну" : "Need training pipeline support" %></span>
+                  <input id="pricingTraining" type="checkbox" class="h-5 w-5 accent-[rgb(var(--ochre))]" />
                 </label>
               </div>
             </article>
 
-            <article class="rounded-[2rem] border border-zinc-950 bg-zinc-950 p-8 text-white shadow-2xl shadow-zinc-950/18">
-              <p class="text-sm uppercase tracking-[0.26em] text-white/45"><%= t("pricing.estimate") %></p>
-              <p id="pricingOutput" class="mt-4 text-6xl font-extrabold">$0</p>
-              <p id="pricingPlanHint" class="mt-4 max-w-xl text-sm leading-7 text-white/65"></p>
-              <ul id="pricingBreakdown" class="mt-8 space-y-3 text-sm text-white/75"></ul>
-              <div class="mt-8 rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
-                <p class="text-sm font-semibold text-white">Included engineering assumptions</p>
-                <ul class="mt-4 space-y-3 text-sm text-white/65">
-                  <li>• Edge inference with low-latency device profiles</li>
-                  <li>• Centralized ingestion, event storage, and role-based access</li>
-                  <li>• Reviewable snapshots, timestamps, confidence scores, and audit trail</li>
+            <article class="panel bg-ink/95 p-8 text-paper">
+              <p class="text-sm uppercase tracking-[0.26em] text-paper/55"><%= t("pricing.estimate") %></p>
+              <p id="pricingOutput" class="mt-4 font-display text-6xl font-extrabold">$0</p>
+              <p id="pricingPlanHint" class="mt-4 max-w-xl text-sm leading-7 text-paper/65"></p>
+              <ul id="pricingBreakdown" class="mt-8 space-y-3 text-sm text-paper/75"></ul>
+              <div class="mt-8 rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-paper/12 bg-paper/5 p-5">
+                <p class="text-sm font-semibold text-paper"><%= isUk ? "Інженерні припущення, включені в оцінку" : "Included engineering assumptions" %></p>
+                <ul class="mt-4 space-y-3 text-sm text-paper/65">
+                  <li><%= isUk ? "• Edge-інференс з профілями пристроїв із низькою затримкою" : "• Edge inference with low-latency device profiles" %></li>
+                  <li><%= isUk ? "• Централізований інжест, зберігання подій і role-based доступ" : "• Centralized ingestion, event storage, and role-based access" %></li>
+                  <li><%= isUk ? "• Snapshot, часові мітки, confidence і аудит-трейл для перевірки" : "• Reviewable snapshots, timestamps, confidence scores, and audit trail" %></li>
                 </ul>
               </div>
             </article>
@@ -177,39 +173,39 @@
 
         <section id="pricing-panel-enterprise" class="pricing-panel mt-12 hidden">
           <div class="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
-            <article class="rounded-[2rem] border border-amber-900/10 bg-white/90 p-8 shadow-xl shadow-amber-950/8">
-              <h2 class="text-3xl font-bold tracking-tight text-zinc-950">Enterprise planning</h2>
-              <p class="mt-4 text-sm leading-7 text-zinc-600">
-                BarnSight is designed for real agricultural constraints: unstable connectivity, uneven lighting, and teams that need software to work without training overhead.
+            <article class="panel p-8">
+              <h2 class="font-display text-3xl font-bold tracking-tight text-ink"><%= isUk ? "Enterprise-планування" : "Enterprise planning" %></h2>
+              <p class="mt-4 text-sm leading-7 text-ink-soft">
+                <%= isUk ? "BarnSight спроєктовано під реальні агрообмеження: нестабільний зв’язок, нерівномірне освітлення та команди, яким потрібне ПЗ без складного навчання." : "BarnSight is designed for real agricultural constraints: unstable connectivity, uneven lighting, and teams that need software to work without training overhead." %>
               </p>
               <div class="mt-8 grid gap-4 sm:grid-cols-2">
-                <article class="rounded-[1.5rem] border border-amber-900/10 bg-amber-50/70 p-5">
-                  <h3 class="text-lg font-semibold text-zinc-950">Reliability first</h3>
-                  <p class="mt-3 text-sm leading-7 text-zinc-600">Offline-capable edge operation, queueing, and resilient ingestion for farm environments.</p>
+                <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/85 p-5">
+                  <h3 class="font-display text-lg font-semibold text-ink"><%= isUk ? "Надійність перш за все" : "Reliability first" %></h3>
+                  <p class="mt-3 text-sm leading-7 text-ink-soft"><%= isUk ? "Офлайн-режим edge-роботи, черги та стійкий інжест для фермерських умов." : "Offline-capable edge operation, queueing, and resilient ingestion for farm environments." %></p>
                 </article>
-                <article class="rounded-[1.5rem] border border-amber-900/10 bg-amber-50/70 p-5">
-                  <h3 class="text-lg font-semibold text-zinc-950">Performance matters</h3>
-                  <p class="mt-3 text-sm leading-7 text-zinc-600">Real-time inference with minimal latency and clear detection review workflow.</p>
+                <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/85 p-5">
+                  <h3 class="font-display text-lg font-semibold text-ink"><%= isUk ? "Важлива продуктивність" : "Performance matters" %></h3>
+                  <p class="mt-3 text-sm leading-7 text-ink-soft"><%= isUk ? "Інференс у реальному часі з мінімальною затримкою та прозорим сценарієм перегляду детекцій." : "Real-time inference with minimal latency and clear detection review workflow." %></p>
                 </article>
-                <article class="rounded-[1.5rem] border border-amber-900/10 bg-amber-50/70 p-5">
-                  <h3 class="text-lg font-semibold text-zinc-950">Simplicity by default</h3>
-                  <p class="mt-3 text-sm leading-7 text-zinc-600">Interfaces optimized for operational staff, not only engineering teams.</p>
+                <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/85 p-5">
+                  <h3 class="font-display text-lg font-semibold text-ink"><%= isUk ? "Простота за замовчуванням" : "Simplicity by default" %></h3>
+                  <p class="mt-3 text-sm leading-7 text-ink-soft"><%= isUk ? "Інтерфейси оптимізовані для операційного персоналу, а не лише для інженерних команд." : "Interfaces optimized for operational staff, not only engineering teams." %></p>
                 </article>
-                <article class="rounded-[1.5rem] border border-amber-900/10 bg-amber-50/70 p-5">
-                  <h3 class="text-lg font-semibold text-zinc-950">Transparency</h3>
-                  <p class="mt-3 text-sm leading-7 text-zinc-600">Confidence scores, imagery, timestamps, and reviewable history for each detection.</p>
+                <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/85 p-5">
+                  <h3 class="font-display text-lg font-semibold text-ink"><%= isUk ? "Прозорість" : "Transparency" %></h3>
+                  <p class="mt-3 text-sm leading-7 text-ink-soft"><%= isUk ? "Confidence, знімки, часові мітки та історія, доступна для перевірки по кожній детекції." : "Confidence scores, imagery, timestamps, and reviewable history for each detection." %></p>
                 </article>
               </div>
             </article>
-            <article class="rounded-[2rem] border border-zinc-950 bg-zinc-950 p-8 text-white shadow-2xl shadow-zinc-950/18">
-              <p class="text-sm uppercase tracking-[0.26em] text-white/45">Projects</p>
-              <ul class="mt-6 space-y-5 text-sm text-white/72">
-                <li><strong class="text-white">barnsight-edge</strong> — Embedded computer vision system for real-time excrement detection from camera feeds.</li>
-                <li><strong class="text-white">barnsight-api</strong> — Async backend for ingestion, user management, analytics, and reporting.</li>
-                <li><strong class="text-white">barnsight-train</strong> — Training pipeline for custom YOLO model development and export.</li>
-                <li><strong class="text-white">barnsight-web</strong> — Public landing site and secure authenticated operational dashboard.</li>
+            <article class="panel bg-ink/95 p-8 text-paper">
+              <p class="text-sm uppercase tracking-[0.26em] text-paper/55"><%= isUk ? "Проєкти" : "Projects" %></p>
+              <ul class="mt-6 space-y-5 text-sm text-paper/72">
+                <li><strong class="font-mono text-paper">barnsight-edge</strong> — <%= isUk ? "Вбудована система комп’ютерного зору для детекції екскрементів у реальному часі з камер." : "Embedded computer vision system for real-time excrement detection from camera feeds." %></li>
+                <li><strong class="font-mono text-paper">barnsight-api</strong> — <%= isUk ? "Асинхронний бекенд для інжесту, управління користувачами, аналітики та звітності." : "Async backend for ingestion, user management, analytics, and reporting." %></li>
+                <li><strong class="font-mono text-paper">barnsight-train</strong> — <%= isUk ? "Пайплайн тренування кастомних YOLO-моделей і експорту." : "Training pipeline for custom YOLO model development and export." %></li>
+                <li><strong class="font-mono text-paper">barnsight-web</strong> — <%= isUk ? "Публічний сайт і захищена авторизована операційна панель." : "Public landing site and secure authenticated operational dashboard." %></li>
               </ul>
-              <a href="https://github.com/barnsight" target="_blank" rel="noreferrer" class="mt-8 inline-flex rounded-xl bg-white px-4 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-amber-100">View GitHub organization</a>
+              <a href="https://github.com/barnsight" target="_blank" rel="noreferrer" class="btn-primary mt-8 inline-flex"><%= isUk ? "Переглянути GitHub-організацію" : "View GitHub organization" %></a>
             </article>
           </div>
         </section>
@@ -218,6 +214,7 @@
 
     <script>window.APP_LOCALE = "<%= locale %>";</script>
     <script src="/public/pageTransitions.js"></script>
+    <script src="/public/site.js"></script>
     <script src="/public/pricing.js"></script>
   </body>
 </html>

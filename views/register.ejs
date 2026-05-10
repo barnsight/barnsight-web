@@ -1,42 +1,39 @@
 <!doctype html>
 <html lang="<%= locale %>">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include("partials/head") %>
     <title><%= t("register.title") %></title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/assets/styles.css" />
   </head>
   <body class="page-transition font-sans">
     <main class="mx-auto flex min-h-screen max-w-6xl items-center px-6 py-12">
-      <section class="mx-auto w-full max-w-2xl panel p-8">
+      <section class="mx-auto w-full max-w-2xl panel tilt-1 p-8">
         <div class="flex flex-wrap items-center justify-between gap-4">
-          <a href="/" class="text-sm text-zinc-600 hover:text-amber-900"><%= t("nav.backHome") %></a>
-          <%- include("partials/language-switcher") %>
-          <img class="h-14 w-14 rounded-2xl object-contain shadow-lg shadow-amber-900/15" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
+          <a href="/" class="text-sm text-ink-soft hover:text-ochre-deep"><%= t("nav.backHome") %></a>
+          <div class="flex items-center gap-2">
+            <%- include("partials/language-switcher") %>
+            <%- include("partials/theme-toggle") %>
+          </div>
+          <img class="brand-logo h-14 w-14" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
         </div>
 
-        <h1 class="mt-5 text-3xl font-bold"><%= t("register.heading") %></h1>
-        <p class="mt-2 text-sm text-zinc-600">
+        <h1 class="mt-5 font-display text-3xl font-bold text-ink">
+          <%= t("register.heading") %>
+        </h1>
+        <p class="mt-2 text-sm text-ink-soft">
           <%= t("register.lead") %>
         </p>
 
         <% if (error) { %>
-        <pre class="mt-4 whitespace-pre-wrap rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-900"><%= error %></pre>
+        <pre class="notice is-bad mt-4 whitespace-pre-wrap font-mono text-xs"><%= error %></pre>
         <% } %>
         <% if (success) { %>
-        <div class="mt-4 rounded-lg border border-emerald-700/20 bg-emerald-50 px-3 py-2 text-sm text-emerald-900"><%= success %></div>
+        <div class="notice mt-4" style="border-color: rgb(var(--ok)/0.55); background: rgb(var(--ok-soft)); color: rgb(var(--ok));"><%= success %></div>
         <% } %>
 
         <form class="mt-6 grid gap-4 md:grid-cols-2" action="/register" method="post" autocomplete="on">
           <% if (isAdmin) { %>
           <div class="md:col-span-2">
-            <label class="mb-1 block text-sm text-zinc-700" for="accountType"><%= t("register.accountType") %></label>
+            <label class="mb-1 block text-sm text-ink-soft" for="accountType"><%= t("register.accountType") %></label>
             <select id="accountType" class="field" name="accountType">
               <option value="farmers" <%= form.accountType === "farmers" ? "selected" : "" %>><%= t("register.farmer") %></option>
               <option value="staff" <%= form.accountType === "staff" ? "selected" : "" %>><%= t("register.staff") %></option>
@@ -47,27 +44,27 @@
           <% } %>
 
           <div>
-            <label class="mb-1 block text-sm text-zinc-700" for="first_name"><%= t("register.firstName") %></label>
+            <label class="mb-1 block text-sm text-ink-soft" for="first_name"><%= t("register.firstName") %></label>
             <input id="first_name" class="field" name="first_name" value="<%= form.first_name || '' %>" required />
           </div>
           <div>
-            <label class="mb-1 block text-sm text-zinc-700" for="middle_name"><%= t("register.middleName") %></label>
+            <label class="mb-1 block text-sm text-ink-soft" for="middle_name"><%= t("register.middleName") %></label>
             <input id="middle_name" class="field" name="middle_name" value="<%= form.middle_name || '' %>" required />
           </div>
           <div>
-            <label class="mb-1 block text-sm text-zinc-700" for="last_name"><%= t("register.lastName") %></label>
+            <label class="mb-1 block text-sm text-ink-soft" for="last_name"><%= t("register.lastName") %></label>
             <input id="last_name" class="field" name="last_name" value="<%= form.last_name || '' %>" required />
           </div>
           <div>
-            <label class="mb-1 block text-sm text-zinc-700" for="username"><%= t("register.username") %></label>
+            <label class="mb-1 block text-sm text-ink-soft" for="username"><%= t("register.username") %></label>
             <input id="username" class="field" name="username" value="<%= form.username || '' %>" required />
           </div>
           <div>
-            <label class="mb-1 block text-sm text-zinc-700" for="email"><%= t("register.email") %></label>
+            <label class="mb-1 block text-sm text-ink-soft" for="email"><%= t("register.email") %></label>
             <input id="email" class="field" type="email" name="email" value="<%= form.email || '' %>" required />
           </div>
           <div>
-            <label class="mb-1 block text-sm text-zinc-700" for="password"><%= t("register.password") %></label>
+            <label class="mb-1 block text-sm text-ink-soft" for="password"><%= t("register.password") %></label>
             <input id="password" class="field" type="password" name="password" minlength="8" required />
           </div>
           <div class="md:col-span-2">
@@ -75,12 +72,13 @@
           </div>
         </form>
 
-        <p class="mt-5 text-center text-sm text-zinc-600">
+        <p class="mt-5 text-center text-sm text-ink-soft">
           <%= t("register.hasAccount") %>
-          <a href="/login" class="font-semibold text-amber-900 hover:text-amber-700"><%= t("login.submit") %></a>
+          <a href="/login" class="font-semibold text-ochre-deep hover:text-ochre"><%= t("login.submit") %></a>
         </p>
       </section>
     </main>
     <script src="/public/pageTransitions.js"></script>
+    <script src="/public/site.js"></script>
   </body>
 </html>
