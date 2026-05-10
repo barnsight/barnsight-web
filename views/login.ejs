@@ -6,42 +6,65 @@
   </head>
   <body class="page-transition font-sans">
     <main class="mx-auto flex min-h-screen max-w-6xl items-center px-6 py-12">
-      <section class="mx-auto w-full max-w-md panel tilt-n1 p-8">
-        <div class="flex items-center justify-between gap-3">
-          <a href="/" class="text-sm text-ink-soft hover:text-ochre-deep"><%= t("nav.backHome") %></a>
-          <div class="flex items-center gap-2">
-            <%- include("partials/language-switcher") %>
-            <%- include("partials/theme-toggle") %>
+      <section class="panel mx-auto grid w-full max-w-5xl gap-0 overflow-hidden p-0 lg:grid-cols-[1.05fr_0.95fr]">
+        <div class="relative min-h-[320px] overflow-hidden bg-paper-soft">
+          <img src="/assets/brand/background.png" alt="" class="h-full w-full object-cover" />
+          <div class="absolute inset-0 bg-ink/35"></div>
+          <div class="absolute inset-x-0 bottom-0 p-8 text-paper">
+            <p class="text-xs uppercase tracking-[0.24em] text-paper/75">BarnSight</p>
+            <h1 class="mt-3 font-display text-4xl font-bold"><%= t("login.heading") %></h1>
+            <p class="mt-3 max-w-md text-sm leading-7 text-paper/80"><%= t("login.lead") %></p>
           </div>
         </div>
-        <img class="brand-logo mt-5 h-16 w-16 rounded-2xl" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
-        <h1 class="mt-3 font-display text-3xl font-bold text-ink">
-          <%= t("login.heading") %>
-        </h1>
-        <p class="mt-2 text-sm text-ink-soft"><%= t("login.lead") %></p>
-
-        <% if (error) { %>
-        <pre class="notice is-bad mt-4 whitespace-pre-wrap font-mono text-xs"><%= error %></pre>
-        <% } %>
-
-        <form class="mt-6 space-y-4" action="/login" method="post" autocomplete="on">
-          <div>
-            <label class="mb-1 block text-sm text-ink-soft" for="username"><%= t("login.username") %></label>
-            <input id="username" class="field" name="username" required />
+        <div class="p-8">
+          <div class="flex items-center justify-between gap-3">
+            <a href="/" class="text-sm text-ink-soft hover:text-ochre-deep"><%= t("nav.backHome") %></a>
+            <div class="flex items-center gap-2">
+              <%- include("partials/language-switcher") %>
+              <%- include("partials/theme-toggle") %>
+            </div>
           </div>
-          <div>
-            <label class="mb-1 block text-sm text-ink-soft" for="password"><%= t("login.password") %></label>
-            <input id="password" class="field" type="password" name="password" required />
+          <img class="brand-logo mt-6 h-16 w-16 rounded-2xl" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
+          <p class="mt-4 text-sm leading-7 text-ink-soft">
+            <%= locale === "uk"
+              ? "Увійдіть, щоб переглядати події гігієни, аналітику BarnSight, edge-пристрої та API-ключі в одному робочому просторі."
+              : "Sign in to review hygiene events, BarnSight analytics, edge devices, and API keys in one workspace." %>
+          </p>
+
+          <% if (error) { %>
+          <pre class="notice is-bad mt-4 whitespace-pre-wrap font-mono text-xs"><%= error %></pre>
+          <% } %>
+
+          <form class="mt-6 space-y-4" action="/login" method="post" autocomplete="on">
+            <div>
+              <label class="mb-1 block text-sm text-ink-soft" for="username"><%= t("login.username") %></label>
+              <input id="username" class="field" name="username" required autocomplete="username" />
+            </div>
+            <div>
+              <div class="mb-1 flex items-center justify-between gap-3">
+                <label class="block text-sm text-ink-soft" for="password"><%= t("login.password") %></label>
+                <a href="/forgot-password" class="text-xs font-semibold text-ochre-deep hover:text-ochre"><%= locale === "uk" ? "Забули пароль?" : "Forgot password?" %></a>
+              </div>
+              <input id="password" class="field" type="password" name="password" required autocomplete="current-password" />
+            </div>
+            <button type="submit" class="btn-primary w-full"><%= t("login.submit") %></button>
+          </form>
+          <div class="mt-5 rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/70 p-4">
+            <p class="text-xs uppercase tracking-[0.18em] text-ink-mute"><%= locale === "uk" ? "Google sign-in" : "Google sign-in" %></p>
+            <p class="mt-2 text-sm text-ink-soft">
+              <%= locale === "uk"
+                ? "Інтерфейс підготовлено, але повний browser callback flow потребує окремого backend session handoff."
+                : "The UI is prepared, but the full browser callback flow still needs a backend session handoff." %>
+            </p>
           </div>
-          <button type="submit" class="btn-primary w-full"><%= t("login.submit") %></button>
-        </form>
-        <p class="mt-5 text-center text-sm text-ink-soft">
-          <%= t("login.noAccount") %>
-          <a href="/register" class="font-semibold text-ochre-deep hover:text-ochre"><%= t("login.register") %></a>
-        </p>
-        <p class="mt-2 text-center text-sm text-ink-soft">
-          <a href="/pricing" class="font-semibold text-ochre-deep hover:text-ochre"><%= t("nav.pricing") %></a>
-        </p>
+          <p class="mt-5 text-center text-sm text-ink-soft">
+            <%= t("login.noAccount") %>
+            <a href="/register" class="font-semibold text-ochre-deep hover:text-ochre"><%= t("login.register") %></a>
+          </p>
+          <p class="mt-2 text-center text-sm text-ink-soft">
+            <a href="/pricing" class="font-semibold text-ochre-deep hover:text-ochre"><%= t("nav.pricing") %></a>
+          </p>
+        </div>
       </section>
     </main>
     <script src="/public/pageTransitions.js"></script>

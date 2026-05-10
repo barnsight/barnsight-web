@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="<%= locale %>">
+  <head>
+    <%- include("partials/head") %>
+    <title>Unauthorized - BarnSight</title>
+  </head>
+  <body class="page-transition font-sans">
+    <main class="mx-auto flex min-h-screen max-w-5xl items-center px-6 py-12">
+      <section class="panel mx-auto max-w-2xl p-8">
+        <img class="brand-logo h-16 w-16 rounded-2xl" src="/assets/brand/logo-t.png" alt="BarnSight logo" />
+        <p class="mt-5 text-sm uppercase tracking-[0.24em] text-ink-mute">BarnSight</p>
+        <h1 class="mt-2 font-display text-4xl font-bold text-ink">
+          <%= locale === "uk" ? "Немає доступу до цього розділу" : "You do not have access to this area" %>
+        </h1>
+        <p class="mt-4 text-sm leading-7 text-ink-soft">
+          <%= locale === "uk"
+            ? "Ваш поточний рольовий доступ не дозволяє виконати цю дію. Поверніться до панелі або зверніться до адміністратора BarnSight, якщо доступ має бути розширений."
+            : "Your current role does not allow this action. Return to the dashboard or contact a BarnSight administrator if access should be expanded." %>
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="/dashboard" class="btn-primary"><%= locale === "uk" ? "Повернутися до панелі" : "Back to dashboard" %></a>
+          <a href="/" class="btn-secondary"><%= locale === "uk" ? "На головну" : "Home" %></a>
+        </div>
+      </section>
+    </main>
+    <script src="/public/pageTransitions.js"></script>
+    <script src="/public/site.js"></script>
+  </body>
+</html>

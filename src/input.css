@@ -438,6 +438,10 @@
     box-shadow: 0 8px 20px -10px rgb(var(--ochre-deep) / 0.55);
   }
 
+  .dashboard-tab[disabled] {
+    @apply cursor-not-allowed opacity-50;
+  }
+
   /* ------------------- Soft notice banner ------------------- */
   .notice {
     @apply rounded-[12px_22px_14px_24px] border border-edge/55 bg-paper-warm/90 px-4 py-3 text-sm text-ink-soft;
@@ -453,6 +457,135 @@
     border-color: rgb(var(--danger) / 0.55);
     background: rgb(var(--danger-soft));
     color: rgb(var(--danger));
+  }
+
+  .status-badge {
+    @apply inline-flex items-center gap-2 rounded-[10px_18px_12px_20px] border px-3 py-1 text-xs font-semibold;
+  }
+
+  .status-badge::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: currentColor;
+    opacity: 0.65;
+  }
+
+  .status-badge.is-ok {
+    border-color: rgb(var(--ok) / 0.3);
+    background: rgb(var(--ok-soft));
+    color: rgb(var(--ok));
+  }
+
+  .status-badge.is-warn {
+    border-color: rgb(var(--ochre) / 0.4);
+    background: rgb(var(--hay) / 0.2);
+    color: rgb(var(--ochre-deep));
+  }
+
+  .status-badge.is-bad {
+    border-color: rgb(var(--danger) / 0.35);
+    background: rgb(var(--danger-soft));
+    color: rgb(var(--danger));
+  }
+
+  .status-badge.is-neutral {
+    @apply border-edge/45 bg-paper-warm text-ink-mute;
+  }
+
+  .empty-state {
+    @apply rounded-[14px_28px_18px_30px] border border-dashed border-edge/55 bg-paper-warm/60 p-5 text-left;
+  }
+
+  .empty-state-title {
+    @apply font-display text-xl font-semibold text-ink;
+  }
+
+  .empty-state-copy {
+    @apply mt-2 text-sm leading-7 text-ink-soft;
+  }
+
+  .empty-state-actions {
+    @apply mt-4 flex flex-wrap gap-3;
+  }
+
+  .checklist-item {
+    @apply flex items-start gap-3 rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4;
+  }
+
+  .checklist-marker {
+    @apply mt-0.5 inline-flex h-7 w-7 flex-none items-center justify-center rounded-[10px_14px_12px_16px] border border-edge/45 bg-paper-warm text-xs font-bold text-ink-mute;
+  }
+
+  .checklist-item.is-complete .checklist-marker {
+    border-color: rgb(var(--ok) / 0.35);
+    background: rgb(var(--ok-soft));
+    color: rgb(var(--ok));
+  }
+
+  .skeleton-block {
+    @apply rounded-[10px_18px_12px_20px] bg-paper-soft;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skeleton-block::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(var(--paper-warm) / 0.8), transparent);
+    animation: skeleton-shimmer 1.35s ease-in-out infinite;
+  }
+
+  .toast-stack {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 60;
+    display: grid;
+    gap: 0.75rem;
+    width: min(24rem, calc(100vw - 2rem));
+  }
+
+  .toast {
+    @apply rounded-[12px_22px_14px_24px] border bg-paper-warm/95 p-4 shadow-panel backdrop-blur-md;
+  }
+
+  .toast.is-success {
+    border-color: rgb(var(--ok) / 0.35);
+  }
+
+  .toast.is-error {
+    border-color: rgb(var(--danger) / 0.35);
+  }
+
+  .toast.is-info {
+    border-color: rgb(var(--edge) / 0.55);
+  }
+
+  .confirm-dialog,
+  .image-preview-dialog {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    max-width: min(44rem, calc(100vw - 2rem));
+    width: 100%;
+  }
+
+  .image-preview-dialog {
+    max-width: min(72rem, calc(100vw - 2rem));
+  }
+
+  .confirm-dialog::backdrop,
+  .image-preview-dialog::backdrop {
+    background: rgb(var(--ink) / 0.45);
+    backdrop-filter: blur(4px);
+  }
+
+  .snapshot-trigger {
+    @apply cursor-zoom-in;
   }
 }
 
@@ -485,4 +618,8 @@
 @keyframes card-float {
   0%, 100% { transform: translateY(0);    }
   50%      { transform: translateY(-8px); }
+}
+
+@keyframes skeleton-shimmer {
+  100% { transform: translateX(100%); }
 }

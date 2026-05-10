@@ -16,7 +16,7 @@ const messages = {
     saved: "Saved.",
     created: "Created.",
     deleted: "Deleted.",
-    loading: "Loading…",
+    loading: "Loading...",
     loaded: "Data loaded.",
     applyError: "Could not refresh the selected period.",
     chooseDates: "Choose start and end dates.",
@@ -47,6 +47,72 @@ const messages = {
     apiKeysCount: "API keys",
     loadedCount: "Data loaded",
     unavailable: "unavailable",
+    online: "Online",
+    offline: "Offline",
+    warning: "Warning",
+    reviewer: "Reviewer",
+    status: "Status",
+    snapshot: "Snapshot",
+    details: "Details",
+    createdAt: "Created",
+    lastUsed: "Last used",
+    prefix: "Prefix",
+    secretShownOnce: "Secret shown once",
+    never: "Never",
+    quickProfile: "Review profile",
+    quickEvents: "Review events",
+    quickKeys: "Manage edge keys",
+    quickAdmin: "Manage coworkers",
+    setupBarn: "Add a barn",
+    setupDevice: "Register an edge device",
+    setupCamera: "Connect a camera and zones",
+    setupKey: "Create an edge API key",
+    emptyBarnsTitle: "No barns connected yet",
+    emptyBarnsCopy: "Create or connect a barn to start grouping devices, cameras, hygiene summaries, and events.",
+    emptyDevicesTitle: "No devices registered",
+    emptyDevicesCopy: "Register an edge device so BarnSight can receive heartbeats, detections, and camera metadata.",
+    emptyCamerasTitle: "No cameras available",
+    emptyCamerasCopy: "Connect at least one camera to a device before creating zones or reviewing detections.",
+    emptyZonesTitle: "No zones configured",
+    emptyZonesCopy: "Zones define the monitored hygiene area for each camera. Add a polygon when a camera is ready.",
+    emptyKeysTitle: "No edge API keys",
+    emptyKeysCopy: "API keys securely connect edge devices to this BarnSight workspace. Create a key and install it once on the device.",
+    emptyEventsTitle: "No detection events yet",
+    emptyEventsCopy: "When edge devices send events and snapshots, the latest review queue will appear here.",
+    retry: "Retry",
+    cancel: "Cancel",
+    confirmDeleteKey: "Revoke this API key? Devices using it will stop sending authenticated data until a replacement key is installed.",
+    confirmDeleteUser: "Delete this user? This action cannot be undone from the dashboard.",
+    confirmDeleteTitle: "Confirm action",
+    openPreview: "Open preview",
+    systemHealthy: "Healthy",
+    systemDegraded: "Degraded",
+    copiedNow: "Shown once. Store it securely now.",
+  metricsUnavailable: "Metrics unavailable.",
+  roleAdmins: "Admins",
+  roleFarmers: "Farmers",
+  roleStaff: "Staff",
+    rotate: "Rotate",
+    updateScopes: "Update scopes",
+    addNote: "Add note",
+    markReviewed: "Mark reviewed",
+    markResolved: "Mark resolved",
+    markFalsePositive: "False positive",
+    markIgnored: "Ignore",
+    terminate: "Terminate",
+    sessionsEmpty: "No active sessions returned.",
+    auditEmpty: "No audit logs returned.",
+    scopes: "Scopes",
+    expiresAt: "Expires",
+    reviewNotePlaceholder: "Add review note",
+    sessionId: "Session",
+    ipAddress: "IP",
+    confirmRotateKey: "Rotate this API key? The old secret will stop working after rotation.",
+    confirmDeleteSession: "Terminate this session?",
+    rotated: "Rotated.",
+    noteSaved: "Note saved.",
+    scopeSaved: "Scopes updated.",
+    sessionDeleted: "Session terminated.",
   },
   uk: {
     requestError: "Помилка запиту.",
@@ -62,7 +128,7 @@ const messages = {
     saved: "Збережено.",
     created: "Створено.",
     deleted: "Видалено.",
-    loading: "Завантаження…",
+    loading: "Завантаження...",
     loaded: "Дані завантажено.",
     applyError: "Не вдалося оновити вибраний період.",
     chooseDates: "Оберіть початкову і кінцеву дати.",
@@ -93,6 +159,72 @@ const messages = {
     apiKeysCount: "API-ключі",
     loadedCount: "Дані завантажено",
     unavailable: "недоступно",
+    online: "Онлайн",
+    offline: "Офлайн",
+    warning: "Попередження",
+    reviewer: "Ревʼюер",
+    status: "Статус",
+    snapshot: "Знімок",
+    details: "Деталі",
+    createdAt: "Створено",
+    lastUsed: "Останнє використання",
+    prefix: "Префікс",
+    secretShownOnce: "Секрет показується один раз",
+    never: "Ніколи",
+    quickProfile: "Перевірити профіль",
+    quickEvents: "Переглянути події",
+    quickKeys: "Керувати edge-ключами",
+    quickAdmin: "Керувати колегами",
+    setupBarn: "Додайте господарство",
+    setupDevice: "Зареєструйте edge-пристрій",
+    setupCamera: "Підключіть камеру і зони",
+    setupKey: "Створіть edge API-ключ",
+    emptyBarnsTitle: "Господарства ще не підключені",
+    emptyBarnsCopy: "Створіть або підключіть господарство, щоб групувати пристрої, камери, зведення гігієни та події.",
+    emptyDevicesTitle: "Пристрої ще не зареєстровані",
+    emptyDevicesCopy: "Зареєструйте edge-пристрій, щоб BarnSight отримував heartbeat, детекції та метадані камер.",
+    emptyCamerasTitle: "Камер ще немає",
+    emptyCamerasCopy: "Підключіть хоча б одну камеру до пристрою перед створенням зон і переглядом детекцій.",
+    emptyZonesTitle: "Зони ще не налаштовані",
+    emptyZonesCopy: "Зони визначають контрольовану ділянку гігієни для кожної камери. Додайте полігон після підключення камери.",
+    emptyKeysTitle: "Немає edge API-ключів",
+    emptyKeysCopy: "API-ключі безпечно підключають edge-пристрої до цього простору BarnSight. Створіть ключ і встановіть його на пристрій один раз.",
+    emptyEventsTitle: "Подій детекції ще немає",
+    emptyEventsCopy: "Коли edge-пристрої надішлють події та знімки, тут зʼявиться актуальна черга перегляду.",
+    retry: "Повторити",
+    cancel: "Скасувати",
+    confirmDeleteKey: "Відкликати цей API-ключ? Пристрої, що його використовують, перестануть надсилати автентифіковані дані, доки ви не встановите новий ключ.",
+    confirmDeleteUser: "Видалити цього користувача? Дію не можна скасувати з панелі.",
+    confirmDeleteTitle: "Підтвердіть дію",
+    openPreview: "Відкрити перегляд",
+    systemHealthy: "Система працює",
+    systemDegraded: "Є деградація",
+    copiedNow: "Ключ показано один раз. Збережіть його безпечно зараз.",
+    metricsUnavailable: "Метрики недоступні.",
+    roleAdmins: "Адміни",
+    roleFarmers: "Фермери",
+    roleStaff: "Персонал",
+    rotate: "Ротувати",
+    updateScopes: "Оновити scopes",
+    addNote: "Додати note",
+    markReviewed: "Позначити reviewed",
+    markResolved: "Позначити resolved",
+    markFalsePositive: "False positive",
+    markIgnored: "Ignore",
+    terminate: "Завершити",
+    sessionsEmpty: "Активні сесії не повернуто.",
+    auditEmpty: "Логи аудиту не повернуто.",
+    scopes: "Scopes",
+    expiresAt: "Термін дії",
+    reviewNotePlaceholder: "Додайте review note",
+    sessionId: "Сесія",
+    ipAddress: "IP",
+    confirmRotateKey: "Ротувати цей API-ключ? Старий секрет перестане працювати після ротації.",
+    confirmDeleteSession: "Завершити цю сесію?",
+    rotated: "Ключ ротовано.",
+    noteSaved: "Нотатку додано.",
+    scopeSaved: "Scopes оновлено.",
+    sessionDeleted: "Сесію завершено.",
   },
 }[locale];
 
@@ -106,20 +238,32 @@ const state = {
   analytics: null,
   report: null,
   adminDashboard: null,
-  coworkers: {
-    admins: [],
-    farmers: [],
-    staff: [],
-  },
+  coworkers: { admins: [], farmers: [], staff: [] },
   currentCoworkerRole: "admins",
   cameras: [],
   zones: [],
+  sessions: [],
+  auditLogs: [],
+  systemHealth: null,
+  systemConfig: null,
+  systemVersion: null,
+  adminSystemHealth: null,
   currentMonth: new Date(),
   selectedCalendarDate: null,
+  eventsMeta: { partial: false, skippedWindows: 0 },
 };
 
 function el(id) {
   return document.getElementById(id);
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 function buildQuery(params) {
@@ -180,6 +324,122 @@ function toImageSrc(snapshot) {
   return `data:image/${isPng ? "png" : "jpeg"};base64,${trimmed}`;
 }
 
+function setLastRefresh() {
+  setText("lastRefreshLabel", formatTimestamp(new Date().toISOString()));
+}
+
+function showToast(text, tone = "info") {
+  const stack = el("toastStack");
+  if (!stack) return;
+  const toast = document.createElement("div");
+  toast.className = `toast is-${tone}`;
+  toast.innerHTML = `
+    <p class="text-sm font-semibold text-ink">${escapeHtml(text)}</p>
+  `;
+  stack.appendChild(toast);
+  window.setTimeout(() => toast.remove(), 3200);
+}
+
+function setFiltersStatus(text, tone = "neutral") {
+  const node = el("filtersStatus");
+  if (!node) return;
+  node.textContent = text;
+  node.className =
+    tone === "error"
+      ? "mt-3 text-xs text-[rgb(var(--danger))]"
+      : tone === "success"
+        ? "mt-3 text-xs text-[rgb(var(--ok))]"
+        : "mt-3 text-xs text-ink-mute";
+}
+
+function setStatus(id, text, tone = "neutral", shouldToast = false) {
+  const node = el(id);
+  if (node) {
+    node.textContent = text;
+    node.className =
+      tone === "error"
+        ? "text-xs text-[rgb(var(--danger))]"
+        : tone === "success"
+          ? "text-xs text-[rgb(var(--ok))]"
+          : "text-xs text-ink-mute";
+  }
+  if (shouldToast) showToast(text, tone === "error" ? "error" : tone === "success" ? "success" : "info");
+}
+
+function renderEmptyState({ title, copy, actionLabel, actionTab }) {
+  return `
+    <div class="empty-state">
+      <p class="empty-state-title">${escapeHtml(title)}</p>
+      <p class="empty-state-copy">${escapeHtml(copy)}</p>
+      ${actionLabel && actionTab ? `
+        <div class="empty-state-actions">
+          <button type="button" class="btn-primary empty-state-action" data-tab-target="${escapeHtml(actionTab)}">${escapeHtml(actionLabel)}</button>
+        </div>
+      ` : ""}
+    </div>
+  `;
+}
+
+function bindEmptyStateActions(root) {
+  root.querySelectorAll(".empty-state-action").forEach((button) => {
+    button.addEventListener("click", () => setActiveTab(button.dataset.tabTarget));
+  });
+}
+
+function renderSkeletonCards(rootId, count = 3) {
+  const root = el(rootId);
+  if (!root) return;
+  root.innerHTML = Array.from({ length: count }).map(() => `
+    <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
+      <div class="skeleton-block h-4 w-24"></div>
+      <div class="skeleton-block mt-3 h-7 w-2/3"></div>
+      <div class="skeleton-block mt-4 h-3 w-full"></div>
+      <div class="skeleton-block mt-2 h-3 w-4/5"></div>
+    </article>
+  `).join("");
+}
+
+function statusBadge(text, tone = "neutral") {
+  return `<span class="status-badge is-${tone}">${escapeHtml(text)}</span>`;
+}
+
+function getDeviceTone(status) {
+  const normalized = String(status || "").toLowerCase();
+  if (normalized === "online") return "ok";
+  if (normalized === "offline") return "bad";
+  return "neutral";
+}
+
+function getEventStatus(event) {
+  const raw = String(event.status || event.review_status || event.state || "").toLowerCase();
+  if (["resolved", "closed"].includes(raw)) return { label: raw, tone: "ok" };
+  if (["false_positive", "ignored", "ignored_by_user"].includes(raw)) return { label: raw.replaceAll("_", " "), tone: "neutral" };
+  if (["reviewed", "in_review"].includes(raw)) return { label: raw.replaceAll("_", " "), tone: "warn" };
+  return { label: raw || "new", tone: raw ? "warn" : "bad" };
+}
+
+function confirmAction(message, title = messages.confirmDeleteTitle) {
+  const dialog = el("confirmDialog");
+  if (!dialog) return Promise.resolve(window.confirm(message));
+  setText("confirmDialogTitle", title);
+  setText("confirmDialogMessage", message);
+  dialog.showModal();
+  return new Promise((resolve) => {
+    dialog.addEventListener("close", () => resolve(dialog.returnValue === "confirm"), { once: true });
+  });
+}
+
+function openImagePreview({ src, title, meta }) {
+  if (!src) return;
+  const dialog = el("imagePreviewModal");
+  el("imagePreviewTitle").textContent = title;
+  el("imagePreviewMeta").textContent = meta;
+  const image = el("imagePreviewImage");
+  image.src = src;
+  image.alt = title;
+  dialog.showModal();
+}
+
 async function apiRequest({ path, method = "GET", query = "", body, apiKey, expectText = false }) {
   const target = path === "/metrics" ? `/app/api/metrics${query ? `?${query}` : ""}` : `/app/api/v1${path}${query ? `?${query}` : ""}`;
   const headers = {};
@@ -192,6 +452,15 @@ async function apiRequest({ path, method = "GET", query = "", body, apiKey, expe
     credentials: "include",
     body: ["GET", "HEAD"].includes(method) ? undefined : JSON.stringify(body ?? {}),
   });
+
+  if (response.status === 401) {
+    window.location.href = "/login";
+    throw new Error("Unauthorized");
+  }
+  if (response.status === 403) {
+    window.location.href = "/unauthorized";
+    throw new Error("Forbidden");
+  }
 
   const text = await response.text();
   let data = text;
@@ -222,47 +491,56 @@ function setActiveTab(tab) {
   });
 }
 
-function setFiltersStatus(text, tone = "neutral") {
-  const node = el("filtersStatus");
-  node.textContent = text;
-  node.className =
-    tone === "error"
-      ? "mt-3 text-xs text-[rgb(var(--danger))]"
-      : tone === "success"
-        ? "mt-3 text-xs text-[rgb(var(--ok))]"
-        : "mt-3 text-xs text-ink-mute";
+function renderQuickActions() {
+  const actions = [
+    { tab: "profile", label: messages.quickProfile },
+    { tab: "events", label: messages.quickEvents },
+    { tab: "keys", label: messages.quickKeys },
+  ];
+  if (role === "admins") actions.push({ tab: "admin", label: messages.quickAdmin });
+  const root = el("quickActions");
+  root.innerHTML = actions.map((item) => `
+    <button type="button" class="btn-secondary quick-action w-full justify-between" data-target-tab="${escapeHtml(item.tab)}">
+      <span>${escapeHtml(item.label)}</span>
+      <span aria-hidden="true">→</span>
+    </button>
+  `).join("");
+  root.querySelectorAll(".quick-action").forEach((button) => {
+    button.addEventListener("click", () => setActiveTab(button.dataset.targetTab));
+  });
 }
 
-function setStatus(id, text, tone = "neutral") {
-  const node = el(id);
-  if (!node) return;
-  node.textContent = text;
-  node.className =
-    tone === "error"
-      ? "text-xs text-[rgb(var(--danger))]"
-      : tone === "success"
-        ? "text-xs text-[rgb(var(--ok))]"
-        : "text-xs text-ink-mute";
+function renderSetupChecklist() {
+  const items = [
+    { label: messages.setupDevice, done: state.devices.length > 0 },
+    { label: messages.setupKey, done: state.apiKeys.length > 0 },
+    { label: messages.quickEvents, done: state.events.length > 0 },
+  ];
+  el("setupChecklist").innerHTML = items.map((item, index) => `
+    <article class="checklist-item ${item.done ? "is-complete" : ""}">
+      <span class="checklist-marker">${item.done ? "✓" : index + 1}</span>
+      <div>
+        <p class="text-sm font-semibold text-ink">${escapeHtml(item.label)}</p>
+        <p class="mt-1 text-xs text-ink-soft">${item.done ? messages.loaded : messages.loading}</p>
+      </div>
+    </article>
+  `).join("");
 }
 
 function renderProfile() {
   if (!state.me) return;
-  const barns = Array.isArray(state.me.barns) ? state.me.barns : [];
   const summary = [
     [messages.username, state.me.username || "—"],
     [messages.email, state.me.email || "—"],
     [messages.role, role],
-    [messages.assignedBarns, barns.length ? barns.map((barn) => barn.name || barn.barn_id || barn.id).join(", ") : "—"],
   ];
   el("profileSummary").innerHTML = summary
-    .map(
-      ([label, value]) => `
-        <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
-          <p class="text-xs uppercase tracking-[0.18em] text-ink-mute">${label}</p>
-          <p class="mt-2 font-display text-xl font-semibold text-ink break-all">${value}</p>
-        </article>
-      `,
-    )
+    .map(([label, value]) => `
+      <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
+        <p class="text-xs uppercase tracking-[0.18em] text-ink-mute">${escapeHtml(label)}</p>
+        <p class="mt-2 font-display text-xl font-semibold break-all text-ink">${escapeHtml(value)}</p>
+      </article>
+    `)
     .join("");
 
   el("profileFirstName").value = state.me.first_name || "";
@@ -272,184 +550,373 @@ function renderProfile() {
   el("recoveryEmail").value = state.me.email || "";
 }
 
+function renderSessions() {
+  const root = el("sessionsList");
+  if (!root) return;
+  if (!state.sessions.length) {
+    root.innerHTML = `<p class="text-sm text-ink-soft">${escapeHtml(messages.sessionsEmpty)}</p>`;
+    return;
+  }
+
+  root.innerHTML = state.sessions.map((session) => {
+    const id = session.session_id || session.id || session._id || "—";
+    return `
+      <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/72 p-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p class="font-display text-lg font-semibold text-ink">${escapeHtml(session.device || session.user_agent || messages.sessionId)}</p>
+            <p class="mt-1 font-mono text-xs text-ink-mute break-all">${escapeHtml(id)}</p>
+          </div>
+          <button type="button" class="btn-secondary session-delete" data-session-id="${escapeHtml(id)}">${escapeHtml(messages.terminate)}</button>
+        </div>
+        <div class="mt-3 grid gap-1 text-sm text-ink-soft">
+          <p><span class="font-medium text-ink">${escapeHtml(messages.ipAddress)}:</span> ${escapeHtml(session.ip || session.ip_address || session.last_ip || "—")}</p>
+          <p><span class="font-medium text-ink">Last seen:</span> ${escapeHtml(formatTimestamp(session.last_seen_at || session.updated_at || session.created_at))}</p>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  root.querySelectorAll(".session-delete").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const confirmed = await confirmAction(messages.confirmDeleteSession);
+      if (!confirmed) return;
+      try {
+        await apiRequest({ path: `/user/me/sessions/${encodeURIComponent(button.dataset.sessionId)}`, method: "DELETE" });
+        showToast(messages.sessionDeleted, "success");
+        await loadSessions();
+      } catch (error) {
+        showToast(formatApiError(error), "error");
+      }
+    });
+  });
+}
+
 function renderApiKeys() {
   const root = el("apiKeysList");
+  const errorNode = el("apiKeysError");
+  if (errorNode) {
+    errorNode.classList.add("hidden");
+    errorNode.textContent = "";
+  }
   if (!state.apiKeys.length) {
-    root.innerHTML = `<p class="text-sm text-ink-soft">${messages.noApiKeys}</p>`;
+    root.innerHTML = renderEmptyState({
+      title: messages.emptyKeysTitle,
+      copy: messages.emptyKeysCopy,
+      actionLabel: locale === "uk" ? "Створити ключ" : "Create key",
+      actionTab: "keys",
+    });
+    bindEmptyStateActions(root);
     return;
   }
 
   root.innerHTML = state.apiKeys
     .map((item) => {
       const id = item._id || item.id || item.key_id;
+      const prefix = item.prefix || item.key_prefix || item.masked_key || String(id || "").slice(0, 10);
+      const lastUsed = item.last_used_at || item.last_used || item.last_used_date;
+      const scopes = Array.isArray(item.scopes) ? item.scopes.join(", ") : "";
       return `
         <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p class="font-display text-lg font-semibold text-ink">${item.name || messages.edgeKey}</p>
-              <p class="mt-1 font-mono text-xs text-ink-mute break-all">${id || "—"}</p>
-              <p class="mt-1 text-xs text-ink-mute">${formatTimestamp(item.created_at)}</p>
+              <p class="font-display text-lg font-semibold text-ink">${escapeHtml(item.name || messages.edgeKey)}</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                ${statusBadge(item.status || messages.unknown, item.status === "active" ? "ok" : item.status === "expired" ? "warn" : "bad")}
+                ${statusBadge(prefix ? `${messages.prefix}: ${prefix}` : "—", "neutral")}
+              </div>
             </div>
-            <button type="button" class="btn-secondary api-key-delete" data-key-id="${id}">${messages.delete}</button>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" class="btn-secondary api-key-rotate" data-key-id="${escapeHtml(id || "")}">${escapeHtml(messages.rotate)}</button>
+              <button type="button" class="btn-secondary api-key-delete" data-key-id="${escapeHtml(id || "")}">${escapeHtml(messages.delete)}</button>
+            </div>
           </div>
+          <div class="mt-4 grid gap-2 text-sm text-ink-soft md:grid-cols-2">
+            <p><span class="font-medium text-ink">${escapeHtml(messages.createdAt)}:</span> ${escapeHtml(formatTimestamp(item.created_at || item.createdAt))}</p>
+            <p><span class="font-medium text-ink">${escapeHtml(messages.lastUsed)}:</span> ${escapeHtml(lastUsed ? formatTimestamp(lastUsed) : messages.never)}</p>
+            <p><span class="font-medium text-ink">${escapeHtml(messages.expiresAt)}:</span> ${escapeHtml(item.expires_at ? formatTimestamp(item.expires_at) : messages.never)}</p>
+            <p><span class="font-medium text-ink">${escapeHtml(messages.scopes)}:</span> ${escapeHtml(scopes || "—")}</p>
+          </div>
+          <form class="mt-4 api-key-scopes-form" data-key-id="${escapeHtml(id || "")}">
+            <div class="grid gap-3 md:grid-cols-[1fr_180px]">
+              <input class="field api-key-scopes-input" value="${escapeHtml(scopes)}" placeholder="events:write,snapshots:write" />
+              <button type="submit" class="btn-secondary w-full">${escapeHtml(messages.updateScopes)}</button>
+            </div>
+          </form>
         </article>
       `;
     })
     .join("");
 
+  root.querySelectorAll(".api-key-rotate").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const confirmed = await confirmAction(messages.confirmRotateKey);
+      if (!confirmed) return;
+      try {
+        const payload = await apiRequest({ path: `/api-keys/${encodeURIComponent(button.dataset.keyId)}/rotate`, method: "POST" });
+        const reveal = el("apiKeyReveal");
+        reveal.className = "notice mt-4";
+        reveal.style.borderColor = "rgb(var(--ok) / 0.55)";
+        reveal.style.background = "rgb(var(--ok-soft))";
+        reveal.style.color = "rgb(var(--ok))";
+        reveal.textContent = `${messages.rotated} ${messages.apiKeyCreated} ${payload.key || ""} ${messages.copiedNow}`;
+        showToast(messages.rotated, "success");
+        await loadApiKeys();
+      } catch (error) {
+        showToast(formatApiError(error), "error");
+      }
+    });
+  });
+
   root.querySelectorAll(".api-key-delete").forEach((button) => {
     button.addEventListener("click", async () => {
+      const confirmed = await confirmAction(messages.confirmDeleteKey);
+      if (!confirmed) return;
       button.disabled = true;
       try {
         await apiRequest({ path: `/api-keys/${encodeURIComponent(button.dataset.keyId)}`, method: "DELETE" });
-        setStatus("apiKeyCreateStatus", messages.deleted, "success");
+        setStatus("apiKeyCreateStatus", messages.deleted, "success", true);
         await loadApiKeys();
       } catch (error) {
-        setStatus("apiKeyCreateStatus", formatApiError(error), "error");
+        setStatus("apiKeyCreateStatus", formatApiError(error), "error", true);
       } finally {
         button.disabled = false;
       }
     });
   });
+
+  root.querySelectorAll(".api-key-scopes-form").forEach((form) => {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const input = form.querySelector(".api-key-scopes-input");
+      const scopes = String(input.value || "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+      if (!scopes.length) return;
+      try {
+        await apiRequest({
+          path: `/api-keys/${encodeURIComponent(form.dataset.keyId)}/scopes`,
+          method: "PATCH",
+          body: { scopes },
+        });
+        showToast(messages.scopeSaved, "success");
+        await loadApiKeys();
+      } catch (error) {
+        showToast(formatApiError(error), "error");
+      }
+    });
+  });
+}
+
+function renderApiKeyError(error) {
+  const root = el("apiKeysList");
+  const errorNode = el("apiKeysError");
+  if (errorNode) {
+    errorNode.classList.remove("hidden");
+    errorNode.textContent = formatApiError(error);
+  }
+  root.innerHTML = "";
 }
 
 function renderBarns() {
   const root = el("barnsList");
   if (!state.barns.length) {
-    root.innerHTML = `<p class="text-sm text-ink-soft">${messages.noBarns}</p>`;
+    root.innerHTML = renderEmptyState({
+      title: messages.emptyBarnsTitle,
+      copy: messages.emptyBarnsCopy,
+      actionLabel: locale === "uk" ? "До пристроїв" : "Go to devices",
+      actionTab: "devices",
+    });
+    bindEmptyStateActions(root);
     return;
   }
-  root.innerHTML = state.barns
-    .map((barn) => `
-      <article class="rounded-[14px_28px_18px_30px] border border-edge/45 bg-paper-warm/72 p-5 shadow-panel">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p class="text-xs uppercase tracking-[0.18em] text-ink-mute">${messages.barn}</p>
-            <h3 class="mt-2 font-display text-xl font-semibold text-ink">${barn.name || `${messages.barn} ${barn.barn_id || barn.id || ""}`}</h3>
-          </div>
-          <span class="rounded-[10px_18px_12px_20px] bg-hay/40 px-3 py-1 font-mono text-xs font-semibold text-ochre-deep">${barn.barn_id || barn.id || "—"}</span>
-        </div>
-        <div class="mt-4 grid gap-2 text-sm text-ink-soft">
-          <p><span class="font-medium text-ink">${messages.location}:</span> ${barn.location || "—"}</p>
-          <p><span class="font-medium text-ink">${messages.description}:</span> ${barn.description || "—"}</p>
-          <p><span class="font-medium text-ink">${messages.account}:</span> ${barn.account_id || "—"}</p>
-        </div>
-      </article>
-    `)
-    .join("");
-}
 
-function renderDevices() {
-  const root = el("devicesList");
-  if (!state.devices.length) {
-    root.innerHTML = `<p class="text-sm text-ink-soft">${messages.noDevices}</p>`;
-    return;
-  }
-  root.innerHTML = state.devices
-    .map((device) => {
-      const status = (device.status || "unknown").toLowerCase();
-      const statusClass = status === "online"
-        ? "bg-[rgb(var(--ok))] text-paper"
-        : status === "offline"
-          ? "bg-ink/85 text-paper"
-          : "bg-edge/55 text-ink";
-      return `
-      <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p class="font-display text-lg font-semibold text-ink">${device.name || device.device_id || messages.device}</p>
-            <p class="mt-1 font-mono text-xs text-ink-mute">${device.device_id || "—"}</p>
-          </div>
-          <span class="rounded-[10px_18px_12px_20px] px-3 py-1 text-xs font-semibold ${statusClass}">${device.status || messages.unknown}</span>
+  root.innerHTML = state.barns.map((barn) => `
+    <article class="rounded-[14px_28px_18px_30px] border border-edge/45 bg-paper-warm/72 p-5 shadow-panel">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p class="text-xs uppercase tracking-[0.18em] text-ink-mute">${escapeHtml(messages.barn)}</p>
+          <h3 class="mt-2 font-display text-xl font-semibold text-ink">${escapeHtml(barn.name || `${messages.barn} ${barn.barn_id || barn.id || ""}`)}</h3>
         </div>
-        <div class="mt-3 grid gap-1 text-sm text-ink-soft">
-          <p><span class="font-medium text-ink">${messages.barn}:</span> ${device.barn_id || "—"}</p>
-          <p><span class="font-medium text-ink">${messages.location}:</span> ${device.location || "—"}</p>
-        </div>
-      </article>
-    `;
-    })
-    .join("");
+        <span class="rounded-[10px_18px_12px_20px] bg-hay/40 px-3 py-1 font-mono text-xs font-semibold text-ochre-deep">${escapeHtml(barn.barn_id || barn.id || "—")}</span>
+      </div>
+      <div class="mt-4 grid gap-2 text-sm text-ink-soft">
+        <p><span class="font-medium text-ink">${escapeHtml(messages.location)}:</span> ${escapeHtml(barn.location || "—")}</p>
+        <p><span class="font-medium text-ink">${escapeHtml(messages.description)}:</span> ${escapeHtml(barn.description || "—")}</p>
+        <p><span class="font-medium text-ink">${escapeHtml(messages.account)}:</span> ${escapeHtml(barn.account_id || "—")}</p>
+      </div>
+    </article>
+  `).join("");
 }
 
 function renderCamerasAndZones() {
   const camerasRoot = el("camerasList");
   const zonesRoot = el("zonesList");
+
   camerasRoot.innerHTML = state.cameras.length
-    ? state.cameras
-        .map((camera) => `
-          <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
-            <p class="font-display text-lg font-semibold text-ink">${camera.name || camera.camera_id || messages.camera}</p>
-            <p class="mt-1 font-mono text-xs text-ink-mute">${camera.camera_id || "—"}</p>
-            <p class="mt-3 text-sm text-ink-soft">${messages.barn} ${camera.barn_id || "—"} · ${messages.device} ${camera.device_id || "—"} · ${camera.status || messages.unknown}</p>
-          </article>
-        `)
-        .join("")
-    : `<p class="text-sm text-ink-soft">${messages.noCameras}</p>`;
+    ? state.cameras.map((camera) => `
+      <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p class="font-display text-lg font-semibold text-ink">${escapeHtml(camera.name || camera.camera_id || messages.camera)}</p>
+            <p class="mt-1 font-mono text-xs text-ink-mute">${escapeHtml(camera.camera_id || "—")}</p>
+          </div>
+          ${statusBadge(camera.status || messages.unknown, getDeviceTone(camera.status))}
+        </div>
+        <p class="mt-3 text-sm text-ink-soft">${escapeHtml(messages.barn)} ${escapeHtml(camera.barn_id || "—")} · ${escapeHtml(messages.device)} ${escapeHtml(camera.device_id || "—")}</p>
+      </article>
+    `).join("")
+    : renderEmptyState({
+        title: messages.emptyCamerasTitle,
+        copy: messages.emptyCamerasCopy,
+        actionLabel: locale === "uk" ? "Додати камеру" : "Add camera",
+        actionTab: "cameras",
+      });
 
   zonesRoot.innerHTML = state.zones.length
-    ? state.zones
-        .map((zone) => `
-          <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
-            <p class="font-display text-lg font-semibold text-ink">${zone.label || zone.zone_id || messages.zone}</p>
-            <p class="mt-1 font-mono text-xs text-ink-mute">${zone.zone_id || "—"}</p>
-            <p class="mt-3 text-sm text-ink-soft">${messages.camera} ${zone.camera_id || "—"} · ${messages.barn} ${zone.barn_id || "—"} · ${zone.enabled === false ? messages.disabled : messages.enabled}</p>
-          </article>
-        `)
-        .join("")
-    : `<p class="text-sm text-ink-soft">${messages.noZones}</p>`;
+    ? state.zones.map((zone) => `
+      <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p class="font-display text-lg font-semibold text-ink">${escapeHtml(zone.label || zone.zone_id || messages.zone)}</p>
+            <p class="mt-1 font-mono text-xs text-ink-mute">${escapeHtml(zone.zone_id || "—")}</p>
+          </div>
+          ${statusBadge(zone.enabled === false ? messages.disabled : messages.enabled, zone.enabled === false ? "neutral" : "ok")}
+        </div>
+        <p class="mt-3 text-sm text-ink-soft">${escapeHtml(messages.camera)} ${escapeHtml(zone.camera_id || "—")} · ${escapeHtml(messages.barn)} ${escapeHtml(zone.barn_id || "—")}</p>
+      </article>
+    `).join("")
+    : renderEmptyState({
+        title: messages.emptyZonesTitle,
+        copy: messages.emptyZonesCopy,
+        actionLabel: locale === "uk" ? "Створити зону" : "Create zone",
+        actionTab: "cameras",
+      });
+
+  bindEmptyStateActions(camerasRoot);
+  bindEmptyStateActions(zonesRoot);
 }
 
 function renderEventsNotice() {
   const node = el("eventsNotice");
-  if (!node) return;
   const meta = state.eventsMeta || {};
   if (!meta.partial) {
     node.classList.add("hidden");
     node.innerHTML = "";
     return;
   }
-  node.classList.remove("hidden");
   node.className = "notice is-warn mt-3";
+  node.classList.remove("hidden");
   const skipped = meta.skippedWindows || 0;
-  const detail = locale === "uk"
-    ? `Деякі історичні події містять некоректне поле <code>image_snapshot</code> (URL замість base64), тому API не зміг їх повернути. Показано лише валідні записи${skipped ? ` · пропущено вікон: ${skipped}` : ""}.`
-    : `Some historical events store an <code>image_snapshot</code> URL instead of base64, so the API rejected them. Only valid records are shown${skipped ? ` · skipped windows: ${skipped}` : ""}.`;
-  node.innerHTML = detail;
+  node.innerHTML = locale === "uk"
+    ? `Частина історичних подій пропущена через невалідне поле <code>image_snapshot</code>${skipped ? ` · пропущено вікон: ${skipped}` : ""}.`
+    : `Some historical events were skipped due to an invalid <code>image_snapshot</code> field${skipped ? ` · skipped windows: ${skipped}` : ""}.`;
 }
 
 function renderEvents(events = state.events) {
   const root = el("eventsList");
   renderEventsNotice();
   if (!events.length) {
-    root.innerHTML = `<p class="text-sm text-ink-mute">${messages.noEvents}</p>`;
+    root.innerHTML = renderEmptyState({
+      title: messages.emptyEventsTitle,
+      copy: messages.emptyEventsCopy,
+      actionLabel: locale === "uk" ? "Оновити" : "Refresh",
+      actionTab: "events",
+    });
+    bindEmptyStateActions(root);
     return;
   }
-  root.innerHTML = events
-    .map((event) => {
-      const imageSrc = toImageSrc(event.image_snapshot);
-      const conf = typeof event.confidence === "number"
-        ? `${Math.round(event.confidence * 100)}%`
-        : (event.confidence ?? "—");
-      return `
-        <article class="rounded-[14px_28px_18px_30px] border border-edge/45 bg-paper-warm/72 p-4 shadow-panel">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <p class="font-mono text-xs uppercase tracking-[0.18em] text-ink-mute">${event.camera_id || `${messages.camera}?`}</p>
-              <p class="mt-1 text-sm font-semibold text-ink">${formatTimestamp(event.timestamp)}</p>
-            </div>
-            <span class="rounded-[10px_18px_12px_20px] bg-hay/40 px-3 py-1 text-xs font-semibold text-ochre-deep">${conf}</span>
+
+  root.innerHTML = events.map((event) => {
+    const imageSrc = toImageSrc(event.image_snapshot);
+    const conf = typeof event.confidence === "number" ? `${Math.round(event.confidence * 100)}%` : (event.confidence ?? "—");
+    const status = getEventStatus(event);
+    const title = `${event.camera_id || messages.camera} · ${formatTimestamp(event.timestamp)}`;
+    return `
+      <article class="rounded-[14px_28px_18px_30px] border border-edge/45 bg-paper-warm/72 p-4 shadow-panel">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.18em] text-ink-mute">${escapeHtml(event.camera_id || `${messages.camera}?`)}</p>
+            <p class="mt-1 text-sm font-semibold text-ink">${escapeHtml(formatTimestamp(event.timestamp))}</p>
           </div>
-          ${imageSrc ? `<img src="${imageSrc}" alt="${locale === "uk" ? "Знімок детекції" : "Detection snapshot"}" class="mt-3 h-40 w-full rounded-[10px_18px_12px_20px] border border-edge/45 object-cover" loading="lazy" />` : ""}
-          <div class="mt-3 grid gap-1 text-xs text-ink-soft">
-            <p><span class="font-medium text-ink">${messages.device}:</span> ${event.device_id || "—"}</p>
-            <p><span class="font-medium text-ink">${messages.barn}:</span> ${event.barn_id || "—"}</p>
-            <p><span class="font-medium text-ink">ID:</span> <span class="font-mono">${event._id || "—"}</span></p>
+          <div class="flex flex-col items-end gap-2">
+            ${statusBadge(status.label, status.tone)}
+            <span class="rounded-[10px_18px_12px_20px] bg-hay/40 px-3 py-1 text-xs font-semibold text-ochre-deep">${escapeHtml(conf)}</span>
           </div>
-        </article>
-      `;
-    })
-    .join("");
+        </div>
+        ${imageSrc ? `
+          <button type="button" class="snapshot-trigger mt-3 w-full" data-image-src="${escapeHtml(imageSrc)}" data-image-title="${escapeHtml(title)}" data-image-meta="${escapeHtml(`${messages.barn} ${event.barn_id || "—"} · ${messages.device} ${event.device_id || "—"}`)}" aria-label="${escapeHtml(messages.openPreview)}">
+            <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(title)}" class="h-40 w-full rounded-[10px_18px_12px_20px] border border-edge/45 object-cover" loading="lazy" />
+          </button>
+        ` : ""}
+        <div class="mt-3 grid gap-1 text-xs text-ink-soft">
+          <p><span class="font-medium text-ink">${escapeHtml(messages.device)}:</span> ${escapeHtml(event.device_id || "—")}</p>
+          <p><span class="font-medium text-ink">${escapeHtml(messages.barn)}:</span> ${escapeHtml(event.barn_id || "—")}</p>
+          <p><span class="font-medium text-ink">${escapeHtml(messages.reviewer)}:</span> ${escapeHtml(event.reviewer || event.reviewed_by || "—")}</p>
+          <p><span class="font-medium text-ink">ID:</span> <span class="font-mono">${escapeHtml(event._id || event.id || "—")}</span></p>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <button type="button" class="btn-secondary event-status-action" data-event-id="${escapeHtml(event._id || event.id || "")}" data-status="reviewed">${escapeHtml(messages.markReviewed)}</button>
+          <button type="button" class="btn-secondary event-status-action" data-event-id="${escapeHtml(event._id || event.id || "")}" data-status="resolved">${escapeHtml(messages.markResolved)}</button>
+          <button type="button" class="btn-secondary event-status-action" data-event-id="${escapeHtml(event._id || event.id || "")}" data-status="false_positive">${escapeHtml(messages.markFalsePositive)}</button>
+          <button type="button" class="btn-secondary event-status-action" data-event-id="${escapeHtml(event._id || event.id || "")}" data-status="ignored">${escapeHtml(messages.markIgnored)}</button>
+        </div>
+        <form class="mt-3 event-note-form" data-event-id="${escapeHtml(event._id || event.id || "")}">
+          <div class="grid gap-3 md:grid-cols-[1fr_160px]">
+            <input class="field event-note-input" maxlength="2000" placeholder="${escapeHtml(messages.reviewNotePlaceholder)}" />
+            <button type="submit" class="btn-secondary w-full">${escapeHtml(messages.addNote)}</button>
+          </div>
+        </form>
+      </article>
+    `;
+  }).join("");
+
+  root.querySelectorAll(".snapshot-trigger").forEach((button) => {
+    button.addEventListener("click", () => {
+      openImagePreview({
+        src: button.dataset.imageSrc,
+        title: button.dataset.imageTitle,
+        meta: button.dataset.imageMeta,
+      });
+    });
+  });
+
+  root.querySelectorAll(".event-status-action").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await apiRequest({
+          path: `/events/${encodeURIComponent(button.dataset.eventId)}/status`,
+          method: "PATCH",
+          body: { status: button.dataset.status },
+        });
+        setStatus("eventActionStatus", `${messages.saved}: ${button.dataset.status}`, "success", true);
+        await loadEvents();
+      } catch (error) {
+        setStatus("eventActionStatus", formatApiError(error), "error", true);
+      }
+    });
+  });
+
+  root.querySelectorAll(".event-note-form").forEach((form) => {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const input = form.querySelector(".event-note-input");
+      const note = String(input.value || "").trim();
+      if (!note) return;
+      try {
+        await apiRequest({
+          path: `/events/${encodeURIComponent(form.dataset.eventId)}/notes`,
+          method: "POST",
+          body: { note },
+        });
+        input.value = "";
+        setStatus("eventActionStatus", messages.noteSaved, "success", true);
+      } catch (error) {
+        setStatus("eventActionStatus", formatApiError(error), "error", true);
+      }
+    });
+  });
 }
 
 function renderAnalytics() {
@@ -476,22 +943,18 @@ function renderAnalytics() {
   const maxEvents = Math.max(...normalized.map((item) => item.events), 1);
   const maxConfidence = Math.max(...normalized.map((item) => item.confidence), 1);
 
-  chart.innerHTML = normalized
-    .map(
-      (item) => `
-        <div class="flex min-h-[220px] flex-col justify-end gap-3 rounded-[10px_18px_12px_20px] bg-paper-warm/75 p-3">
-          <div class="flex flex-1 items-end gap-2">
-            <div class="flex-1 rounded-t-xl bg-ochre/85" style="height:${Math.max(10, (item.events / maxEvents) * 100)}%"></div>
-            <div class="flex-1 rounded-t-xl bg-ink/80" style="height:${Math.max(10, (item.confidence / maxConfidence) * 100)}%"></div>
-          </div>
-          <div class="text-center">
-            <p class="font-mono text-xs font-semibold text-ink">${item.label}</p>
-            <p class="text-[11px] text-ink-mute">${item.events} / ${item.confidence}</p>
-          </div>
-        </div>
-      `,
-    )
-    .join("");
+  chart.innerHTML = normalized.map((item) => `
+    <div class="flex min-h-[220px] flex-col justify-end gap-3 rounded-[10px_18px_12px_20px] bg-paper-warm/75 p-3">
+      <div class="flex flex-1 items-end gap-2">
+        <div class="flex-1 rounded-t-xl bg-ochre/85" style="height:${Math.max(10, (item.events / maxEvents) * 100)}%"></div>
+        <div class="flex-1 rounded-t-xl bg-ink/80" style="height:${Math.max(10, (item.confidence / maxConfidence) * 100)}%"></div>
+      </div>
+      <div class="text-center">
+        <p class="font-mono text-xs font-semibold text-ink">${escapeHtml(item.label)}</p>
+        <p class="text-[11px] text-ink-mute">${escapeHtml(String(item.events))} / ${escapeHtml(String(item.confidence))}</p>
+      </div>
+    </div>
+  `).join("");
 
   const detections = Number(state.report?.total_detections ?? 0);
   const zones = Array.isArray(state.report?.high_risk_zones) ? state.report.high_risk_zones.length : 0;
@@ -501,16 +964,12 @@ function renderAnalytics() {
     [messages.detections, detections],
     [messages.highRiskZones, zones],
     [messages.trend, trend],
-  ]
-    .map(
-      ([label, value]) => `
-        <article class="rounded-[10px_18px_12px_20px] border border-edge/45 bg-paper-warm/65 p-4">
-          <p class="text-xs uppercase tracking-[0.18em] text-ink-mute">${label}</p>
-          <p class="mt-2 font-display text-3xl font-bold text-ink">${value}</p>
-        </article>
-      `,
-    )
-    .join("");
+  ].map(([label, value]) => `
+    <article class="rounded-[10px_18px_12px_20px] border border-edge/45 bg-paper-warm/65 p-4">
+      <p class="text-xs uppercase tracking-[0.18em] text-ink-mute">${escapeHtml(label)}</p>
+      <p class="mt-2 font-display text-3xl font-bold text-ink">${escapeHtml(value)}</p>
+    </article>
+  `).join("");
 
   setText("trend", trend);
 }
@@ -569,29 +1028,23 @@ function renderSelectedDay() {
   const list = el("calendarEventList");
   const items = state.events.filter((event) => toDateKey(event.timestamp) === state.selectedCalendarDate);
   list.innerHTML = items.length
-    ? items
-        .slice(0, 6)
-        .map(
-          (event) => {
-            const conf = typeof event.confidence === "number"
-              ? `${Math.round(event.confidence * 100)}%`
-              : (event.confidence ?? "—");
-            return `
-            <article class="rounded-[10px_18px_12px_20px] border border-edge/45 bg-paper-warm/72 p-3">
-              <div class="flex items-start justify-between gap-3">
-                <div>
-                  <p class="font-mono text-sm font-semibold text-ink">${event.camera_id || `${messages.camera}?`}</p>
-                  <p class="mt-1 text-xs text-ink-mute">${formatTimestamp(event.timestamp)}</p>
-                </div>
-                <span class="rounded-[8px_14px_10px_16px] bg-ink/90 px-2 py-1 text-[11px] font-semibold text-paper">${conf}</span>
+    ? items.slice(0, 6).map((event) => {
+        const conf = typeof event.confidence === "number" ? `${Math.round(event.confidence * 100)}%` : (event.confidence ?? "—");
+        const status = getEventStatus(event);
+        return `
+          <article class="rounded-[10px_18px_12px_20px] border border-edge/45 bg-paper-warm/72 p-3">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <p class="font-mono text-sm font-semibold text-ink">${escapeHtml(event.camera_id || `${messages.camera}?`)}</p>
+                <p class="mt-1 text-xs text-ink-mute">${escapeHtml(formatTimestamp(event.timestamp))}</p>
               </div>
-              <p class="mt-2 text-xs text-ink-soft">${messages.barn} ${event.barn_id || "—"} · ${messages.device} ${event.device_id || "—"}</p>
-            </article>
-          `;
-          },
-        )
-        .join("")
-    : `<p class="text-sm text-ink-soft">${messages.noCalendarEvents}</p>`;
+              ${statusBadge(conf, status.tone)}
+            </div>
+            <p class="mt-2 text-xs text-ink-soft">${escapeHtml(messages.barn)} ${escapeHtml(event.barn_id || "—")} · ${escapeHtml(messages.device)} ${escapeHtml(event.device_id || "—")}</p>
+          </article>
+        `;
+      }).join("")
+    : `<p class="text-sm text-ink-soft">${escapeHtml(messages.noCalendarEvents)}</p>`;
 }
 
 function renderAdmin() {
@@ -604,32 +1057,34 @@ function renderAdmin() {
   const items = state.coworkers[state.currentCoworkerRole] || [];
   const root = el("coworkersList");
   if (!items.length) {
-    root.innerHTML = `<p class="text-sm text-ink-soft">${messages.noCoworkers}</p>`;
+    root.innerHTML = renderEmptyState({
+      title: locale === "uk" ? "Колег для цієї ролі немає" : "No coworkers in this role",
+      copy: locale === "uk" ? "Створіть фермерів або персонал, щоб розподілити доступ до господарств і подій." : "Create farmers or staff to distribute access to barns and events.",
+      actionLabel: locale === "uk" ? "Додати колегу" : "Add coworker",
+      actionTab: "admin",
+    });
+    bindEmptyStateActions(root);
     return;
   }
-  root.innerHTML = items
-    .map(
-      (user) => `
-        <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
-          <div class="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <p class="font-display text-lg font-semibold text-ink">${user.first_name || ""} ${user.last_name || ""}</p>
-              <p class="mt-1 text-sm text-ink-soft">${user.username || "—"}</p>
-              <p class="mt-1 text-xs text-ink-mute">${user.email || "—"}</p>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <select class="field coworker-role-select" data-username="${user.username}" style="width:auto">
-                <option value="admins" ${user.role === "admins" ? "selected" : ""}>admins</option>
-                <option value="farmers" ${user.role === "farmers" ? "selected" : ""}>farmers</option>
-                <option value="staff" ${user.role === "staff" ? "selected" : ""}>staff</option>
-              </select>
-              <button type="button" class="btn-secondary coworker-delete" data-username="${user.username}">${messages.delete}</button>
-            </div>
-          </div>
-        </article>
-      `,
-    )
-    .join("");
+  root.innerHTML = items.map((user) => `
+    <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/65 p-4">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p class="font-display text-lg font-semibold text-ink">${escapeHtml(`${user.first_name || ""} ${user.last_name || ""}`.trim() || user.username || "—")}</p>
+          <p class="mt-1 text-sm text-ink-soft">${escapeHtml(user.username || "—")}</p>
+          <p class="mt-1 text-xs text-ink-mute">${escapeHtml(user.email || "—")}</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <select class="field coworker-role-select" data-username="${escapeHtml(user.username || "")}" style="width:auto">
+            <option value="admins" ${user.role === "admins" ? "selected" : ""}>admins</option>
+            <option value="farmers" ${user.role === "farmers" ? "selected" : ""}>farmers</option>
+            <option value="staff" ${user.role === "staff" ? "selected" : ""}>staff</option>
+          </select>
+          <button type="button" class="btn-secondary coworker-delete" data-username="${escapeHtml(user.username || "")}">${escapeHtml(messages.delete)}</button>
+        </div>
+      </div>
+    </article>
+  `).join("");
 
   root.querySelectorAll(".coworker-role-select").forEach((select) => {
     select.addEventListener("change", async () => {
@@ -639,25 +1094,69 @@ function renderAdmin() {
           method: "PATCH",
           body: { new_role: select.value },
         });
-        setStatus("coworkerStatus", messages.saved, "success");
+        setStatus("coworkerStatus", messages.saved, "success", true);
         await loadAdminData();
       } catch (error) {
-        setStatus("coworkerStatus", formatApiError(error), "error");
+        setStatus("coworkerStatus", formatApiError(error), "error", true);
       }
     });
   });
 
   root.querySelectorAll(".coworker-delete").forEach((button) => {
     button.addEventListener("click", async () => {
+      const confirmed = await confirmAction(messages.confirmDeleteUser);
+      if (!confirmed) return;
       try {
         await apiRequest({ path: `/users/${encodeURIComponent(button.dataset.username)}`, method: "DELETE" });
-        setStatus("coworkerStatus", messages.deleted, "success");
+        setStatus("coworkerStatus", messages.deleted, "success", true);
         await loadAdminData();
       } catch (error) {
-        setStatus("coworkerStatus", formatApiError(error), "error");
+        setStatus("coworkerStatus", formatApiError(error), "error", true);
       }
     });
   });
+
+  renderAuditLogs();
+}
+
+function renderAuditLogs() {
+  const root = el("auditLogsList");
+  if (!root) return;
+  if (!state.auditLogs.length) {
+    root.innerHTML = `<p class="text-sm text-ink-soft">${escapeHtml(messages.auditEmpty)}</p>`;
+    return;
+  }
+
+  root.innerHTML = state.auditLogs.slice(0, 20).map((entry) => `
+    <article class="rounded-[12px_22px_14px_24px] border border-edge/45 bg-paper-warm/72 p-4">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p class="font-display text-lg font-semibold text-ink">${escapeHtml(entry.action || entry.event || entry.type || "audit")}</p>
+          <p class="mt-1 text-xs text-ink-mute">${escapeHtml(formatTimestamp(entry.timestamp || entry.created_at))}</p>
+        </div>
+        ${statusBadge(entry.status || entry.result || "log", "neutral")}
+      </div>
+      <pre class="mt-3 overflow-auto rounded-[10px_18px_12px_20px] bg-paper-soft p-3 text-xs text-ink-soft">${escapeHtml(JSON.stringify(entry, null, 2))}</pre>
+    </article>
+  `).join("");
+}
+
+function renderSystemCards() {
+  const root = el("systemCards");
+  if (!root) return;
+  const cards = [
+    ["Version", state.systemVersion],
+    ["System health", state.systemHealth],
+    ["Admin health", state.adminSystemHealth],
+    ["Config", state.systemConfig],
+  ].filter(([, value]) => value);
+
+  root.innerHTML = cards.map(([label, value]) => `
+    <div class="rounded-[1.2rem_1.8rem_1.4rem_2rem] border border-edge/45 bg-paper-warm/65 p-4">
+      <p class="text-xs uppercase tracking-[0.18em] text-ink-mute">${escapeHtml(label)}</p>
+      <pre class="mt-2 overflow-auto text-xs text-ink-soft">${escapeHtml(JSON.stringify(value, null, 2))}</pre>
+    </div>
+  `).join("");
 }
 
 async function loadProfile() {
@@ -668,36 +1167,28 @@ async function loadProfile() {
   renderProfile();
 }
 
-async function loadBarns() {
+async function loadSessions() {
   try {
-    const response = await apiRequest({ path: "/barns" });
-    state.barns = response.barns || response.items || response || [];
+    const response = await apiRequest({ path: "/user/me/sessions" });
+    state.sessions = Array.isArray(response) ? response : response.items || response.sessions || [];
   } catch {
-    state.barns = [];
+    state.sessions = [];
   }
-  setText("barnCount", String(state.barns.length));
-  renderBarns();
-}
-
-async function loadDevices() {
-  try {
-    const response = await apiRequest({ path: "/devices" });
-    state.devices = response.devices || response.items || response || [];
-  } catch {
-    state.devices = [];
-  }
-  setText("deviceCountLabel", `${messages.devicesCount}: ${state.devices.length}`);
-  renderDevices();
+  setText("sessionCountValue", String(state.sessions.length));
+  setText("sessionCountLabel", `${messages.loaded}: ${state.sessions.length}`);
+  renderSessions();
 }
 
 async function loadApiKeys() {
-  try {
-    const response = await apiRequest({ path: "/api-keys" });
-    state.apiKeys = response.api_keys || response.keys || response.items || response || [];
-  } catch {
-    state.apiKeys = [];
-  }
-  setText("apiKeyCountLabel", `${messages.apiKeysCount}: ${state.apiKeys.length}`);
+  const response = await apiRequest({ path: "/api-keys" });
+  state.apiKeys = response.api_keys || response.keys || response.items || response || [];
+  const lastUsed = state.apiKeys
+    .map((item) => item.last_used_at || item.last_used || item.last_used_date)
+    .filter(Boolean)
+    .sort()
+    .at(-1);
+  setText("apiKeyCountValue", String(state.apiKeys.length));
+  setText("apiKeyCountLabel", `${messages.lastUsed}: ${lastUsed ? formatTimestamp(lastUsed) : messages.never}`);
   renderApiKeys();
 }
 
@@ -720,61 +1211,50 @@ async function loadEvents() {
   renderEvents();
 }
 
-async function loadAnalytics() {
-  const start = el("startDate").value;
-  const end = el("endDate").value;
-  const barnId = el("barnId").value;
-  if (!start || !end) throw new Error(messages.chooseDates);
-  const query = buildQuery({ start, end, barn_id: barnId });
-  const [analyticsResult, reportResult] = await Promise.allSettled([
-    apiRequest({ path: "/analytics", query }),
-    apiRequest({ path: "/reports/custom", query }),
-  ]);
-
-  state.analytics = analyticsResult.status === "fulfilled" ? analyticsResult.value : null;
-  state.report = reportResult.status === "fulfilled" ? reportResult.value : null;
-  renderAnalytics();
-}
-
 async function loadHealthAndMetrics() {
+  const dot = document.querySelector("[data-api-health]");
+  const label = document.querySelector("[data-api-health-label]");
   try {
     const response = await fetch("/app/api/health");
     const data = await response.json();
-    setText("systemHealth", response.ok ? `${data.status || "ok"}` : messages.unavailable);
+    const ok = response.ok && String(data.status || "").toLowerCase() === "ok";
+    setText("systemHealth", ok ? messages.systemHealthy : messages.systemDegraded);
+    if (dot) dot.className = `status-dot ${ok ? "is-ok" : "is-bad"}`;
+    if (label) label.textContent = ok ? `API · ${data.status || "ok"}` : `API · ${messages.unavailable}`;
   } catch {
     setText("systemHealth", messages.unavailable);
+    if (dot) dot.className = "status-dot is-bad";
+    if (label) label.textContent = `API · ${messages.unavailable}`;
   }
+  try {
+    state.systemHealth = await apiRequest({ path: "/system/health" });
+  } catch {
+    state.systemHealth = null;
+  }
+  try {
+    state.systemVersion = await apiRequest({ path: "/system/version" });
+  } catch {
+    state.systemVersion = null;
+  }
+  try {
+    state.systemConfig = await apiRequest({ path: "/system/config" });
+  } catch {
+    state.systemConfig = null;
+  }
+  if (role === "admins") {
+    try {
+      state.adminSystemHealth = await apiRequest({ path: "/admin/system-health" });
+    } catch {
+      state.adminSystemHealth = null;
+    }
+  }
+  renderSystemCards();
   try {
     const metrics = await apiRequest({ path: "/metrics", expectText: true });
     setText("metricsOutput", metrics || "");
-  } catch (error) {
-    setText("metricsOutput", formatApiError(error));
-  }
-}
-
-async function loadCamerasAndZones() {
-  const deviceId = el("cameraDeviceIdInput").value.trim() || state.devices[0]?.device_id;
-  const barnId = el("cameraBarnIdInput").value.trim() || state.barns[0]?.barn_id;
-
-  if (deviceId) {
-    try {
-      const camerasResponse = await apiRequest({ path: `/devices/${encodeURIComponent(deviceId)}/cameras` });
-      state.cameras = camerasResponse.cameras || camerasResponse.items || camerasResponse || [];
-    } catch {
-      state.cameras = [];
-    }
-  } else {
-    state.cameras = [];
-  }
-
-  try {
-    const zonesQuery = buildQuery({ barn_id: barnId });
-    const zonesResponse = await apiRequest({ path: "/devices/zones", query: zonesQuery });
-    state.zones = zonesResponse.zones || zonesResponse.items || zonesResponse || [];
   } catch {
-    state.zones = [];
+    setText("metricsOutput", messages.metricsUnavailable);
   }
-  renderCamerasAndZones();
 }
 
 async function loadAdminData() {
@@ -792,16 +1272,13 @@ async function loadAdminData() {
       state.coworkers[roleName] = [];
     }
   }
+  try {
+    const audit = await apiRequest({ path: "/admin/audit-logs", query: buildQuery({ limit: 20 }) });
+    state.auditLogs = Array.isArray(audit) ? audit : audit.items || audit.logs || [];
+  } catch {
+    state.auditLogs = [];
+  }
   renderAdmin();
-}
-
-function setDefaultDates() {
-  const now = new Date();
-  const end = now.toISOString().slice(0, 10);
-  const startDate = new Date(now);
-  startDate.setDate(now.getDate() - 7);
-  el("startDate").value = startDate.toISOString().slice(0, 10);
-  el("endDate").value = end;
 }
 
 function bindTabs() {
@@ -822,15 +1299,23 @@ function bindTabs() {
 }
 
 function bindForms() {
-  el("filtersForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    setFiltersStatus(messages.loading);
+  el("refreshSessionsBtn")?.addEventListener("click", loadSessions);
+  el("refreshAuditLogsBtn")?.addEventListener("click", loadAdminData);
+
+  el("listApiKeysBtn")?.addEventListener("click", async () => {
+    setStatus("apiKeyCreateStatus", messages.loading);
     try {
-      await loadAnalytics();
-      setFiltersStatus(messages.loaded, "success");
+      await loadApiKeys();
+      setStatus("apiKeyCreateStatus", messages.loaded, "success", true);
     } catch (error) {
-      setFiltersStatus(formatApiError(error) || messages.applyError, "error");
+      renderApiKeyError(error);
+      setStatus("apiKeyCreateStatus", formatApiError(error), "error", true);
     }
+  });
+
+  el("createApiKeyBtn")?.addEventListener("click", () => {
+    el("apiKeyName").focus();
+    el("apiKeyForm").requestSubmit();
   });
 
   el("refreshBtn").addEventListener("click", init);
@@ -856,9 +1341,9 @@ function bindForms() {
         },
       });
       await loadProfile();
-      setStatus("profileStatus", messages.saved, "success");
+      setStatus("profileStatus", messages.saved, "success", true);
     } catch (error) {
-      setStatus("profileStatus", formatApiError(error), "error");
+      setStatus("profileStatus", formatApiError(error), "error", true);
     }
   });
 
@@ -875,9 +1360,9 @@ function bindForms() {
       });
       await loadProfile();
       el("emailPassword").value = "";
-      setStatus("profileStatus", messages.saved, "success");
+      setStatus("profileStatus", messages.saved, "success", true);
     } catch (error) {
-      setStatus("profileStatus", formatApiError(error), "error");
+      setStatus("profileStatus", formatApiError(error), "error", true);
     }
   });
 
@@ -894,9 +1379,9 @@ function bindForms() {
       });
       el("currentPassword").value = "";
       el("newPassword").value = "";
-      setStatus("profileStatus", messages.saved, "success");
+      setStatus("profileStatus", messages.saved, "success", true);
     } catch (error) {
-      setStatus("profileStatus", formatApiError(error), "error");
+      setStatus("profileStatus", formatApiError(error), "error", true);
     }
   });
 
@@ -912,97 +1397,44 @@ function bindForms() {
         },
       });
       el("recoveryPassword").value = "";
-      setStatus("profileStatus", messages.saved, "success");
+      setStatus("profileStatus", messages.saved, "success", true);
     } catch (error) {
-      setStatus("profileStatus", formatApiError(error), "error");
+      setStatus("profileStatus", formatApiError(error), "error", true);
     }
   });
 
   el("apiKeyForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     try {
+      const scopes = String(el("apiKeyScopes").value || "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
       const payload = await apiRequest({
         path: "/api-keys",
         method: "POST",
-        body: { name: el("apiKeyName").value || "BarnSight Edge Device" },
+        body: {
+          name: el("apiKeyName").value || "BarnSight Edge Device",
+          device_id: el("apiKeyDeviceId").value || undefined,
+          barn_id: el("apiKeyBarnId").value || undefined,
+          expires_in_days: el("apiKeyExpiresDays").value ? Number(el("apiKeyExpiresDays").value) : undefined,
+          scopes,
+        },
       });
-      el("apiKeyName").value = "";
+      ["apiKeyName", "apiKeyDeviceId", "apiKeyBarnId", "apiKeyExpiresDays", "apiKeyScopes"].forEach((id) => {
+        if (el(id)) el(id).value = "";
+      });
       const reveal = el("apiKeyReveal");
       reveal.className = "notice mt-4";
-      reveal.style.borderColor = "rgb(var(--ok)/0.55)";
+      reveal.style.borderColor = "rgb(var(--ok) / 0.55)";
       reveal.style.background = "rgb(var(--ok-soft))";
       reveal.style.color = "rgb(var(--ok))";
-      reveal.textContent = `${messages.apiKeyCreated} ${payload.key || ""}`;
-      setStatus("apiKeyCreateStatus", messages.created, "success");
+      reveal.textContent = `${messages.apiKeyCreated} ${payload.key || ""} ${messages.copiedNow}`;
+      setStatus("apiKeyCreateStatus", messages.created, "success", true);
       await loadApiKeys();
     } catch (error) {
-      setStatus("apiKeyCreateStatus", formatApiError(error), "error");
-    }
-  });
-
-  el("deviceForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    try {
-      await apiRequest({
-        path: "/devices",
-        method: "POST",
-        body: {
-          device_id: el("deviceIdInput").value,
-          barn_id: el("deviceBarnIdInput").value,
-          name: el("deviceNameInput").value,
-          location: el("deviceLocationInput").value,
-          status: el("deviceStatusInput").value,
-        },
-      });
-      setStatus("deviceStatusMessage", messages.saved, "success");
-      await loadDevices();
-    } catch (error) {
-      setStatus("deviceStatusMessage", formatApiError(error), "error");
-    }
-  });
-
-  el("cameraForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    try {
-      await apiRequest({
-        path: `/devices/${encodeURIComponent(el("cameraDeviceIdInput").value)}/cameras`,
-        method: "POST",
-        body: {
-          camera_id: el("cameraIdInput").value,
-          device_id: el("cameraDeviceIdInput").value,
-          barn_id: el("cameraBarnIdInput").value,
-          name: el("cameraNameInput").value,
-          stream_label: el("cameraStreamInput").value,
-          status: "offline",
-        },
-      });
-      setStatus("cameraStatusMessage", messages.saved, "success");
-      await loadCamerasAndZones();
-    } catch (error) {
-      setStatus("cameraStatusMessage", formatApiError(error), "error");
-    }
-  });
-
-  el("zoneForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
-    try {
-      await apiRequest({
-        path: `/cameras/${encodeURIComponent(el("zoneCameraIdInput").value)}/zones`,
-        method: "POST",
-        body: {
-          zone_id: el("zoneIdInput").value,
-          barn_id: el("zoneBarnIdInput").value,
-          device_id: el("zoneDeviceIdInput").value,
-          camera_id: el("zoneCameraIdInput").value,
-          polygon: JSON.parse(el("zonePolygonInput").value || "[]"),
-          enabled: true,
-          label: el("zoneLabelInput").value,
-        },
-      });
-      setStatus("zoneStatusMessage", messages.saved, "success");
-      await loadCamerasAndZones();
-    } catch (error) {
-      setStatus("zoneStatusMessage", formatApiError(error), "error");
+      renderApiKeyError(error);
+      setStatus("apiKeyCreateStatus", formatApiError(error), "error", true);
     }
   });
 
@@ -1024,28 +1456,51 @@ function bindForms() {
           },
         });
         event.target.reset();
-        setStatus("coworkerStatus", messages.created, "success");
+        setStatus("coworkerStatus", messages.created, "success", true);
         await loadAdminData();
       } catch (error) {
-        setStatus("coworkerStatus", formatApiError(error), "error");
+        setStatus("coworkerStatus", formatApiError(error), "error", true);
       }
     });
   }
 }
 
+function bindDialogs() {
+  el("imagePreviewClose").addEventListener("click", () => el("imagePreviewModal").close());
+}
+
+function setInitialLoadingState() {
+  renderSkeletonCards("apiKeysList", 2);
+  renderSkeletonCards("eventsList", 3);
+}
+
 async function init() {
-  setDefaultDates();
   setActiveTab(state.currentTab);
-  setFiltersStatus(messages.loading);
-  try {
-    await Promise.all([loadProfile(), loadBarns(), loadDevices(), loadApiKeys(), loadEvents(), loadHealthAndMetrics()]);
-    await Promise.all([loadAnalytics(), loadCamerasAndZones(), loadAdminData()]);
-    setFiltersStatus(messages.loaded, "success");
-  } catch (error) {
-    setFiltersStatus(formatApiError(error), "error");
+  renderQuickActions();
+  setInitialLoadingState();
+  setLastRefresh();
+  const primary = await Promise.allSettled([
+    loadProfile(),
+    loadSessions(),
+    loadApiKeys(),
+    loadEvents(),
+    loadHealthAndMetrics(),
+  ]);
+  const secondary = await Promise.allSettled([loadAdminData()]);
+
+  const failures = [...primary, ...secondary].filter((item) => item.status === "rejected");
+  const apiKeyFailure = primary[2];
+  if (apiKeyFailure?.status === "rejected") {
+    renderApiKeyError(apiKeyFailure.reason);
+  }
+
+  renderSetupChecklist();
+  if (failures.length) {
+    return;
   }
 }
 
 bindTabs();
 bindForms();
+bindDialogs();
 init();

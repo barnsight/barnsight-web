@@ -112,6 +112,18 @@ app.get("/pricing", (req, res) => {
   res.render("pricing");
 });
 
+app.get("/unauthorized", (req, res) => {
+  res.status(403).render("unauthorized");
+});
+
+app.get("/forgot-password", (req, res) => {
+  res.render("forgot-password");
+});
+
+app.get("/reset-password", (req, res) => {
+  res.render("reset-password");
+});
+
 app.get("/api-console", (req, res) => {
   if (!req.session.user?.token) {
     return res.redirect("/login");
@@ -299,10 +311,6 @@ app.get("/app/api/health", async (_req, res) => {
 });
 
 app.get("/app/api/user/me", requireAuth, async (req, res) => proxyJson(req, res, { path: "/api/v1/user/me" }));
-app.get("/app/api/barns", requireAuth, async (req, res) => proxyJson(req, res, { path: "/api/v1/barns" }));
-app.get("/app/api/barns/:barnId", requireAuth, async (req, res) =>
-  proxyJson(req, res, { path: `/api/v1/barns/${req.params.barnId}`, queryFromReq: false }),
-);
 app.get("/app/api/events", requireAuth, async (req, res) => {
   try {
     const result = await fetchEventsResilient({
@@ -322,11 +330,7 @@ app.get("/app/api/events", requireAuth, async (req, res) => {
     });
   }
 });
-app.get("/app/api/analytics", requireAuth, async (req, res) => proxyJson(req, res, { path: "/api/v1/analytics" }));
 app.get("/app/api/detections", requireAuth, async (req, res) => proxyJson(req, res, { path: "/api/v1/detections" }));
-app.get("/app/api/reports/custom", requireAuth, async (req, res) =>
-  proxyJson(req, res, { path: "/api/v1/reports/custom" }),
-);
 app.get("/app/api/admin/dashboard", requireAuth, async (req, res) =>
   proxyJson(req, res, { path: "/api/v1/admin/dashboard", queryFromReq: false }),
 );
