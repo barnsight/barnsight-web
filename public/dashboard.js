@@ -212,6 +212,13 @@ async function apiRequest({ path, method = "GET", query = "", body, apiKey, expe
   return data;
 }
 
+function normalizeListResponse(response, keys = []) {
+  for (const key of keys) {
+    if (Array.isArray(response?.[key])) return response[key];
+  }
+  return Array.isArray(response) ? response : [];
+}
+
 function setActiveTab(tab) {
   state.currentTab = tab;
   document.querySelectorAll(".dashboard-tab").forEach((button) => {
@@ -671,7 +678,7 @@ async function loadProfile() {
 async function loadBarns() {
   try {
     const response = await apiRequest({ path: "/barns" });
-    state.barns = response.barns || response.items || response || [];
+    state.barns = normalizeListResponse(response, ["barns", "items"]);
   } catch {
     state.barns = [];
   }
@@ -682,7 +689,7 @@ async function loadBarns() {
 async function loadDevices() {
   try {
     const response = await apiRequest({ path: "/devices" });
-    state.devices = response.devices || response.items || response || [];
+    state.devices = normalizeListResponse(response, ["devices", "items"]);
   } catch {
     state.devices = [];
   }
@@ -693,7 +700,7 @@ async function loadDevices() {
 async function loadApiKeys() {
   try {
     const response = await apiRequest({ path: "/api-keys" });
-    state.apiKeys = response.api_keys || response.keys || response.items || response || [];
+    state.apiKeys = normalizeListResponse(response, ["api_keys", "keys", "items"]);
   } catch {
     state.apiKeys = [];
   }
@@ -706,7 +713,7 @@ async function loadEvents() {
   let skippedWindows = 0;
   try {
     const response = await apiRequest({ path: "/events", query: buildQuery({ limit: 120 }) });
-    state.events = response.events || response.items || response || [];
+    state.events = normalizeListResponse(response, ["events", "items"]);
     setText("eventCount", String(response.total || state.events.length));
     partial = Boolean(response.partial || response.recovered_from_validation_error);
     skippedWindows = Number(response.skipped_windows || 0);
