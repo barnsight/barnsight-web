@@ -1180,10 +1180,24 @@ async function loadSessions() {
 }
 
 async function loadApiKeys() {
-  const response = await apiRequest({ path: "/api-keys" });
-  state.apiKeys = response.api_keys || response.keys || response.items || response || [];
+  try {
+    const response = await apiRequest({ path: "/api-keys" });
+    const candidate = response?.api_keys ?? response?.keys ?? response?.items ?? response;
+    const normalized = Array.isArray(candidate)
+      ? candidate
+      : Array.isArray(candidate?.items)
+        ? candidate.items
+        : Array.isArray(candidate?.api_keys)
+          ? candidate.api_keys
+          : [];
+
+    state.apiKeys = normalized;
+  } catch {
+    state.apiKeys = [];
+  }
+
   const lastUsed = state.apiKeys
-    .map((item) => item.last_used_at || item.last_used || item.last_used_date)
+    .map((item) => item?.last_used_at || item?.last_used || item?.last_used_date)
     .filter(Boolean)
     .sort()
     .at(-1);
