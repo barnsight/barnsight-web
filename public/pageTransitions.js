@@ -69,6 +69,7 @@
   document.addEventListener("submit", (event) => {
     const form = event.target;
     if (!(form instanceof HTMLFormElement)) return;
+    if (event.defaultPrevented) return;
     if (form.dataset.noTransition === "true") return;
     if (body.dataset.exiting === "1") return;
 

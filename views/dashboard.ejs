@@ -85,11 +85,11 @@
                 <h2 class="font-display text-lg font-semibold"><%= t("dashboard.filters") %></h2>
                 <p class="mt-1 text-sm text-ink-soft"><%= locale === "uk" ? "Використовуйте одне вікно дат для аналітики, звітів і перегляду подій." : "Use one date window for analytics, reports, and event review." %></p>
               </div>
-              <form id="filtersForm" class="grid w-full gap-3 xl:grid-cols-[180px_180px_1fr_180px]">
+              <form id="filtersForm" data-no-transition="true" class="grid w-full gap-3 xl:grid-cols-[180px_180px_1fr_180px]">
                 <input id="startDate" type="date" class="field" aria-label="<%= t("dashboard.start") %>" />
                 <input id="endDate" type="date" class="field" aria-label="<%= t("dashboard.end") %>" />
                 <input id="barnId" type="number" class="field" placeholder="<%= locale === 'uk' ? 'ID господарства' : 'Barn ID' %>" />
-                <button id="applyFiltersBtn" type="submit" class="btn-primary w-full"><%= t("dashboard.apply") %></button>
+                <button id="applyFiltersBtn" type="button" class="btn-primary w-full"><%= t("dashboard.apply") %></button>
               </form>
             </div>
             <p id="filtersStatus" class="mt-3 text-xs text-ink-mute"><%= t("dashboard.waiting") %></p>

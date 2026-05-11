@@ -829,8 +829,7 @@ function bindTabs() {
 }
 
 function bindForms() {
-  el("filtersForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
+  const applyFilters = async () => {
     setFiltersStatus(messages.loading);
     try {
       await loadAnalytics();
@@ -838,6 +837,19 @@ function bindForms() {
     } catch (error) {
       setFiltersStatus(formatApiError(error) || messages.applyError, "error");
     }
+  };
+
+  el("filtersForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    await applyFilters();
+  });
+  el("applyFiltersBtn").addEventListener("click", applyFilters);
+  ["startDate", "endDate", "barnId"].forEach((id) => {
+    el(id).addEventListener("keydown", async (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      await applyFilters();
+    });
   });
 
   el("refreshBtn").addEventListener("click", init);
